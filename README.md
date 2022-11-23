@@ -4,7 +4,7 @@
 [![](https://jitpack.io/v/w2sv/AndroidUtils.svg)](https://jitpack.io/#w2sv/AndroidUtils)
 ![GitHub](https://img.shields.io/github/license/w2sv/AndroidUtils)
 
-Android library for convenient interfacing with SharedPreferences whilst reducing the number of carried out, expensive IO operations 
+A collection of utils for Android Development 
 
 ## Installation with gradle & jitpack
 
