@@ -2,12 +2,12 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'maven-publish'
+    id 'de.mannodermaus.android-junit5'
 }
 
 android {
     namespace 'com.w2sv.androidutils'
     compileSdk 33
-
     defaultConfig {
         minSdk 23
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -58,4 +58,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.7.0'
 
     implementation 'com.github.PaulWoitaschek:Slimber:2.0.0'
+
+    // Unit tests
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
 }
