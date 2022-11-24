@@ -5,7 +5,7 @@ package com.w2sv.androidutils
 import android.app.Application
 import timber.log.Timber
 
-class DebugTreeCultivatingApplication : Application() {
+open class DebugTreeCultivatingApplication : Application() {
 
     /**
      * Plants [Timber] tree if debug mode active
