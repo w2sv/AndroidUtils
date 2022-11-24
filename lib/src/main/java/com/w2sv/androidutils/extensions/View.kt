@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.w2sv.androidutils.extensions
 
 import android.view.View
@@ -11,8 +13,12 @@ fun View.show() {
     visibility = View.VISIBLE
 }
 
-fun View.hide() {
+fun View.remove() {
     visibility = View.GONE
+}
+
+fun View.hide() {
+    visibility = View.INVISIBLE
 }
 
 inline fun View.ifNotInEditMode(f: () -> Unit) {

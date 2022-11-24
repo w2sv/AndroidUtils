@@ -12,7 +12,6 @@ android {
         minSdk 23
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -49,12 +48,14 @@ afterEvaluate {
 
 dependencies {
     implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
-    implementation 'com.github.PaulWoitaschek:Slimber:2.0.0'
     implementation 'androidx.appcompat:appcompat-resources:1.5.1'
-    implementation 'androidx.lifecycle:lifecycle-livedata-core-ktx:2.5.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
-    implementation 'com.google.dagger:hilt-android:2.42'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-livedata-core-ktx:2.5.1'
+
+    implementation 'com.google.dagger:hilt-android:2.42'
     implementation 'com.google.android.material:material:1.7.0'
+
+    implementation 'com.github.PaulWoitaschek:Slimber:2.0.0'
 }

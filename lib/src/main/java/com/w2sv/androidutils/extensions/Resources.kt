@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.w2sv.androidutils.extensions
 
 import android.content.res.Resources

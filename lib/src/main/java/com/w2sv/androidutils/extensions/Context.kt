@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.w2sv.androidutils.extensions
 
 import android.app.Activity
@@ -25,19 +27,23 @@ fun Context.getColoredIcon(@DrawableRes drawableId: Int, @ColorRes colorId: Int)
 fun Context.getThemedColor(@ColorRes id: Int): Int =
     resources.getColor(id, theme)
 
-fun Context.uriPermissionGranted(uri: Uri, permissionCode: Int): Boolean =
+fun Context.uriPermissionGranted(
+    uri: Uri,
+    permissionCode: Int,
+    readPermission: String? = null,
+    writePermission: String? = null
+): Boolean =
     checkUriPermission(
         uri,
-        null,
-        null,
+        readPermission,
+        writePermission,
         Binder.getCallingPid(),
         Binder.getCallingUid(),
         permissionCode
     ) == PackageManager.PERMISSION_GRANTED
 
 tailrec fun Context.getActivity(): Activity? =
-    this as? Activity
-        ?: (this as? ContextWrapper)?.baseContext?.getActivity()
+    this as? Activity ?: (this as? ContextWrapper)?.baseContext?.getActivity()
 
 @Suppress("DEPRECATION")
 inline fun <reified T : Service> Context.serviceRunning() =
