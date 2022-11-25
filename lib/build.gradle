@@ -7,10 +7,10 @@ plugins {
 
 android {
     namespace 'com.w2sv.androidutils'
-    compileSdk 33
+    compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
-        minSdk 23
-        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        minSdkVersion rootProject.ext.minSdkVersion
+//        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
         release {
