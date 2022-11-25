@@ -23,7 +23,7 @@ jobs:
           chmod +x gradlew
           ./gradlew test
 
-  assemble:
+  build:
     name: Build
     runs-on: ubuntu-latest
     steps:
