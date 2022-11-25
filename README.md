@@ -2,6 +2,7 @@
 
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/w2sv/AndroidUtils?include_prereleases)
 [![](https://jitpack.io/v/w2sv/AndroidUtils.svg)](https://jitpack.io/#w2sv/AndroidUtils)
+[![Build](https://github.com/w2sv/AndroidUtils/actions/workflows/workflow.yaml/badge.svg)](https://github.com/w2sv/AndroidUtils/actions/workflows/workflow.yaml)
 ![GitHub](https://img.shields.io/github/license/w2sv/AndroidUtils)
 
 A collection of utils for Android Development 
