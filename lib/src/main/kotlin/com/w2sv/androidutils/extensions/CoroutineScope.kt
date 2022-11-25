@@ -9,27 +9,30 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-fun <R> CoroutineScope.launch(
-    f: () -> R,
-    onPostExecute: ((R) -> Unit)? = null
+inline fun <R> CoroutineScope.launchWithOnFinishedListener(
+    crossinline f: () -> R,
+    crossinline onFinishedListener: ((R) -> Unit)
 ) =
     launch {
-        val result = withContext(Dispatchers.IO) {
-            f()
-        }
-        onPostExecute?.run { invoke(result) }
+        onFinishedListener(
+            withContext(Dispatchers.IO) {
+                f()
+            }
+        )
     }
 
-fun <P, R> CoroutineScope.launch(
-    f: suspend (suspend (P) -> Unit) -> R,
-    onProgressUpdate: (P) -> Unit,
-    onPostExecute: (R) -> Unit
+inline fun <P, R> CoroutineScope.launchWithOnProgressOnFinishedListener(
+    crossinline f: suspend (suspend (P) -> Unit) -> R,
+    crossinline onProgressListener: (P) -> Unit,
+    crossinline onFinishedListener: (R) -> Unit
 ) =
     launch {
-        onPostExecute(
+        onFinishedListener(
             withContext(Dispatchers.IO) {
                 f {
-                    withContext(Dispatchers.Main) { onProgressUpdate(it) }
+                    withContext(Dispatchers.Main) {
+                        onProgressListener(it)
+                    }
                 }
             }
         )
