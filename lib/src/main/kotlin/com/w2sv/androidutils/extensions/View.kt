@@ -21,6 +21,11 @@ fun View.hide() {
     visibility = View.INVISIBLE
 }
 
+fun crossVisualize(hideView: View, showView: View){
+    hideView.hide()
+    showView.show()
+}
+
 inline fun View.ifNotInEditMode(f: () -> Unit) {
     if (!isInEditMode)
         f()
