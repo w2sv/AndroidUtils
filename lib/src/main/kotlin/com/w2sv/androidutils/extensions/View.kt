@@ -26,11 +26,6 @@ fun crossVisualize(hideView: View, showView: View){
     showView.show()
 }
 
-inline fun View.ifNotInEditMode(f: () -> Unit) {
-    if (!isInEditMode)
-        f()
-}
-
 inline fun <reified VM : ViewModel> View.viewModel(): Lazy<VM> =
     lazy { ViewModelProvider(findViewTreeViewModelStoreOwner()!!)[VM::class.java] }
 
