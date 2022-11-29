@@ -3,12 +3,20 @@
 package com.w2sv.androidutils.extensions
 
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 
-inline fun CoroutineScope.launchDelayed(timeMillis: Long, crossinline f: () -> Unit): Job =
-    launch {
+fun CoroutineScope.launchDelayed(
+    timeMillis: Long,
+    context: CoroutineContext = EmptyCoroutineContext,
+    start: CoroutineStart = CoroutineStart.DEFAULT,
+    block: suspend CoroutineScope.() -> Unit
+): Job =
+    launch(context, start) {
         delay(timeMillis)
-        f()
+        block()
     }

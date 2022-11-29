@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.w2sv.androidutils
 
 import com.w2sv.androidutils.extensions.launchDelayed
@@ -5,7 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 
 open class BackPressListener(
     private val coroutineScope: CoroutineScope,
-    private val confirmationWindowDuration: Long = 2500,
+    private val confirmationWindowDuration: Long,
 ) {
     private var pressedOnce: Boolean = false
 
