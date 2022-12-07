@@ -5,24 +5,6 @@ env:
   JAVA_VERSION: 11
 
 jobs:
-  unit-tests:
-    name: Run Unit tests
-    runs-on: macos-latest
-
-    steps:
-      - name: Checkout current repository
-        uses: actions/checkout@v3
-
-      - name: Setup JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: ${{ env.JAVA_VERSION }}
-
-      - name: Run Unit tests
-        run: |
-          chmod +x gradlew
-          ./gradlew test
-
   build:
     name: Build
     runs-on: ubuntu-latest
