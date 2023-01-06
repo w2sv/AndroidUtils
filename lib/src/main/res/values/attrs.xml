@@ -1,0 +1,5 @@
+<resources>
+    <declare-styleable name="SnackbarRepelledLayout">
+        <attr name="translationCoefficient" format="float" />
+    </declare-styleable>
+</resources>

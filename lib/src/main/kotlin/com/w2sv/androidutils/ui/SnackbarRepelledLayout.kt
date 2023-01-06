@@ -8,16 +8,36 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.snackbar.Snackbar.SnackbarLayout
+import com.w2sv.androidutils.R
 import kotlin.math.min
 
-class SnackbarRepelledLayout(context: Context, private val attributeSet: AttributeSet) :
+class SnackbarRepelledLayout(context: Context, private val attrs: AttributeSet) :
     LinearLayout(
         context,
-        attributeSet
+        attrs
     ),
     CoordinatorLayout.AttachedBehavior {
 
-    class Behavior(context: Context?, attrs: AttributeSet?) :
+    private val translationCoefficient: Float
+
+    init {
+        context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.SnackbarRepelledLayout,
+            0,
+            0
+        )
+            .apply {
+                try {
+                    translationCoefficient =
+                        getFloat(R.styleable.SnackbarRepelledLayout_translationCoefficient, 1f)
+                } finally {
+                    recycle()
+                }
+            }
+    }
+
+    inner class Behavior(context: Context?, attrs: AttributeSet?) :
         CoordinatorLayout.Behavior<View?>(context, attrs) {
 
         override fun layoutDependsOn(
@@ -36,7 +56,10 @@ class SnackbarRepelledLayout(context: Context, private val attributeSet: Attribu
                 .apply {
                     clearAnimation()
 
-                    val translation = min(0f, (dependency.translationY - dependency.height) * 0.75f)
+                    val translation = min(
+                        0f,
+                        (dependency.translationY - dependency.height) * translationCoefficient
+                    )
                     translationY = translation
                     setPadding(0, -translation.toInt(), 0, 0)
                 }
@@ -54,5 +77,5 @@ class SnackbarRepelledLayout(context: Context, private val attributeSet: Attribu
     }
 
     override fun getBehavior(): CoordinatorLayout.Behavior<*> =
-        Behavior(context, attributeSet)
+        Behavior(context, attrs)
 }
