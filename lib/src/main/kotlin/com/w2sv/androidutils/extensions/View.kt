@@ -26,6 +26,15 @@ fun crossVisualize(hideView: View, showView: View){
     showView.show()
 }
 
+fun crossVisualize(hideViews: Iterable<View>, showViews: Iterable<View>){
+    hideViews.forEach {
+        it.hide()
+    }
+    showViews.forEach{
+        it.show()
+    }
+}
+
 inline fun <reified VM : ViewModel> View.viewModel(): Lazy<VM> =
     lazy { ViewModelProvider(findViewTreeViewModelStoreOwner()!!)[VM::class.java] }
 
