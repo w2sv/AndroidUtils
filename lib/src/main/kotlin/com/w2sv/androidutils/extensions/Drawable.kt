@@ -7,5 +7,5 @@ import androidx.annotation.ColorRes
 
 fun Drawable.setColor(context: Context, @ColorRes colorId: Int) {
     @Suppress("DEPRECATION")
-    setColorFilter(context.getThemedColor(colorId), PorterDuff.Mode.SRC_IN)
+    setColorFilter(context.getColor(colorId), PorterDuff.Mode.SRC_IN)
 }

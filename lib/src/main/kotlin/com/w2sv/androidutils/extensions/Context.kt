@@ -24,9 +24,6 @@ fun Context.getColoredIcon(@DrawableRes drawableId: Int, @ColorRes colorId: Int)
         setColor(this@getColoredIcon, colorId)
     }
 
-fun Context.getThemedColor(@ColorRes id: Int): Int =
-    resources.getColor(id, theme)
-
 fun Context.uriPermissionGranted(
     uri: Uri,
     permissionCode: Int,
