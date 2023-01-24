@@ -9,6 +9,10 @@ import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import dagger.hilt.android.internal.managers.ViewComponentManager
 
+/**
+ * Visibility Alteration
+ */
+
 fun View.show() {
     visibility = View.VISIBLE
 }
@@ -34,6 +38,10 @@ fun crossVisualize(hideViews: Iterable<View>, showViews: Iterable<View>){
         it.show()
     }
 }
+
+/**
+ * ViewModel Retrieval
+ */
 
 inline fun <reified VM : ViewModel> View.viewModel(): Lazy<VM> =
     lazy { ViewModelProvider(findViewTreeViewModelStoreOwner()!!)[VM::class.java] }
