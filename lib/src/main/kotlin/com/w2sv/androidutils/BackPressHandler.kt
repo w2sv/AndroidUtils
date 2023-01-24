@@ -5,7 +5,7 @@ package com.w2sv.androidutils
 import com.w2sv.androidutils.extensions.launchDelayed
 import kotlinx.coroutines.CoroutineScope
 
-open class BackPressListener(
+open class BackPressHandler(
     private val coroutineScope: CoroutineScope,
     private val confirmationWindowDuration: Long,
 ) {
