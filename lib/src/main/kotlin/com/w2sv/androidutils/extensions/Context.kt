@@ -12,6 +12,7 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
@@ -72,8 +73,16 @@ fun Context.goToWebpage(url: String) {
  * Attribute retrieval
  */
 
-tailrec fun Context.getActivity(): Activity? =
-    this as? Activity ?: (this as? ContextWrapper)?.baseContext?.getActivity()
+val Context.activity: Activity? get() = _getActivity()
+
+fun Context.requireActivity(): Activity = activity!!
+
+@Suppress("UNCHECKED_CAST")
+fun <A : Activity> Context.requireCastActivity(): A =
+    requireActivity() as A
+
+private tailrec fun Context._getActivity(): Activity? =
+    this as? Activity ?: (this as? ContextWrapper)?.baseContext?._getActivity()
 
 /**
  * Services

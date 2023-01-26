@@ -9,21 +9,21 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 
-interface ActivityCallContractAdministrator<I, O> : DefaultLifecycleObserver {
-    val activityResultRegistry: ActivityResultRegistry
-    val activityResultContract: ActivityResultContract<I, O>
-    val activityResultCallback: (O) -> Unit
-    var activityResultLauncher: ActivityResultLauncher<I>
-
+interface ActivityCallContractHandler<I, O> : DefaultLifecycleObserver {
+    val resultRegistry: ActivityResultRegistry
+    val resultContract: ActivityResultContract<I, O>
+    val resultCallback: (O) -> Unit
     val registryKey: String
 
+    var resultLauncher: ActivityResultLauncher<I>
+
     abstract class Impl<I, O>(
-        override val activityResultRegistry: ActivityResultRegistry,
-        override val activityResultContract: ActivityResultContract<I, O>
-    ) : ActivityCallContractAdministrator<I, O> {
+        override val resultRegistry: ActivityResultRegistry,
+        override val resultContract: ActivityResultContract<I, O>
+    ) : ActivityCallContractHandler<I, O> {
 
         /**
-         * Enable construction with [activity]
+         * Enable construction from [activity]
          */
         constructor(
             activity: ComponentActivity,
@@ -31,21 +31,21 @@ interface ActivityCallContractAdministrator<I, O> : DefaultLifecycleObserver {
         ) : this(activity.activityResultRegistry, activityResultContract)
 
         /**
-         * Key by which [activityResultCallback] will be identified within [activityResultRegistry]
+         * Key by which [resultCallback] will be identified within [resultRegistry]
          */
         override val registryKey: String = this::class.java.name
 
-        override lateinit var activityResultLauncher: ActivityResultLauncher<I>
+        override lateinit var resultLauncher: ActivityResultLauncher<I>
 
         override fun onCreate(owner: LifecycleOwner) {
             super.onCreate(owner)
 
-            activityResultLauncher =
-                activityResultRegistry.register(
+            resultLauncher =
+                resultRegistry.register(
                     registryKey,
                     owner,
-                    activityResultContract,
-                    activityResultCallback
+                    resultContract,
+                    resultCallback
                 )
         }
     }

@@ -18,11 +18,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '17'
+        jvmTarget = '11'
     }
     publishing {
         singleVariant('release') {
@@ -46,17 +46,17 @@ afterEvaluate {
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.10.0-alpha01'
+    implementation 'androidx.core:core-ktx:1.10.0-alpha02'
     implementation 'androidx.appcompat:appcompat-resources:1.7.0-alpha01'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
 
-    def LIFECYCLE_VERSION = '2.6.0-alpha03'
+    def LIFECYCLE_VERSION = '2.6.0-alpha05'
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$LIFECYCLE_VERSION"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$LIFECYCLE_VERSION"
     implementation "androidx.lifecycle:lifecycle-livedata-core-ktx:$LIFECYCLE_VERSION"
 
     implementation 'com.google.dagger:hilt-android:2.44.2'
-    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'com.google.android.material:material:1.8.0'
 
     // Unit tests
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
