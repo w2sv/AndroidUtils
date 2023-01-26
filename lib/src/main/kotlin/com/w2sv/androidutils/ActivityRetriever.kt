@@ -9,7 +9,6 @@ import com.w2sv.androidutils.extensions.requireActivity
 
 interface ActivityRetriever {
     val activity: Activity
-    val fragmentActivity: FragmentActivity
 
     @Suppress("UNCHECKED_CAST")
     fun <A : Activity> castActivity(): A =
@@ -20,8 +19,5 @@ interface ActivityRetriever {
         override val activity: Activity by lazy {
             context.requireActivity()
         }
-
-        override val fragmentActivity: FragmentActivity
-            get() = activity as FragmentActivity
     }
 }
