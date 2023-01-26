@@ -5,7 +5,7 @@ package com.w2sv.androidutils
 import android.app.Activity
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
-import com.w2sv.androidutils.extensions.getActivity
+import com.w2sv.androidutils.extensions.requireActivity
 
 interface ActivityRetriever {
     val activity: Activity
@@ -18,7 +18,7 @@ interface ActivityRetriever {
     open class Implementation(private val context: Context) : ActivityRetriever {
 
         override val activity: Activity by lazy {
-            context.getActivity()!!
+            context.requireActivity()
         }
 
         override val fragmentActivity: FragmentActivity
