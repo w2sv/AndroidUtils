@@ -7,11 +7,11 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import com.google.android.material.snackbar.Snackbar.SnackbarLayout
 import com.w2sv.androidutils.R
 import kotlin.math.min
+import kotlin.reflect.KClass
 
-class SnackbarRepelledLayout(context: Context, private val attrs: AttributeSet) :
+abstract class RepelledLayout<V: View>(context: Context, private val attrs: AttributeSet, private val repellingViewClass: KClass<out View>) :
     LinearLayout(
         context,
         attrs
@@ -23,14 +23,14 @@ class SnackbarRepelledLayout(context: Context, private val attrs: AttributeSet) 
     init {
         context.theme.obtainStyledAttributes(
             attrs,
-            R.styleable.SnackbarRepelledLayout,
+            R.styleable.RepelledLayout,
             0,
             0
         )
             .apply {
                 try {
                     translationCoefficient =
-                        getFloat(R.styleable.SnackbarRepelledLayout_translationCoefficient, 1f)
+                        getFloat(R.styleable.RepelledLayout_translationCoefficient, 1f)
                 } finally {
                     recycle()
                 }
@@ -45,7 +45,7 @@ class SnackbarRepelledLayout(context: Context, private val attrs: AttributeSet) 
             child: View,
             dependency: View
         ): Boolean =
-            (dependency is SnackbarLayout)
+            dependency::class == repellingViewClass
 
         override fun onDependentViewChanged(
             parent: CoordinatorLayout,
