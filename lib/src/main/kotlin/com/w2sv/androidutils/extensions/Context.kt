@@ -34,34 +34,19 @@ fun Context.getToast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT): To
         .makeText(this, text, duration)
 
 /**
- * Notifications
+ * Drawable
  */
 
-fun Context.notificationManager(): NotificationManager =
-    getSystemService(NotificationManager::class.java)
-
-fun Context.showNotification(id: Int, builder: NotificationCompat.Builder) {
-    notificationManager()
-        .notify(
-            id,
-            builder.build()
-        )
-}
-
-/**
- * Resources
- */
-
-fun Context.getColoredIcon(@DrawableRes drawableId: Int, @ColorRes colorId: Int): Drawable =
+fun Context.getColoredDrawable(@DrawableRes drawableId: Int, @ColorRes colorId: Int): Drawable =
     DrawableCompat.wrap(AppCompatResources.getDrawable(this, drawableId)!!).apply {
-        setColor(this@getColoredIcon, colorId)
+        setColor(this@getColoredDrawable, colorId)
     }
 
 /**
  * Activity launching
  */
 
-fun Context.goToWebpage(url: String) {
+fun Context.openUrl(url: String) {
     startActivity(
         Intent(
             Intent.ACTION_VIEW,
@@ -101,6 +86,21 @@ inline fun <reified T : Service> Context.serviceRunning() =
 
 val Context.locationServicesEnabled: Boolean
     get() = LocationManagerCompat.isLocationEnabled(getSystemService(LocationManager::class.java))
+
+/**
+ * .Notifications
+ */
+
+fun Context.getNotificationManager(): NotificationManager =
+    getSystemService(NotificationManager::class.java)
+
+fun Context.showNotification(id: Int, builder: NotificationCompat.Builder) {
+    getNotificationManager()
+        .notify(
+            id,
+            builder.build()
+        )
+}
 
 /**
  * Misc
