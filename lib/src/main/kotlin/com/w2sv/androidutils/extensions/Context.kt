@@ -10,14 +10,15 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.location.LocationManager
 import android.net.Uri
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.NotificationCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.location.LocationManagerCompat
 
 /**
  * Toast
@@ -70,7 +71,7 @@ fun Context.goToWebpage(url: String) {
 }
 
 /**
- * Attribute retrieval
+ * Activity retrieval
  */
 
 val Context.activity: Activity? get() = _getActivity()
@@ -93,3 +94,17 @@ inline fun <reified T : Service> Context.serviceRunning() =
     (getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager)
         .getRunningServices(Integer.MAX_VALUE)
         .any { it.service.className == T::class.java.name }
+
+/**
+ * System Services
+ */
+
+val Context.locationServicesEnabled: Boolean
+    get() = LocationManagerCompat.isLocationEnabled(getSystemService(LocationManager::class.java))
+
+/**
+ * Misc
+ */
+
+val Context.playStoreLink: String
+    get() = "https://play.google.com/store/apps/details?id=$packageName"

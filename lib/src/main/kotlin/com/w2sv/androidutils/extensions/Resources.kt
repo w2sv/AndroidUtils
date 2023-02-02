@@ -4,6 +4,7 @@ package com.w2sv.androidutils.extensions
 
 import android.content.res.Resources
 import android.text.Spanned
+import androidx.annotation.ArrayRes
 import androidx.annotation.IntegerRes
 import androidx.annotation.StringRes
 import androidx.core.text.HtmlCompat
@@ -19,3 +20,9 @@ fun Resources.getHtmlText(@StringRes id: Int, vararg formatArgs: Any): Spanned =
         ),
         HtmlCompat.FROM_HTML_MODE_COMPACT
     )
+
+fun Resources.getNestedStringArray(@ArrayRes id: Int, index: Int): List<String> =
+    obtainTypedArray(id).run {
+        getTextArray(index).map { it.toString() }
+            .also { recycle() }
+    }

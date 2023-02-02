@@ -1,8 +1,10 @@
-@file:Suppress("unused")
+@file:Suppress("unused", "DEPRECATION")
 
 package com.w2sv.androidutils
 
 import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
 import android.content.IntentFilter
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -31,5 +33,16 @@ abstract class SelfManagingLocalBroadcastReceiver(
 
         broadcastManager
             .unregisterReceiver(this)
+    }
+
+    open class Impl(
+        broadcastManager: LocalBroadcastManager,
+        intentFilter: IntentFilter,
+        private val callback: (Context?, Intent?) -> Unit
+    ) : SelfManagingLocalBroadcastReceiver(broadcastManager, intentFilter) {
+
+        override fun onReceive(context: Context?, intent: Intent?) {
+            callback(context, intent)
+        }
     }
 }
