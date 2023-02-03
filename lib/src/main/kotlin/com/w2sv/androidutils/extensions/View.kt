@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
-import dagger.hilt.android.internal.managers.ViewComponentManager
 
 /**
  * Visibility Alteration
@@ -51,11 +50,4 @@ inline fun <reified VM : ViewModel> View.activityViewModel(): Lazy<VM> =
         ViewModelProvider(
             (context as ViewModelStoreOwner)
         )[VM::class.java]
-    }
-
-inline fun <reified VM : ViewModel> View.hiltActivityViewModel(): Lazy<VM> =
-    lazy {
-        val activityContext =
-            (context as? ViewComponentManager.FragmentContextWrapper)?.baseContext ?: context
-        ViewModelProvider((activityContext as ViewModelStoreOwner))[VM::class.java]
     }
