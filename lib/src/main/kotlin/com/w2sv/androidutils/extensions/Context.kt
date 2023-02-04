@@ -15,6 +15,7 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.NotificationCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -25,13 +26,20 @@ import androidx.core.location.LocationManagerCompat
  */
 
 fun Context.showToast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
-    getToast(text, duration)
+    makeToast(text, duration)
         .show()
 }
 
-fun Context.getToast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT): Toast =
+fun Context.showToast(@StringRes text: Int, duration: Int = Toast.LENGTH_SHORT) {
+    makeToast(text, duration)
+}
+
+fun Context.makeToast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT): Toast =
     Toast
         .makeText(this, text, duration)
+
+fun Context.makeToast(@StringRes text: Int, duration: Int = Toast.LENGTH_SHORT): Toast =
+    makeToast(resources.getText(text), duration)
 
 /**
  * Drawable
@@ -106,5 +114,5 @@ fun Context.showNotification(id: Int, builder: NotificationCompat.Builder) {
  * Misc
  */
 
-val Context.playStoreLink: String
+val Context.playStoreUrl: String
     get() = "https://play.google.com/store/apps/details?id=$packageName"
