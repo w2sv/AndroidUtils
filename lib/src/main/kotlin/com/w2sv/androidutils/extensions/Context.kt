@@ -2,6 +2,7 @@
 
 package com.w2sv.androidutils.extensions
 
+import android.Manifest
 import android.app.Activity
 import android.app.ActivityManager
 import android.app.NotificationManager
@@ -9,9 +10,12 @@ import android.app.Service
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
+import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.location.LocationManager
 import android.net.Uri
+import android.os.Build
 import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
@@ -49,6 +53,13 @@ fun Context.getColoredDrawable(@DrawableRes drawableId: Int, @ColorRes colorId: 
     DrawableCompat.wrap(AppCompatResources.getDrawable(this, drawableId)!!).apply {
         setColor(this@getColoredDrawable, colorId)
     }
+
+/**
+ * SharedPreferences
+ */
+
+fun Context.getDefaultPreferences(): SharedPreferences =
+    getSharedPreferences(packageName, Context.MODE_PRIVATE)
 
 /**
  * Activity launching
@@ -103,6 +114,9 @@ fun Context.getNotificationManager(): NotificationManager =
     getSystemService(NotificationManager::class.java)
 
 fun Context.showNotification(id: Int, builder: NotificationCompat.Builder) {
+    if (Build.VERSION.SDK_INT >= 33 && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)
+        throw SecurityException("${Manifest.permission.POST_NOTIFICATIONS} required for SDK >= 33")
+
     getNotificationManager()
         .notify(
             id,
