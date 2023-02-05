@@ -114,7 +114,7 @@ fun Context.getNotificationManager(): NotificationManager =
     getSystemService(NotificationManager::class.java)
 
 fun Context.showNotification(id: Int, builder: NotificationCompat.Builder) {
-    if (Build.VERSION.SDK_INT >= 33 && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)
         throw SecurityException("${Manifest.permission.POST_NOTIFICATIONS} required for SDK >= 33")
 
     getNotificationManager()
