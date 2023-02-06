@@ -36,6 +36,7 @@ fun Context.showToast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
 
 fun Context.showToast(@StringRes text: Int, duration: Int = Toast.LENGTH_SHORT) {
     makeToast(text, duration)
+        .show()
 }
 
 fun Context.makeToast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT): Toast =
