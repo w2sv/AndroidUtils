@@ -11,7 +11,7 @@ import com.w2sv.androidutils.R
 import kotlin.math.min
 import kotlin.reflect.KClass
 
-abstract class RepelledLayout<V: View>(context: Context, private val attrs: AttributeSet, private val repellingViewClass: KClass<out View>) :
+abstract class RepelledLayout<out V: View>(context: Context, private val attrs: AttributeSet, private val repellingViewClass: KClass<V>) :
     LinearLayout(
         context,
         attrs
