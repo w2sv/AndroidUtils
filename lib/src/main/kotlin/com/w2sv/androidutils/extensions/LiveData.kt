@@ -33,5 +33,9 @@ fun <T> LiveData<T>.postValue(value: T?) {
     asMutable.postValue(value)
 }
 
+fun <T> LiveData<T>.repostValue() {
+    asMutable.postValue(value)
+}
+
 private val <T> LiveData<T>.asMutable: MutableLiveData<T>
     get() = this as MutableLiveData<T>
