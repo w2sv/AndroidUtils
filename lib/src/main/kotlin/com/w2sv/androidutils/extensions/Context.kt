@@ -72,6 +72,7 @@ fun Context.openUrl(url: String) {
             Intent.ACTION_VIEW,
             Uri.parse(url)
         )
+            .addCategory(Intent.CATEGORY_BROWSABLE)
     )
 }
 
