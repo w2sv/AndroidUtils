@@ -59,7 +59,7 @@ fun Context.getColoredDrawable(@DrawableRes drawableId: Int, @ColorRes colorId: 
  * SharedPreferences
  */
 
-fun Context.getDefaultPreferences(): SharedPreferences =
+fun Context.getAppPreferences(): SharedPreferences =
     getSharedPreferences(packageName, Context.MODE_PRIVATE)
 
 /**
