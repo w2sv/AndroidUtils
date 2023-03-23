@@ -1,15 +1,15 @@
 plugins {
-    id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
+    alias libs.plugins.android.library
+    alias libs.plugins.kotlin
+    alias libs.plugins.mannodermaus
     id 'maven-publish'
-    id 'de.mannodermaus.android-junit5'
 }
 
 android {
     namespace 'com.w2sv.androidutils'
-    compileSdk rootProject.ext.compileSdk
+    compileSdk libs.versions.compileSdk.get().toInteger()
     defaultConfig {
-        minSdk rootProject.ext.minSdk
+        minSdk libs.versions.minSdk.get().toInteger()
     }
     buildTypes {
         release {
@@ -46,19 +46,18 @@ afterEvaluate {
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.activity:activity-ktx:1.7.0'
-    implementation 'androidx.fragment:fragment-ktx:1.5.6'
-    implementation 'androidx.appcompat:appcompat-resources:1.6.1'
-    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
-    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
-    implementation 'com.github.PaulWoitaschek:Slimber:2.0.0'
+    implementation libs.androidx.core
+    implementation libs.androidx.activity
+    implementation libs.androidx.fragment
+    implementation libs.androidx.coordinatorlayout
+    implementation libs.androidx.localbroadcastmanager
+    implementation libs.androidx.resources
+    implementation libs.androidx.lifecycle.viewmodel
+    implementation libs.androidx.lifecycle.runtime
+    implementation libs.androidx.lifecycle.livedata
 
-    def LIFECYCLE_VERSION = '2.6.1'
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$LIFECYCLE_VERSION"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$LIFECYCLE_VERSION"
-    implementation "androidx.lifecycle:lifecycle-livedata-core-ktx:$LIFECYCLE_VERSION"
+    implementation libs.slimber
 
     // Unit tests
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
+    testImplementation libs.junit
 }
