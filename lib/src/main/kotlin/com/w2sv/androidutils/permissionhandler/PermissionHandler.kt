@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.w2sv.permissionhandler
+package com.w2sv.androidutils.permissionhandler
 
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultRegistry

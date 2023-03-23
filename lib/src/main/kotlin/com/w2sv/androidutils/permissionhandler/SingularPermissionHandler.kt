@@ -1,11 +1,12 @@
 @file:Suppress("unused")
 
-package com.w2sv.permissionhandler
+package com.w2sv.androidutils.permissionhandler
 
 import android.content.pm.PackageManager
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import com.w2sv.androidutils.permissionhandler.getPackageUsedPermissions
 
 abstract class SingularPermissionHandler(
     activity: ComponentActivity,

@@ -1,4 +1,4 @@
-package com.w2sv.permissionhandler
+package com.w2sv.androidutils.permissionhandler
 
 import android.content.Context
 import android.content.pm.PackageInfo
