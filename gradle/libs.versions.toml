@@ -1,6 +1,6 @@
 [versions]
 kotlin = '1.8.0'
-agp = '7.4.0'
+agp = '7.4.2'
 
 minSdk = '23'
 compileSdk = '33'
