@@ -10,3 +10,11 @@ fun RemoteViews.crossVisualize(@IdRes hideView: Int, @IdRes showView: Int) {
     setViewVisibility(showView, View.VISIBLE)
     setViewVisibility(hideView, View.GONE)
 }
+
+fun RemoteViews.setColorFilter(@IdRes id: Int, color: Int) {
+    setInt(id, "setColorFilter", color)
+}
+
+fun RemoteViews.setBackgroundColor(@IdRes id: Int, color: Int) {
+    setInt(id, "setBackgroundColor", color)
+}

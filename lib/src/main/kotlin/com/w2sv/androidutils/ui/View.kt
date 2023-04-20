@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.w2sv.androidutils.extensions
+package com.w2sv.androidutils.ui
 
 import android.view.View
 import androidx.lifecycle.ViewModel

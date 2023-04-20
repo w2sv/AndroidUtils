@@ -22,6 +22,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.location.LocationManagerCompat
 
@@ -80,16 +81,15 @@ fun Context.openUrl(url: String) {
  * Activity retrieval
  */
 
-val Context.activity: Activity? get() = _getActivity()
+val Context.activity: Activity?
+    get() =
+        this as? Activity ?: (this as? ContextWrapper)?.baseContext?.activity
 
 fun Context.requireActivity(): Activity = activity!!
 
 @Suppress("UNCHECKED_CAST")
 fun <A : Activity> Context.requireCastActivity(): A =
     requireActivity() as A
-
-private tailrec fun Context._getActivity(): Activity? =
-    this as? Activity ?: (this as? ContextWrapper)?.baseContext?._getActivity()
 
 /**
  * Services
@@ -129,6 +129,9 @@ fun Context.showNotification(id: Int, builder: NotificationCompat.Builder) {
 /**
  * Misc
  */
+
+fun Context.hasPermission(permission: String): Boolean =
+    ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 
 val Context.playStoreUrl: String
     get() = "https://play.google.com/store/apps/details?id=$packageName"

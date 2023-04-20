@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.w2sv.androidutils.extensions
+package com.w2sv.androidutils.ui
 
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
