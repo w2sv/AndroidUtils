@@ -6,7 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.core.content.edit
-import com.w2sv.androidutils.extensions.getAppPreferences
+import com.w2sv.androidutils.datastorage.sharedpreferences.getSharedPreferences
 import com.w2sv.androidutils.lifecycle.ActivityCallContractHandler
 import slimber.log.i
 
@@ -30,7 +30,7 @@ abstract class PermissionHandler<I, O>(
     private val sharedPreferencesKey by ::registryKey
 
     protected var permissionPreviouslyRequested: Boolean =
-        activity.getAppPreferences().getBoolean(sharedPreferencesKey, false)
+        activity.getSharedPreferences().getBoolean(sharedPreferencesKey, false)
             .also {
                 i { "Retrieved $sharedPreferencesKey.permissionPreviouslyRequested=$it" }
             }
@@ -40,7 +40,7 @@ abstract class PermissionHandler<I, O>(
      */
     private fun onFirstEverRequestDismissed() {
         permissionPreviouslyRequested = true
-        activity.getAppPreferences().edit {
+        activity.getSharedPreferences().edit {
             putBoolean(sharedPreferencesKey, true)
             i { "Wrote $sharedPreferencesKey=true to sharedPreferences" }
         }
