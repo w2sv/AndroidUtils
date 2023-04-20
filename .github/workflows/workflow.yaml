@@ -2,7 +2,7 @@ name: Build
 on: [ push, pull_request ]
 
 env:
-  JAVA_VERSION: 11
+  JAVA_VERSION: 17
 
 jobs:
   build:
@@ -14,7 +14,8 @@ jobs:
       - name: Setup JDK
         uses: actions/setup-java@v1
         with:
-          java-version: ${{ env.JAVA_VERSION }}
+          java-version: '17'
+          distribution: 'temurin'
 
       - name: Build
         run: ./gradlew build
