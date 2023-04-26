@@ -20,7 +20,7 @@ androidx-lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata-
 
 slimber = 'com.github.PaulWoitaschek:Slimber:2.0.0'
 
-junit = 'org.junit.jupiter:junit-jupiter:5.9.2'
+junit = 'org.junit.jupiter:junit-jupiter:5.9.3'
 
 [plugins]
 android-library = { id = 'com.android.library', version.ref = 'agp' }
