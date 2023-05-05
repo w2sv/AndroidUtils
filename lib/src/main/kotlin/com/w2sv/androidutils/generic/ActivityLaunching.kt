@@ -2,10 +2,14 @@
 
 package com.w2sv.androidutils.generic
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
+import com.w2sv.androidutils.R
+import com.w2sv.androidutils.notifying.showToast
 
 fun Context.openUrl(url: String) {
     startActivity(
@@ -15,6 +19,22 @@ fun Context.openUrl(url: String) {
         )
             .addCategory(Intent.CATEGORY_BROWSABLE)
     )
+}
+
+fun Context.openUrlWithActivityNotFoundHandling(
+    url: String,
+    onActivityNotFoundException: (Context) -> Unit = {
+        showToast(
+            getString(R.string.couldn_t_find_a_browser_to_open_the_url_with),
+            Toast.LENGTH_LONG
+        )
+    }
+) {
+    try {
+        openUrl(url)
+    } catch (e: ActivityNotFoundException) {
+        onActivityNotFoundException(this)
+    }
 }
 
 val ActivityResult.uris: List<Uri>?
