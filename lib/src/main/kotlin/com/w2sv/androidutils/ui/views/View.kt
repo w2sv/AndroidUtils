@@ -2,15 +2,17 @@
 
 package com.w2sv.androidutils.ui.views
 
+import android.graphics.Rect
+import android.view.TouchDelegate
 import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
 
-/**
- * Visibility Alteration
- */
+// =======================
+// Visibility Alteration
+// =======================
 
 fun View.show() {
     visibility = View.VISIBLE
@@ -38,9 +40,37 @@ fun crossVisualize(hideViews: Iterable<View>, showViews: Iterable<View>) {
     }
 }
 
+// ================
+// Accessibility
+// ================
+
+fun View.increaseTouchArea(pixels: Int) {
+    post {
+        (parent as View).touchDelegate = TouchDelegate(
+            getHitRect()
+                .apply {
+                    top -= pixels
+                    bottom += pixels
+                    left -= pixels
+                    right += pixels
+                },
+            this
+        )
+    }
+}
+
 /**
- * ViewModel Retrieval
+ * Convenience wrapper for View.getHitRect(outRect: Rect!!).
  */
+fun View.getHitRect(): Rect =
+    Rect()
+        .apply {
+            getHitRect(this)
+        }
+
+// =======================
+// ViewModel Retrieval
+// =======================
 
 inline fun <reified VM : ViewModel> View.viewModel(): Lazy<VM> =
     lazy { ViewModelProvider(findViewTreeViewModelStoreOwner()!!)[VM::class.java] }
