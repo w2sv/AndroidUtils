@@ -1,6 +1,6 @@
 [versions]
-kotlin = '1.8.20'
-agp = '8.0.0'
+kotlin = '1.8.21'
+agp = '8.0.1'
 
 minSdk = '23'
 compileSdk = '33'
@@ -20,7 +20,7 @@ androidx-lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata-
 
 slimber = 'com.github.PaulWoitaschek:Slimber:2.0.0'
 
-junit = 'org.junit.jupiter:junit-jupiter:5.9.2'
+junit = 'org.junit.jupiter:junit-jupiter:5.9.3'
 
 [plugins]
 android-library = { id = 'com.android.library', version.ref = 'agp' }
