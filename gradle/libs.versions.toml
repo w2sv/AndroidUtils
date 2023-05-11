@@ -25,4 +25,4 @@ junit = 'org.junit.jupiter:junit-jupiter:5.9.3'
 [plugins]
 android-library = { id = 'com.android.library', version.ref = 'agp' }
 kotlin = { id = 'org.jetbrains.kotlin.android', version.ref = 'kotlin' }
-mannodermaus = { id = 'de.mannodermaus.android-junit5', version = '1.8.2.1' }
+mannodermaus = { id = 'de.mannodermaus.android-junit5', version = '1.9.3.0' }
