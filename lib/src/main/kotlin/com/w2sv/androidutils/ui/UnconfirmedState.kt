@@ -174,7 +174,7 @@ open class UnconfirmedStatesComposition(
     }
 }
 
-abstract class UnconfirmedStatesHoldingViewModel<R : AbstractPreferencesDataStoreRepository>(
+abstract class PreferencesDataStoreBackedUnconfirmedStatesViewModel<R : AbstractPreferencesDataStoreRepository>(
     dataStoreRepository: R
 ) : AbstractPreferencesDataStoreRepository.ViewModel<R>(dataStoreRepository) {
 
@@ -182,19 +182,29 @@ abstract class UnconfirmedStatesHoldingViewModel<R : AbstractPreferencesDataStor
     // Instance creation
     // =======================
 
-    fun <K : DataStoreEntry.UniType<V>, V> makeUnconfirmedStateMap(appliedFlowMap: Map<K, Flow<V>>): UnconfirmedStateMap<K, V, V> =
+    fun <K : DataStoreEntry.UniType<V>, V> makeUnconfirmedStateMap(
+        appliedFlowMap: Map<K, Flow<V>>,
+        map: MutableMap<K, V> = appliedFlowMap
+            .getSynchronousMap()
+            .toMutableMap()
+    ): UnconfirmedStateMap<K, V, V> =
         UnconfirmedStateMap(
-            coroutineScope,
-            appliedFlowMap,
+            coroutineScope = coroutineScope,
+            appliedFlowMap = appliedFlowMap,
+            map = map,
             syncState = { dataStoreRepository.saveMap(it) }
         )
 
     fun <K : DataStoreEntry.EnumValued<V>, V : Enum<V>> makeUnconfirmedEnumValuedStateMap(
-        appliedFlowMap: Map<K, Flow<V>>
+        appliedFlowMap: Map<K, Flow<V>>,
+        map: MutableMap<K, V> = appliedFlowMap
+            .getSynchronousMap()
+            .toMutableMap()
     ): UnconfirmedStateMap<K, V, Int> =
         UnconfirmedStateMap(
-            coroutineScope,
-            appliedFlowMap,
+            coroutineScope = coroutineScope,
+            appliedFlowMap = appliedFlowMap,
+            map = map,
             syncState = { dataStoreRepository.saveEnumValuedMap(it) }
         )
 
