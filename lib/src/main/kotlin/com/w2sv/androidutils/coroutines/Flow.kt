@@ -6,6 +6,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -23,6 +24,10 @@ fun <K, V> Map<K, Flow<V>>.getSynchronousMap(): Map<K, V> =
             it.value.first()
         }
     }
+
+fun MutableStateFlow<Boolean>.toggle() {
+    value = !value
+}
 
 /**
  * Does not produce the same value in a row, so respect "distinct until changed emissions"
