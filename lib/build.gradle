@@ -55,8 +55,11 @@ dependencies {
     implementation libs.androidx.lifecycle.viewmodel
     implementation libs.androidx.lifecycle.runtime
     implementation libs.androidx.lifecycle.livedata
+    implementation libs.androidx.datastore.preferences
 
     implementation libs.slimber
+
+    implementation libs.kotlinutils
 
     // Unit tests
     testImplementation libs.junit

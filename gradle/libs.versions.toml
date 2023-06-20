@@ -17,10 +17,13 @@ androidx-localbroadcastmanager = 'androidx.localbroadcastmanager:localbroadcastm
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = 'lifecycle'}
 androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = 'lifecycle'}
 androidx-lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata-core-ktx", version.ref = 'lifecycle'}
+androidx-datastore-preferences = 'androidx.datastore:datastore-preferences:1.0.0'
 
 slimber = 'com.github.PaulWoitaschek:Slimber:2.0.0'
 
 junit = 'org.junit.jupiter:junit-jupiter:5.9.3'
+
+kotlinutils = 'com.github.w2sv:KotlinUtils:0.0.7-rc2'
 
 [plugins]
 android-library = { id = 'com.android.library', version.ref = 'agp' }

@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import com.w2sv.androidutils.R
@@ -35,6 +36,19 @@ fun Context.openUrlWithActivityNotFoundHandling(
     } catch (e: ActivityNotFoundException) {
         onActivityNotFoundException(this)
     }
+}
+
+fun goToAppSettings(context: Context) {
+    context.startActivity(
+        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            .setData(
+                Uri.fromParts(
+                    "package",
+                    context.packageName,
+                    null
+                )
+            )
+    )
 }
 
 val ActivityResult.uris: List<Uri>?

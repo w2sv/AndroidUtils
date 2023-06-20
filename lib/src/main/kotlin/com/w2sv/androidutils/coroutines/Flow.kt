@@ -8,3 +8,10 @@ import kotlinx.coroutines.runBlocking
 
 fun <T> Flow<T>.getValueSynchronously(): T =
     runBlocking { first() }
+
+fun <K, V> Map<K, Flow<V>>.getSynchronousMap(): Map<K, V> =
+    runBlocking {
+        mapValues {
+            it.value.first()
+        }
+    }
