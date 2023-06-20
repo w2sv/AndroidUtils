@@ -89,7 +89,7 @@ abstract class AbstractPreferencesDataStoreRepository(
     ) {
         dataStore.edit {
             map.forEach { (entry, value) ->
-                save(entry.preferencesKey, value)
+                it[entry.preferencesKey] = value
             }
         }
     }
@@ -106,7 +106,7 @@ abstract class AbstractPreferencesDataStoreRepository(
     suspend fun <DSE : DataStoreEntry.UriValued> saveUriValuedMap(map: Map<DSE, Uri?>) {
         dataStore.edit {
             map.forEach { (entry, value) ->
-                save(entry.preferencesKey, value)
+                it[entry.preferencesKey] = value?.toString() ?: ""
             }
         }
     }
@@ -127,7 +127,7 @@ abstract class AbstractPreferencesDataStoreRepository(
     ) {
         dataStore.edit {
             map.forEach { (entry, value) ->
-                save(entry.preferencesKey, value)
+                it[entry.preferencesKey] = value.ordinal
             }
         }
     }
