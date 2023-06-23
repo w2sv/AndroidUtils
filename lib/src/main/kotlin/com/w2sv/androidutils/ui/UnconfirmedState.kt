@@ -1,5 +1,6 @@
 package com.w2sv.androidutils.ui
 
+import android.net.Uri
 import androidx.datastore.preferences.core.Preferences
 import com.w2sv.androidutils.coroutines.getSynchronousMap
 import com.w2sv.androidutils.coroutines.getValueSynchronously
@@ -30,21 +31,21 @@ abstract class UnconfirmedState<T> {
     abstract suspend fun reset()
 }
 
-open class UnconfirmedStateMap<K : DataStoreEntry<V1, V2>, V1, V2>(
+open class UnconfirmedStateMap<DSE : DataStoreEntry<*, V>, V>(
     private val coroutineScope: CoroutineScope,
-    private val appliedFlowMap: Map<K, Flow<V1>>,
-    private val map: MutableMap<K, V1> = appliedFlowMap
+    private val appliedFlowMap: Map<DSE, Flow<V>>,
+    private val map: MutableMap<DSE, V> = appliedFlowMap
         .getSynchronousMap()
         .toMutableMap(),
-    private val syncState: suspend (Map<K, V1>) -> Unit
-) : UnconfirmedState<Map<K, V1>>(),
-    MutableMap<K, V1> by map {
+    private val syncState: suspend (Map<DSE, V>) -> Unit
+) : UnconfirmedState<Map<DSE, V>>(),
+    MutableMap<DSE, V> by map {
 
     /**
      * Tracking of keys which correspond to values, differing between [appliedFlowMap] and this
      * for efficient syncing/resetting.
      */
-    private val dissimilarKeys = mutableSetOf<K>()
+    private val dissimilarKeys = mutableSetOf<DSE>()
 
     // ==============
     // Modification
@@ -53,7 +54,7 @@ open class UnconfirmedStateMap<K : DataStoreEntry<V1, V2>, V1, V2>(
     /**
      * Inherently updates [dissimilarKeys] and [statesDissimilar] in an asynchronous fashion.
      */
-    override fun put(key: K, value: V1): V1? =
+    override fun put(key: DSE, value: V): V? =
         map.put(key, value)
             .also {
                 coroutineScope.launch {
@@ -65,7 +66,7 @@ open class UnconfirmedStateMap<K : DataStoreEntry<V1, V2>, V1, V2>(
                 }
             }
 
-    override fun putAll(from: Map<out K, V1>) {
+    override fun putAll(from: Map<out DSE, V>) {
         from.forEach { (k, v) ->
             put(k, v)
         }
@@ -187,7 +188,7 @@ abstract class PreferencesDataStoreBackedUnconfirmedStatesViewModel<R : Abstract
         makeMutableMap: (Map<K, Flow<V>>) -> MutableMap<K, V> = {
             it.getSynchronousMap().toMutableMap()
         },
-    ): UnconfirmedStateMap<K, V, V> =
+    ): UnconfirmedStateMap<K, V> =
         UnconfirmedStateMap(
             coroutineScope = coroutineScope,
             appliedFlowMap = appliedFlowMap,
@@ -200,12 +201,25 @@ abstract class PreferencesDataStoreBackedUnconfirmedStatesViewModel<R : Abstract
         makeMutableMap: (Map<K, Flow<V>>) -> MutableMap<K, V> = {
             it.getSynchronousMap().toMutableMap()
         }
-    ): UnconfirmedStateMap<K, V, Int> =
+    ): UnconfirmedStateMap<K, V> =
         UnconfirmedStateMap(
             coroutineScope = coroutineScope,
             appliedFlowMap = appliedFlowMap,
             map = makeMutableMap(appliedFlowMap),
             syncState = { dataStoreRepository.saveEnumValuedMap(it) }
+        )
+
+    fun <DSE : DataStoreEntry.UriValued> makeUnconfirmedUriValuedStateMap(
+        appliedFlowMap: Map<DSE, Flow<Uri?>>,
+        makeMutableMap: (Map<DSE, Flow<Uri?>>) -> MutableMap<DSE, Uri?> = {
+            it.getSynchronousMap().toMutableMap()
+        }
+    ): UnconfirmedStateMap<DSE, Uri?> =
+        UnconfirmedStateMap(
+            coroutineScope = coroutineScope,
+            appliedFlowMap = appliedFlowMap,
+            map = makeMutableMap(appliedFlowMap),
+            syncState = { dataStoreRepository.saveUriValuedMap(it) }
         )
 
     fun <T> makeUnconfirmedStateFlow(
@@ -216,10 +230,18 @@ abstract class PreferencesDataStoreBackedUnconfirmedStatesViewModel<R : Abstract
             dataStoreRepository.save(preferencesKey, it)
         }
 
-    inline fun <reified T : Enum<T>> makeUnconfirmedEnumStateFlow(
+    inline fun <reified T : Enum<T>> makeUnconfirmedEnumValuedStateFlow(
         appliedFlow: Flow<T>,
         preferencesKey: Preferences.Key<Int>
     ): UnconfirmedStateFlow<T> =
+        UnconfirmedStateFlow(coroutineScope, appliedFlow) {
+            dataStoreRepository.save(preferencesKey, it)
+        }
+
+    fun makeUnconfirmedUriValuedStateFlow(
+        appliedFlow: Flow<Uri?>,
+        preferencesKey: Preferences.Key<String>
+    ): UnconfirmedStateFlow<Uri?> =
         UnconfirmedStateFlow(coroutineScope, appliedFlow) {
             dataStoreRepository.save(preferencesKey, it)
         }

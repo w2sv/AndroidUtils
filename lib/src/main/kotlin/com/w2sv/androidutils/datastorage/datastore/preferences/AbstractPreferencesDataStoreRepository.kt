@@ -2,6 +2,7 @@ package com.w2sv.androidutils.datastorage.datastore.preferences
 
 import android.net.Uri
 import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.viewModelScope
@@ -12,23 +13,27 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import slimber.log.i
 
 abstract class AbstractPreferencesDataStoreRepository(
-    protected val dataStore: DataStore<Preferences>
+    val dataStore: DataStore<Preferences>
 ) {
 
     // ================
     // Simple values
     // ================
 
-    protected fun <T> getFlow(preferencesKey: Preferences.Key<T>, defaultValue: T): Flow<T> =
+    fun <T> getFlow(preferencesKey: Preferences.Key<T>, defaultValue: T): Flow<T> =
         dataStore.data.map {
             it[preferencesKey] ?: defaultValue
         }
 
+    fun <T> getFlow(entry: DataStoreEntry<T, T>): Flow<T> =
+        getFlow(entry.preferencesKey, entry.defaultValue)
+
     suspend fun <T> save(preferencesKey: Preferences.Key<T>, value: T) {
         dataStore.edit {
-            it[preferencesKey] = value
+            it.save(preferencesKey, value)
         }
     }
 
@@ -41,7 +46,12 @@ abstract class AbstractPreferencesDataStoreRepository(
         defaultValue: Uri?
     ): Flow<Uri?> =
         dataStore.data.map {
-            it[preferencesKey]?.let { string -> if (string.isEmpty()) null else Uri.parse(string) }
+            it[preferencesKey]?.let { string ->
+                if (string == DEFAULT_STRING_VALUE)
+                    null
+                else
+                    Uri.parse(string)
+            }
                 ?: defaultValue
         }
 
@@ -50,7 +60,7 @@ abstract class AbstractPreferencesDataStoreRepository(
 
     suspend fun save(preferencesKey: Preferences.Key<String>, value: Uri?) {
         dataStore.edit {
-            it[preferencesKey] = value?.toString() ?: ""
+            it.save(preferencesKey, value)
         }
     }
 
@@ -58,7 +68,7 @@ abstract class AbstractPreferencesDataStoreRepository(
     // Enums
     // ============
 
-    protected inline fun <reified E : Enum<E>> getEnumFlow(
+    inline fun <reified E : Enum<E>> getEnumFlow(
         preferencesKey: Preferences.Key<Int>,
         defaultValue: E
     ): Flow<E> =
@@ -68,18 +78,25 @@ abstract class AbstractPreferencesDataStoreRepository(
                 ?: defaultValue
         }
 
+    inline fun <reified E : Enum<E>> getEnumFlow(
+        entry: DataStoreEntry.EnumValued<E>
+    ): Flow<E> =
+        getEnumFlow(entry.preferencesKey, entry.defaultValue)
+
     suspend fun save(
         preferencesKey: Preferences.Key<Int>,
-        enum: Enum<*>
+        value: Enum<*>
     ) {
-        save(preferencesKey, enum.ordinal)
+        dataStore.edit {
+            it.save(preferencesKey, value)
+        }
     }
 
     // ============
     // Simple Maps
     // ============
 
-    protected fun <DSE : DataStoreEntry.UniType<V>, V> getFlowMap(properties: Iterable<DSE>): Map<DSE, Flow<V>> =
+    fun <DSE : DataStoreEntry.UniType<V>, V> getFlowMap(properties: Iterable<DSE>): Map<DSE, Flow<V>> =
         properties.associateWith { property ->
             getFlow(property.preferencesKey, property.defaultValue)
         }
@@ -89,7 +106,7 @@ abstract class AbstractPreferencesDataStoreRepository(
     ) {
         dataStore.edit {
             map.forEach { (entry, value) ->
-                it[entry.preferencesKey] = value
+                it.save(entry.preferencesKey, value)
             }
         }
     }
@@ -98,7 +115,7 @@ abstract class AbstractPreferencesDataStoreRepository(
     // UriValued Maps
     // ============
 
-    protected fun <DSE : DataStoreEntry.UriValued> getUriFlowMap(entries: Iterable<DSE>): Map<DSE, Flow<Uri?>> =
+    fun <DSE : DataStoreEntry.UriValued> getUriFlowMap(entries: Iterable<DSE>): Map<DSE, Flow<Uri?>> =
         entries.associateWith {
             getUriFlow(it.preferencesKey, it.defaultValue)
         }
@@ -106,7 +123,7 @@ abstract class AbstractPreferencesDataStoreRepository(
     suspend fun <DSE : DataStoreEntry.UriValued> saveUriValuedMap(map: Map<DSE, Uri?>) {
         dataStore.edit {
             map.forEach { (entry, value) ->
-                it[entry.preferencesKey] = value?.toString() ?: ""
+                it.save(entry.preferencesKey, value)
             }
         }
     }
@@ -115,7 +132,7 @@ abstract class AbstractPreferencesDataStoreRepository(
     // EnumValued Maps
     // ============
 
-    protected inline fun <DSE : DataStoreEntry.EnumValued<V>, reified V : Enum<V>> getEnumValuedFlowMap(
+    inline fun <DSE : DataStoreEntry.EnumValued<V>, reified V : Enum<V>> getEnumValuedFlowMap(
         properties: Iterable<DSE>
     ): Map<DSE, Flow<V>> =
         properties.associateWith { property ->
@@ -127,7 +144,7 @@ abstract class AbstractPreferencesDataStoreRepository(
     ) {
         dataStore.edit {
             map.forEach { (entry, value) ->
-                it[entry.preferencesKey] = value.ordinal
+                it.save(entry.preferencesKey, value)
             }
         }
     }
@@ -149,11 +166,30 @@ abstract class AbstractPreferencesDataStoreRepository(
                 dataStoreRepository.save(key, value)
             }
 
-        fun <T, P : DataStoreEntry.UniType<T>> saveMapToDataStore(
-            map: Map<P, T>
+        fun <E : Enum<E>> saveToDataStore(key: Preferences.Key<Int>, value: E): Job =
+            coroutineScope.launch(Dispatchers.IO) {
+                dataStoreRepository.save(key, value)
+            }
+
+        fun <DSE : DataStoreEntry.UniType<V>, V> saveMapToDataStore(
+            map: Map<DSE, V>
         ): Job =
             coroutineScope.launch(Dispatchers.IO) {
                 dataStoreRepository.saveMap(map)
+            }
+
+        fun <DSE : DataStoreEntry.EnumValued<V>, V : Enum<V>> saveEnumValuedMapToDataStore(
+            map: Map<DSE, V>
+        ): Job =
+            coroutineScope.launch(Dispatchers.IO) {
+                dataStoreRepository.saveEnumValuedMap(map)
+            }
+
+        fun <DSE : DataStoreEntry.UriValued> saveUriValuedMapToDataStore(
+            map: Map<DSE, Uri?>
+        ): Job =
+            coroutineScope.launch(Dispatchers.IO) {
+                dataStoreRepository.saveUriValuedMap(map)
             }
     }
 
@@ -163,4 +199,19 @@ abstract class AbstractPreferencesDataStoreRepository(
 
         override val coroutineScope: CoroutineScope by ::viewModelScope
     }
+}
+
+private const val DEFAULT_STRING_VALUE = ""
+
+private fun <T> MutablePreferences.save(preferencesKey: Preferences.Key<T>, value: T) {
+    this[preferencesKey] = value
+    i { "Saved ${preferencesKey.name}=$value" }
+}
+
+private fun MutablePreferences.save(preferencesKey: Preferences.Key<String>, value: Uri?) {
+    save(preferencesKey, value?.toString() ?: DEFAULT_STRING_VALUE)
+}
+
+private fun MutablePreferences.save(preferencesKey: Preferences.Key<Int>, value: Enum<*>) {
+    save(preferencesKey, value.ordinal)
 }
