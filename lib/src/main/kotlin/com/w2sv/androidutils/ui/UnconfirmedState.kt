@@ -249,7 +249,7 @@ abstract class PreferencesDataStoreBackedUnconfirmedStatesViewModel<R : Abstract
     inline fun <reified T : Enum<T>> makeUnconfirmedEnumValuedStateFlow(
         appliedFlow: Flow<T>,
         preferencesKey: Preferences.Key<Int>,
-        crossinline onStateSynced: suspend (T) -> Unit = {}
+        crossinline onStateSynced: suspend (T) -> Unit
     ): UnconfirmedStateFlow<T> =
         UnconfirmedStateFlow(coroutineScope, appliedFlow) {
             dataStoreRepository.save(preferencesKey, it)
