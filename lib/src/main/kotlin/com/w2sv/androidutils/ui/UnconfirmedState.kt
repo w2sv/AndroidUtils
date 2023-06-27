@@ -133,7 +133,8 @@ typealias UnconfirmedStates = List<UnconfirmedState<*>>
 
 open class UnconfirmedStatesComposition(
     unconfirmedStates: UnconfirmedStates,
-    coroutineScope: CoroutineScope
+    coroutineScope: CoroutineScope,
+    private val onStateSynced: () -> Unit = {}
 ) : UnconfirmedStates by unconfirmedStates,
     UnconfirmedState<UnconfirmedStates>() {
 
@@ -164,6 +165,7 @@ open class UnconfirmedStatesComposition(
         changedStateInstances.forEach {
             it.sync()
         }
+        onStateSynced()
     }
 
     override suspend fun reset() {
@@ -188,66 +190,91 @@ abstract class PreferencesDataStoreBackedUnconfirmedStatesViewModel<R : Abstract
         makeMutableMap: (Map<K, Flow<V>>) -> MutableMap<K, V> = {
             it.getSynchronousMap().toMutableMap()
         },
+        onStateSynced: () -> Unit = {}
     ): UnconfirmedStateMap<K, V> =
         UnconfirmedStateMap(
             coroutineScope = coroutineScope,
             appliedFlowMap = appliedFlowMap,
             map = makeMutableMap(appliedFlowMap),
-            syncState = { dataStoreRepository.saveMap(it) }
+            syncState = {
+                dataStoreRepository.saveMap(it)
+                onStateSynced()
+            }
         )
 
     fun <K : DataStoreEntry.EnumValued<V>, V : Enum<V>> makeUnconfirmedEnumValuedStateMap(
         appliedFlowMap: Map<K, Flow<V>>,
         makeMutableMap: (Map<K, Flow<V>>) -> MutableMap<K, V> = {
             it.getSynchronousMap().toMutableMap()
-        }
+        },
+        onStateSynced: () -> Unit = {}
     ): UnconfirmedStateMap<K, V> =
         UnconfirmedStateMap(
             coroutineScope = coroutineScope,
             appliedFlowMap = appliedFlowMap,
             map = makeMutableMap(appliedFlowMap),
-            syncState = { dataStoreRepository.saveEnumValuedMap(it) }
+            syncState = {
+                dataStoreRepository.saveEnumValuedMap(it)
+                onStateSynced()
+            }
         )
 
     fun <DSE : DataStoreEntry.UriValued> makeUnconfirmedUriValuedStateMap(
         appliedFlowMap: Map<DSE, Flow<Uri?>>,
         makeMutableMap: (Map<DSE, Flow<Uri?>>) -> MutableMap<DSE, Uri?> = {
             it.getSynchronousMap().toMutableMap()
-        }
+        },
+        onStateSynced: () -> Unit = {}
     ): UnconfirmedStateMap<DSE, Uri?> =
         UnconfirmedStateMap(
             coroutineScope = coroutineScope,
             appliedFlowMap = appliedFlowMap,
             map = makeMutableMap(appliedFlowMap),
-            syncState = { dataStoreRepository.saveUriValuedMap(it) }
+            syncState = {
+                dataStoreRepository.saveUriValuedMap(it)
+                onStateSynced()
+            }
         )
 
     fun <T> makeUnconfirmedStateFlow(
         appliedFlow: Flow<T>,
-        preferencesKey: Preferences.Key<T>
+        preferencesKey: Preferences.Key<T>,
+        onStateSynced: () -> Unit = {}
     ): UnconfirmedStateFlow<T> =
         UnconfirmedStateFlow(coroutineScope, appliedFlow) {
             dataStoreRepository.save(preferencesKey, it)
+            onStateSynced()
         }
 
     inline fun <reified T : Enum<T>> makeUnconfirmedEnumValuedStateFlow(
         appliedFlow: Flow<T>,
-        preferencesKey: Preferences.Key<Int>
+        preferencesKey: Preferences.Key<Int>,
+        crossinline onStateSynced: () -> Unit = {}
     ): UnconfirmedStateFlow<T> =
         UnconfirmedStateFlow(coroutineScope, appliedFlow) {
             dataStoreRepository.save(preferencesKey, it)
+            onStateSynced()
         }
 
     fun makeUnconfirmedUriValuedStateFlow(
         appliedFlow: Flow<Uri?>,
-        preferencesKey: Preferences.Key<String>
+        preferencesKey: Preferences.Key<String>,
+        onStateSynced: () -> Unit = {}
     ): UnconfirmedStateFlow<Uri?> =
         UnconfirmedStateFlow(coroutineScope, appliedFlow) {
             dataStoreRepository.save(preferencesKey, it)
+            onStateSynced()
         }
 
-    fun makeUnconfirmedStatesComposition(unconfirmedStates: UnconfirmedStates): UnconfirmedStatesComposition =
-        UnconfirmedStatesComposition(unconfirmedStates, coroutineScope = coroutineScope)
+    fun makeUnconfirmedStatesComposition(
+        unconfirmedStates: UnconfirmedStates,
+        onStateSynced: () -> Unit = {}
+    ): UnconfirmedStatesComposition =
+        UnconfirmedStatesComposition(
+            unconfirmedStates,
+            coroutineScope = coroutineScope,
+            onStateSynced = onStateSynced
+        )
 
     // =======================
     // Syncing / resetting on coroutine scope
