@@ -179,47 +179,52 @@ abstract class PreferencesDataStoreRepository(
      * Interface for classes interfacing with a [PreferencesDataStoreRepository] via a held [coroutineScope].
      */
     interface Interface {
-        val dataStoreRepository: PreferencesDataStoreRepository
+        val repository: PreferencesDataStoreRepository
         val coroutineScope: CoroutineScope
 
         fun <T> saveToDataStore(key: Preferences.Key<T>, value: T): Job =
             coroutineScope.launch(Dispatchers.IO) {
-                dataStoreRepository.save(key, value)
+                repository.save(key, value)
             }
 
         fun saveToDataStore(key: Preferences.Key<String>, value: Uri?): Job =
             coroutineScope.launch(Dispatchers.IO) {
-                dataStoreRepository.save(key, value)
+                repository.save(key, value)
             }
 
         fun <E : Enum<E>> saveToDataStore(key: Preferences.Key<Int>, value: E): Job =
             coroutineScope.launch(Dispatchers.IO) {
-                dataStoreRepository.save(key, value)
+                repository.save(key, value)
+            }
+
+        fun <E : Enum<E>> saveSerializedObjectToDataStore(key: Preferences.Key<String>, value: Any): Job =
+            coroutineScope.launch(Dispatchers.IO) {
+                repository.saveAsJson(key, value)
             }
 
         fun <DSE : DataStoreEntry.UniType<V>, V> saveMapToDataStore(
             map: Map<DSE, V>
         ): Job =
             coroutineScope.launch(Dispatchers.IO) {
-                dataStoreRepository.saveMap(map)
+                repository.saveMap(map)
             }
 
         fun <DSE : DataStoreEntry.EnumValued<V>, V : Enum<V>> saveEnumValuedMapToDataStore(
             map: Map<DSE, V>
         ): Job =
             coroutineScope.launch(Dispatchers.IO) {
-                dataStoreRepository.saveEnumValuedMap(map)
+                repository.saveEnumValuedMap(map)
             }
 
         fun <DSE : DataStoreEntry.UriValued> saveUriValuedMapToDataStore(
             map: Map<DSE, Uri?>
         ): Job =
             coroutineScope.launch(Dispatchers.IO) {
-                dataStoreRepository.saveUriValuedMap(map)
+                repository.saveUriValuedMap(map)
             }
     }
 
-    abstract class ViewModel<R : PreferencesDataStoreRepository>(override val dataStoreRepository: R) :
+    abstract class ViewModel<R : PreferencesDataStoreRepository>(override val repository: R) :
         androidx.lifecycle.ViewModel(),
         Interface {
 

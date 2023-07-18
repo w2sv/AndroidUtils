@@ -197,7 +197,7 @@ abstract class PreferencesDataStoreBackedUnconfirmedStatesViewModel<R : Preferen
             appliedFlowMap = appliedFlowMap,
             map = makeMutableMap(appliedFlowMap),
             syncState = {
-                dataStoreRepository.saveMap(it)
+                repository.saveMap(it)
                 onStateSynced(it)
             }
         )
@@ -214,7 +214,7 @@ abstract class PreferencesDataStoreBackedUnconfirmedStatesViewModel<R : Preferen
             appliedFlowMap = appliedFlowMap,
             map = makeMutableMap(appliedFlowMap),
             syncState = {
-                dataStoreRepository.saveEnumValuedMap(it)
+                repository.saveEnumValuedMap(it)
                 onStateSynced(it)
             }
         )
@@ -231,7 +231,7 @@ abstract class PreferencesDataStoreBackedUnconfirmedStatesViewModel<R : Preferen
             appliedFlowMap = appliedFlowMap,
             map = makeMutableMap(appliedFlowMap),
             syncState = {
-                dataStoreRepository.saveUriValuedMap(it)
+                repository.saveUriValuedMap(it)
                 onStateSynced(it)
             }
         )
@@ -242,7 +242,7 @@ abstract class PreferencesDataStoreBackedUnconfirmedStatesViewModel<R : Preferen
         onStateSynced: suspend (T) -> Unit = {}
     ): UnconfirmedStateFlow<T> =
         UnconfirmedStateFlow(coroutineScope, appliedFlow) {
-            dataStoreRepository.save(preferencesKey, it)
+            repository.save(preferencesKey, it)
             onStateSynced(it)
         }
 
@@ -252,7 +252,7 @@ abstract class PreferencesDataStoreBackedUnconfirmedStatesViewModel<R : Preferen
         crossinline onStateSynced: suspend (T) -> Unit
     ): UnconfirmedStateFlow<T> =
         UnconfirmedStateFlow(coroutineScope, appliedFlow) {
-            dataStoreRepository.save(preferencesKey, it)
+            repository.save(preferencesKey, it)
             onStateSynced(it)
         }
 
@@ -262,7 +262,7 @@ abstract class PreferencesDataStoreBackedUnconfirmedStatesViewModel<R : Preferen
         onStateSynced: suspend (Uri?) -> Unit = {}
     ): UnconfirmedStateFlow<Uri?> =
         UnconfirmedStateFlow(coroutineScope, appliedFlow) {
-            dataStoreRepository.save(preferencesKey, it)
+            repository.save(preferencesKey, it)
             onStateSynced(it)
         }
 
