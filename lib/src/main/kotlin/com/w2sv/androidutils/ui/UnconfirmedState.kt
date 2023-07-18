@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.datastore.preferences.core.Preferences
 import com.w2sv.androidutils.coroutines.getSynchronousMap
 import com.w2sv.androidutils.coroutines.getValueSynchronously
-import com.w2sv.androidutils.datastorage.datastore.preferences.AbstractPreferencesDataStoreRepository
+import com.w2sv.androidutils.datastorage.datastore.preferences.PreferencesDataStoreRepository
 import com.w2sv.androidutils.datastorage.datastore.preferences.DataStoreEntry
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -177,9 +177,9 @@ open class UnconfirmedStatesComposition(
     }
 }
 
-abstract class PreferencesDataStoreBackedUnconfirmedStatesViewModel<R : AbstractPreferencesDataStoreRepository>(
+abstract class PreferencesDataStoreBackedUnconfirmedStatesViewModel<R : PreferencesDataStoreRepository>(
     dataStoreRepository: R
-) : AbstractPreferencesDataStoreRepository.ViewModel<R>(dataStoreRepository) {
+) : PreferencesDataStoreRepository.ViewModel<R>(dataStoreRepository) {
 
     // =======================
     // Instance creation

@@ -6,6 +6,7 @@ minSdk = '23'
 compileSdk = '33'
 
 lifecycle = '2.6.1'
+gson = "2.10.1"
 
 [libraries]
 androidx-core = 'androidx.core:core-ktx:1.10.1'
@@ -20,6 +21,7 @@ androidx-lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata-
 androidx-datastore-preferences = 'androidx.datastore:datastore-preferences:1.0.0'
 
 slimber = 'com.github.PaulWoitaschek:Slimber:2.0.0'
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 
 junit = 'org.junit.jupiter:junit-jupiter:5.9.3'
 

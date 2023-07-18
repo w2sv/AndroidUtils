@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.datastore.preferences.core.Preferences
 
 /**
- * Interface for Classes, which are to be managed as map by a [AbstractPreferencesDataStoreRepository].
+ * Interface for Classes, which are to be managed as map by a [PreferencesDataStoreRepository].
  */
 interface DataStoreEntry<K, V> {
     val preferencesKey: Preferences.Key<K>
@@ -29,5 +29,12 @@ interface DataStoreEntry<K, V> {
             override val preferencesKey: Preferences.Key<String>,
             override val defaultValue: Uri?
         ) : UriValued
+    }
+
+    interface ObjectValued<T>: DataStoreEntry<String, T?> {
+        abstract class Impl<T>(
+            override val preferencesKey: Preferences.Key<String>,
+            override val defaultValue: T?
+        ) : ObjectValued<T?>
     }
 }

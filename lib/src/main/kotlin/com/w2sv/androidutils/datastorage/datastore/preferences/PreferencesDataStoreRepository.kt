@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import com.w2sv.kotlinutils.extensions.getByOrdinal
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,12 +16,12 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import slimber.log.i
 
-abstract class AbstractPreferencesDataStoreRepository(
+abstract class PreferencesDataStoreRepository(
     val dataStore: DataStore<Preferences>
 ) {
 
     // ================
-    // Simple values
+    // Plain values
     // ================
 
     fun <T> getFlow(preferencesKey: Preferences.Key<T>, defaultValue: T): Flow<T> =
@@ -93,6 +94,31 @@ abstract class AbstractPreferencesDataStoreRepository(
     }
 
     // ============
+    // Objects
+    // ============
+
+    inline fun <reified T> getDeserializedObjectFlow(
+        preferencesKey: Preferences.Key<String>,
+        defaultValue: T?
+    ): Flow<T?> =
+        dataStore.data.map {
+            it[preferencesKey]
+                ?.let { json -> Gson().fromJson(json, T::class.java) }
+                ?: defaultValue
+        }
+
+    inline fun <reified T> getDeserializedObjectFlow(
+        entry: DataStoreEntry.ObjectValued<T>
+    ): Flow<T?> =
+        getDeserializedObjectFlow(entry.preferencesKey, entry.defaultValue)
+
+    suspend fun saveAsJson(preferencesKey: Preferences.Key<String>, obj: Any) {
+        dataStore.edit {
+            it[preferencesKey] = Gson().toJson(obj)
+        }
+    }
+
+    // ============
     // Simple Maps
     // ============
 
@@ -150,10 +176,10 @@ abstract class AbstractPreferencesDataStoreRepository(
     }
 
     /**
-     * Interface for classes interfacing with a [AbstractPreferencesDataStoreRepository] via a held [coroutineScope].
+     * Interface for classes interfacing with a [PreferencesDataStoreRepository] via a held [coroutineScope].
      */
     interface Interface {
-        val dataStoreRepository: AbstractPreferencesDataStoreRepository
+        val dataStoreRepository: PreferencesDataStoreRepository
         val coroutineScope: CoroutineScope
 
         fun <T> saveToDataStore(key: Preferences.Key<T>, value: T): Job =
@@ -193,7 +219,7 @@ abstract class AbstractPreferencesDataStoreRepository(
             }
     }
 
-    abstract class ViewModel<R : AbstractPreferencesDataStoreRepository>(override val dataStoreRepository: R) :
+    abstract class ViewModel<R : PreferencesDataStoreRepository>(override val dataStoreRepository: R) :
         androidx.lifecycle.ViewModel(),
         Interface {
 
