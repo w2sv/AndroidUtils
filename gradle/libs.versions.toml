@@ -23,7 +23,7 @@ androidx-datastore-preferences = 'androidx.datastore:datastore-preferences:1.0.0
 slimber = 'com.github.PaulWoitaschek:Slimber:2.0.0'
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 
-junit = 'org.junit.jupiter:junit-jupiter:5.9.3'
+junit = 'org.junit.jupiter:junit-jupiter:5.10.0'
 
 kotlinutils = 'com.github.w2sv:KotlinUtils:0.0.7-rc2'
 
