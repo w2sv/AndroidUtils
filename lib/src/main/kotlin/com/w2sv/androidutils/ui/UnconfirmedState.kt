@@ -31,21 +31,21 @@ abstract class UnconfirmedState<T> {
     abstract suspend fun reset()
 }
 
-open class UnconfirmedStateMap<DSE : DataStoreEntry<*, V>, V>(
+open class UnconfirmedStateMap<K, V>(
     private val coroutineScope: CoroutineScope,
-    private val appliedFlowMap: Map<DSE, Flow<V>>,
-    private val map: MutableMap<DSE, V> = appliedFlowMap
+    private val appliedFlowMap: Map<K, Flow<V>>,
+    private val map: MutableMap<K, V> = appliedFlowMap
         .getSynchronousMap()
         .toMutableMap(),
-    private val syncState: suspend (Map<DSE, V>) -> Unit
-) : UnconfirmedState<Map<DSE, V>>(),
-    MutableMap<DSE, V> by map {
+    private val syncState: suspend (Map<K, V>) -> Unit
+) : UnconfirmedState<Map<K, V>>(),
+    MutableMap<K, V> by map {
 
     /**
      * Tracking of keys which correspond to values, differing between [appliedFlowMap] and this
      * for efficient syncing/resetting.
      */
-    private val dissimilarKeys = mutableSetOf<DSE>()
+    private val dissimilarKeys = mutableSetOf<K>()
 
     // ==============
     // Modification
@@ -54,7 +54,7 @@ open class UnconfirmedStateMap<DSE : DataStoreEntry<*, V>, V>(
     /**
      * Inherently updates [dissimilarKeys] and [statesDissimilar] in an asynchronous fashion.
      */
-    override fun put(key: DSE, value: V): V? =
+    override fun put(key: K, value: V): V? =
         map.put(key, value)
             .also {
                 coroutineScope.launch {
@@ -66,7 +66,7 @@ open class UnconfirmedStateMap<DSE : DataStoreEntry<*, V>, V>(
                 }
             }
 
-    override fun putAll(from: Map<out DSE, V>) {
+    override fun putAll(from: Map<out K, V>) {
         from.forEach { (k, v) ->
             put(k, v)
         }
@@ -185,118 +185,4 @@ open class UnconfirmedStatesComposition(
             it.reset()
         }
     }
-}
-
-abstract class PreferencesDataStoreBackedUnconfirmedStatesViewModel<R : PreferencesDataStoreRepository>(
-    dataStoreRepository: R
-) : PreferencesDataStoreRepository.ViewModel<R>(dataStoreRepository) {
-
-    // =======================
-    // Instance creation
-    // =======================
-
-    fun <K : DataStoreEntry.UniType<V>, V> makeUnconfirmedStateMap(
-        appliedFlowMap: Map<K, Flow<V>>,
-        makeMutableMap: (Map<K, Flow<V>>) -> MutableMap<K, V> = {
-            it.getSynchronousMap().toMutableMap()
-        },
-        onStateSynced: suspend (Map<K, V>) -> Unit = {}
-    ): UnconfirmedStateMap<K, V> =
-        UnconfirmedStateMap(
-            coroutineScope = coroutineScope,
-            appliedFlowMap = appliedFlowMap,
-            map = makeMutableMap(appliedFlowMap),
-            syncState = {
-                repository.saveMap(it)
-                onStateSynced(it)
-            }
-        )
-
-    fun <K : DataStoreEntry.EnumValued<V>, V : Enum<V>> makeUnconfirmedEnumValuedStateMap(
-        appliedFlowMap: Map<K, Flow<V>>,
-        makeMutableMap: (Map<K, Flow<V>>) -> MutableMap<K, V> = {
-            it.getSynchronousMap().toMutableMap()
-        },
-        onStateSynced: suspend (Map<K, V>) -> Unit = {}
-    ): UnconfirmedStateMap<K, V> =
-        UnconfirmedStateMap(
-            coroutineScope = coroutineScope,
-            appliedFlowMap = appliedFlowMap,
-            map = makeMutableMap(appliedFlowMap),
-            syncState = {
-                repository.saveEnumValuedMap(it)
-                onStateSynced(it)
-            }
-        )
-
-    fun <DSE : DataStoreEntry.UriValued> makeUnconfirmedUriValuedStateMap(
-        appliedFlowMap: Map<DSE, Flow<Uri?>>,
-        makeMutableMap: (Map<DSE, Flow<Uri?>>) -> MutableMap<DSE, Uri?> = {
-            it.getSynchronousMap().toMutableMap()
-        },
-        onStateSynced: suspend (Map<DSE, Uri?>) -> Unit = {}
-    ): UnconfirmedStateMap<DSE, Uri?> =
-        UnconfirmedStateMap(
-            coroutineScope = coroutineScope,
-            appliedFlowMap = appliedFlowMap,
-            map = makeMutableMap(appliedFlowMap),
-            syncState = {
-                repository.saveUriValuedMap(it)
-                onStateSynced(it)
-            }
-        )
-
-    fun <T> makeUnconfirmedStateFlow(
-        appliedFlow: Flow<T>,
-        preferencesKey: Preferences.Key<T>,
-        onStateSynced: suspend (T) -> Unit = {}
-    ): UnconfirmedStateFlow<T> =
-        UnconfirmedStateFlow(coroutineScope, appliedFlow) {
-            repository.save(preferencesKey, it)
-            onStateSynced(it)
-        }
-
-    inline fun <reified T : Enum<T>> makeUnconfirmedEnumValuedStateFlow(
-        appliedFlow: Flow<T>,
-        preferencesKey: Preferences.Key<Int>,
-        crossinline onStateSynced: suspend (T) -> Unit
-    ): UnconfirmedStateFlow<T> =
-        UnconfirmedStateFlow(coroutineScope, appliedFlow) {
-            repository.save(preferencesKey, it)
-            onStateSynced(it)
-        }
-
-    fun makeUnconfirmedUriValuedStateFlow(
-        appliedFlow: Flow<Uri?>,
-        preferencesKey: Preferences.Key<String>,
-        onStateSynced: suspend (Uri?) -> Unit = {}
-    ): UnconfirmedStateFlow<Uri?> =
-        UnconfirmedStateFlow(coroutineScope, appliedFlow) {
-            repository.save(preferencesKey, it)
-            onStateSynced(it)
-        }
-
-    fun makeUnconfirmedStatesComposition(
-        unconfirmedStates: UnconfirmedStates,
-        onStateSynced: suspend () -> Unit = {}
-    ): UnconfirmedStatesComposition =
-        UnconfirmedStatesComposition(
-            unconfirmedStates,
-            coroutineScope = coroutineScope,
-            onStateSynced = onStateSynced
-        )
-
-    // =======================
-    // Syncing / resetting on coroutine scope
-    // =======================
-
-    fun UnconfirmedState<*>.launchSync(): Job =
-        coroutineScope.launch {
-            sync()
-        }
-
-    fun UnconfirmedState<*>.launchReset(): Job =
-        coroutineScope.launch {
-            reset()
-        }
 }
