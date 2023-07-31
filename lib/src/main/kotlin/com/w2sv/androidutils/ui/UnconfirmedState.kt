@@ -4,8 +4,8 @@ import android.net.Uri
 import androidx.datastore.preferences.core.Preferences
 import com.w2sv.androidutils.coroutines.getSynchronousMap
 import com.w2sv.androidutils.coroutines.getValueSynchronously
-import com.w2sv.androidutils.datastorage.datastore.preferences.PreferencesDataStoreRepository
 import com.w2sv.androidutils.datastorage.datastore.preferences.DataStoreEntry
+import com.w2sv.androidutils.datastorage.datastore.preferences.PreferencesDataStoreRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
@@ -99,7 +99,7 @@ open class UnconfirmedStateMap<DSE : DataStoreEntry<*, V>, V>(
 }
 
 open class UnconfirmedStateFlow<T>(
-    coroutineScope: CoroutineScope,
+    private val coroutineScope: CoroutineScope,
     private val appliedFlow: Flow<T>,
     initialValue: T = appliedFlow.getValueSynchronously(),
     private val syncState: suspend (T) -> Unit
@@ -114,6 +114,16 @@ open class UnconfirmedStateFlow<T>(
             }
         }
     }
+
+    suspend fun edit(action: (T) -> Unit) {
+        action(value)
+        _statesDissimilar.value = value != appliedFlow.first()
+    }
+
+    fun launchEdit(action: (T) -> Unit): Job =
+        coroutineScope.launch {
+            edit(action)
+        }
 
     override suspend fun sync() {
         i { "Syncing $logIdentifier" }

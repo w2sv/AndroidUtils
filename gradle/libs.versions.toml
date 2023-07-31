@@ -11,7 +11,7 @@ gson = "2.10.1"
 [libraries]
 androidx-core = 'androidx.core:core-ktx:1.10.1'
 androidx-activity = 'androidx.activity:activity-ktx:1.7.2'
-androidx-fragment = 'androidx.fragment:fragment-ktx:1.6.0'
+androidx-fragment = "androidx.fragment:fragment-ktx:1.6.1"
 androidx-resources = 'androidx.appcompat:appcompat-resources:1.6.1'
 androidx-coordinatorlayout = 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
 androidx-localbroadcastmanager = 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
@@ -23,7 +23,7 @@ androidx-datastore-preferences = 'androidx.datastore:datastore-preferences:1.0.0
 slimber = 'com.github.PaulWoitaschek:Slimber:2.0.0'
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 
-junit = 'org.junit.jupiter:junit-jupiter:5.9.3'
+junit = "org.junit.jupiter:junit-jupiter:5.10.0"
 
 kotlinutils = 'com.github.w2sv:KotlinUtils:0.0.7-rc2'
 
