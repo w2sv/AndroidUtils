@@ -1,11 +1,7 @@
 package com.w2sv.androidutils.ui
 
-import android.net.Uri
-import androidx.datastore.preferences.core.Preferences
 import com.w2sv.androidutils.coroutines.getSynchronousMap
 import com.w2sv.androidutils.coroutines.getValueSynchronously
-import com.w2sv.androidutils.datastorage.datastore.preferences.DataStoreEntry
-import com.w2sv.androidutils.datastorage.datastore.preferences.PreferencesDataStoreRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
@@ -40,6 +36,13 @@ open class UnconfirmedStateMap<K, V>(
     private val syncState: suspend (Map<K, V>) -> Unit
 ) : UnconfirmedState<Map<K, V>>(),
     MutableMap<K, V> by map {
+
+    constructor(
+        coroutineScope: CoroutineScope,
+        appliedFlowMap: Map<K, Flow<V>>,
+        makeSynchronousMutableMap: (Map<K, Flow<V>>) -> MutableMap<K, V>,
+        syncState: suspend (Map<K, V>) -> Unit
+    ) : this(coroutineScope, appliedFlowMap, makeSynchronousMutableMap(appliedFlowMap), syncState)
 
     /**
      * Tracking of keys which correspond to values, differing between [appliedFlowMap] and this
