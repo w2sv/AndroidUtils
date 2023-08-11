@@ -2,11 +2,13 @@
 
 package com.w2sv.androidutils.coroutines
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -28,6 +30,9 @@ fun <K, V> Map<K, Flow<V>>.getSynchronousMap(): Map<K, V> =
 fun MutableStateFlow<Boolean>.toggle() {
     value = !value
 }
+
+fun <T> Flow<T>.stateInWithInitial(scope: CoroutineScope, started: SharingStarted): StateFlow<T> =
+    stateIn(scope = scope, started = started, initialValue = getValueSynchronously())
 
 /**
  * Does not produce the same value in a row, so respect "distinct until changed emissions"

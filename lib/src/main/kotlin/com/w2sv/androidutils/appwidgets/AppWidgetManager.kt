@@ -12,8 +12,17 @@ fun AppWidgetManager.getAppWidgetIds(
     appWidgetProviderClass: Class<out AppWidgetProvider>
 ): IntArray =
     getAppWidgetIds(
+        context.packageName,
+        appWidgetProviderClass
+    )
+
+fun AppWidgetManager.getAppWidgetIds(
+    packageName: String,
+    appWidgetProviderClass: Class<out AppWidgetProvider>
+): IntArray =
+    getAppWidgetIds(
         ComponentName(
-            context.packageName,
+            packageName,
             appWidgetProviderClass.name
         )
     )
