@@ -59,7 +59,6 @@ dependencies {
 
     implementation libs.slimber
     implementation libs.kotlinutils
-    implementation libs.gson
 
     // Unit tests
     testImplementation libs.junit

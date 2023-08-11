@@ -6,7 +6,6 @@ import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
 import com.w2sv.kotlinutils.extensions.getByOrdinal
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -94,31 +93,6 @@ abstract class PreferencesDataStoreRepository(
     }
 
     // ============
-    // Objects
-    // ============
-
-    inline fun <reified T> getDeserializedObjectFlow(
-        preferencesKey: Preferences.Key<String>,
-        defaultValue: T?
-    ): Flow<T?> =
-        dataStore.data.map {
-            it[preferencesKey]
-                ?.let { json -> Gson().fromJson(json, T::class.java) }
-                ?: defaultValue
-        }
-
-    inline fun <reified T> getDeserializedObjectFlow(
-        entry: DataStoreEntry.ObjectValued<T>
-    ): Flow<T?> =
-        getDeserializedObjectFlow(entry.preferencesKey, entry.defaultValue)
-
-    suspend fun saveAsJson(preferencesKey: Preferences.Key<String>, obj: Any) {
-        dataStore.edit {
-            it[preferencesKey] = Gson().toJson(obj)
-        }
-    }
-
-    // ============
     // Simple Maps
     // ============
 
@@ -195,11 +169,6 @@ abstract class PreferencesDataStoreRepository(
         fun <E : Enum<E>> saveToDataStore(key: Preferences.Key<Int>, value: E): Job =
             coroutineScope.launch(Dispatchers.IO) {
                 repository.save(key, value)
-            }
-
-        fun <E : Enum<E>> saveSerializedObjectToDataStore(key: Preferences.Key<String>, value: Any): Job =
-            coroutineScope.launch(Dispatchers.IO) {
-                repository.saveAsJson(key, value)
             }
 
         fun <DSE : DataStoreEntry.UniType<V>, V> saveMapToDataStore(
