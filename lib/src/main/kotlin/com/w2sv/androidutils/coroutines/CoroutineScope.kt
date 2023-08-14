@@ -22,11 +22,3 @@ fun CoroutineScope.launchDelayed(
         delay(timeMillis)
         block()
     }
-
-fun <T> CoroutineScope.launchFlowCollections(vararg collectionArgs: Pair<Flow<T>, FlowCollector<T>>) {
-    collectionArgs.forEach { (flow, collector) ->
-        launch {
-            flow.collect(collector)
-        }
-    }
-}
