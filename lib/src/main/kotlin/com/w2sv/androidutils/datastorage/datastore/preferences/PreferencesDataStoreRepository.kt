@@ -30,10 +30,15 @@ abstract class PreferencesDataStoreRepository(
             it[preferencesKey] ?: defaultValue
         }
 
+    fun <T> getNullableFlow(preferencesKey: Preferences.Key<T>, defaultValue: T?): Flow<T?> =
+        dataStore.data.map {
+            it[preferencesKey] ?: defaultValue
+        }
+
     fun <T> getFlow(entry: DataStoreEntry<T, T>): Flow<T> =
         getFlow(entry.preferencesKey, entry.defaultValue)
 
-    suspend fun <T> save(preferencesKey: Preferences.Key<T>, value: T) {
+    suspend fun <T> save(preferencesKey: Preferences.Key<T?>, value: T?) {
         dataStore.edit {
             it.save(preferencesKey, value)
         }
@@ -158,7 +163,7 @@ abstract class PreferencesDataStoreRepository(
         val repository: PreferencesDataStoreRepository
         val coroutineScope: CoroutineScope
 
-        fun <T> saveToDataStore(key: Preferences.Key<T>, value: T): Job =
+        fun <T> saveToDataStore(key: Preferences.Key<T?>, value: T?): Job =
             coroutineScope.launch(Dispatchers.IO) {
                 repository.save(key, value)
             }

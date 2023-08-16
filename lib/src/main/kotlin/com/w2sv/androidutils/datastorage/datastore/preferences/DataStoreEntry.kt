@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.datastore.preferences.core.Preferences
 
 /**
- * Interface for Classes, which are to be managed as map by a [PreferencesDataStoreRepository].
+ * Interfaces for classes which are to be managed as map by a [PreferencesDataStoreRepository].
  */
 interface DataStoreEntry<K, V> {
     val preferencesKey: Preferences.Key<K>
