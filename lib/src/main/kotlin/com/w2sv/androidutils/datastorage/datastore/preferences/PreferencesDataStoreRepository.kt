@@ -38,7 +38,13 @@ abstract class PreferencesDataStoreRepository(
     fun <T> getFlow(entry: DataStoreEntry<T, T>): Flow<T> =
         getFlow(entry.preferencesKey, entry.defaultValue)
 
-    suspend fun <T> save(preferencesKey: Preferences.Key<T?>, value: T?) {
+    suspend fun <T> save(preferencesKey: Preferences.Key<T>, value: T) {
+        dataStore.edit {
+            it.save(preferencesKey, value)
+        }
+    }
+
+    suspend fun <T> saveNullable(preferencesKey: Preferences.Key<T?>, value: T?) {
         dataStore.edit {
             it.save(preferencesKey, value)
         }
