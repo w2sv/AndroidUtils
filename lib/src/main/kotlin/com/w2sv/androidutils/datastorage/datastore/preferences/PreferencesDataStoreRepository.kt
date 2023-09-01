@@ -15,6 +15,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import slimber.log.i
 
 abstract class PreferencesDataStoreRepository(
@@ -39,14 +40,18 @@ abstract class PreferencesDataStoreRepository(
         getFlow(entry.preferencesKey, entry.defaultValue)
 
     suspend fun <T> save(preferencesKey: Preferences.Key<T>, value: T) {
-        dataStore.edit {
-            it.save(preferencesKey, value)
+        withContext(Dispatchers.IO) {
+            dataStore.edit {
+                it.save(preferencesKey, value)
+            }
         }
     }
 
     suspend fun <T> saveNullable(preferencesKey: Preferences.Key<T?>, value: T?) {
-        dataStore.edit {
-            it.save(preferencesKey, value)
+        withContext(Dispatchers.IO) {
+            dataStore.edit {
+                it.save(preferencesKey, value)
+            }
         }
     }
 
@@ -72,8 +77,10 @@ abstract class PreferencesDataStoreRepository(
         getUriFlow(entry.preferencesKey, entry.defaultValue)
 
     suspend fun save(preferencesKey: Preferences.Key<String>, value: Uri?) {
-        dataStore.edit {
-            it.save(preferencesKey, value)
+        withContext(Dispatchers.IO) {
+            dataStore.edit {
+                it.save(preferencesKey, value)
+            }
         }
     }
 
@@ -100,8 +107,10 @@ abstract class PreferencesDataStoreRepository(
         preferencesKey: Preferences.Key<Int>,
         value: Enum<*>
     ) {
-        dataStore.edit {
-            it.save(preferencesKey, value)
+        withContext(Dispatchers.IO) {
+            dataStore.edit {
+                it.save(preferencesKey, value)
+            }
         }
     }
 
@@ -117,9 +126,11 @@ abstract class PreferencesDataStoreRepository(
     suspend fun <DSE : DataStoreEntry.UniType<V>, V> saveMap(
         map: Map<DSE, V>
     ) {
-        dataStore.edit {
-            map.forEach { (entry, value) ->
-                it.save(entry.preferencesKey, value)
+        withContext(Dispatchers.IO) {
+            dataStore.edit {
+                map.forEach { (entry, value) ->
+                    it.save(entry.preferencesKey, value)
+                }
             }
         }
     }
@@ -134,9 +145,11 @@ abstract class PreferencesDataStoreRepository(
         }
 
     suspend fun <DSE : DataStoreEntry.UriValued> saveUriValuedMap(map: Map<DSE, Uri?>) {
-        dataStore.edit {
-            map.forEach { (entry, value) ->
-                it.save(entry.preferencesKey, value)
+        withContext(Dispatchers.IO) {
+            dataStore.edit {
+                map.forEach { (entry, value) ->
+                    it.save(entry.preferencesKey, value)
+                }
             }
         }
     }
@@ -155,62 +168,13 @@ abstract class PreferencesDataStoreRepository(
     suspend fun <DSE : DataStoreEntry.EnumValued<V>, V : Enum<V>> saveEnumValuedMap(
         map: Map<DSE, V>
     ) {
-        dataStore.edit {
-            map.forEach { (entry, value) ->
-                it.save(entry.preferencesKey, value)
+        withContext(Dispatchers.IO) {
+            dataStore.edit {
+                map.forEach { (entry, value) ->
+                    it.save(entry.preferencesKey, value)
+                }
             }
         }
-    }
-
-    /**
-     * Interface for classes interfacing with a [PreferencesDataStoreRepository] via a held [coroutineScope].
-     */
-    interface Interface {
-        val repository: PreferencesDataStoreRepository
-        val coroutineScope: CoroutineScope
-
-        fun <T> saveToDataStore(key: Preferences.Key<T?>, value: T?): Job =
-            coroutineScope.launch(Dispatchers.IO) {
-                repository.save(key, value)
-            }
-
-        fun saveToDataStore(key: Preferences.Key<String>, value: Uri?): Job =
-            coroutineScope.launch(Dispatchers.IO) {
-                repository.save(key, value)
-            }
-
-        fun <E : Enum<E>> saveToDataStore(key: Preferences.Key<Int>, value: E): Job =
-            coroutineScope.launch(Dispatchers.IO) {
-                repository.save(key, value)
-            }
-
-        fun <DSE : DataStoreEntry.UniType<V>, V> saveMapToDataStore(
-            map: Map<DSE, V>
-        ): Job =
-            coroutineScope.launch(Dispatchers.IO) {
-                repository.saveMap(map)
-            }
-
-        fun <DSE : DataStoreEntry.EnumValued<V>, V : Enum<V>> saveEnumValuedMapToDataStore(
-            map: Map<DSE, V>
-        ): Job =
-            coroutineScope.launch(Dispatchers.IO) {
-                repository.saveEnumValuedMap(map)
-            }
-
-        fun <DSE : DataStoreEntry.UriValued> saveUriValuedMapToDataStore(
-            map: Map<DSE, Uri?>
-        ): Job =
-            coroutineScope.launch(Dispatchers.IO) {
-                repository.saveUriValuedMap(map)
-            }
-    }
-
-    abstract class ViewModel<R : PreferencesDataStoreRepository>(override val repository: R) :
-        androidx.lifecycle.ViewModel(),
-        Interface {
-
-        override val coroutineScope: CoroutineScope by ::viewModelScope
     }
 }
 
