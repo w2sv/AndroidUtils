@@ -3,10 +3,12 @@ package com.w2sv.androidutils.datastorage.datastore.preferences
 import android.net.Uri
 import androidx.datastore.preferences.core.Preferences
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 abstract class PersistedValue<K, V>(
     flow: Flow<V>,
@@ -19,6 +21,11 @@ abstract class PersistedValue<K, V>(
         started: SharingStarted,
     ): StateFlow<V> =
         stateIn(scope, started, default)
+
+    fun launchSave(value: V, scope: CoroutineScope): Job =
+        scope.launch {
+            save(value)
+        }
 
     class UniTyped<T>(default: T, flow: Flow<T>, save: suspend (T) -> Unit) :
         PersistedValue<T, T>(
