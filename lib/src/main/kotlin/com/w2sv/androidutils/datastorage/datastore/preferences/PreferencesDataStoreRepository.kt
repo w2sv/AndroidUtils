@@ -173,7 +173,7 @@ abstract class PreferencesDataStoreRepository(
         }
     }
 
-    private fun <T> getPersistedValue(
+    protected fun <T> getPersistedValue(
         key: Preferences.Key<T>,
         default: T
     ): PersistedValue.UniTyped<T> =
@@ -183,7 +183,7 @@ abstract class PreferencesDataStoreRepository(
             save = { save(key, it) }
         )
 
-    private inline fun <reified E : Enum<E>> getPersistedValue(
+    protected inline fun <reified E : Enum<E>> getPersistedValue(
         key: Preferences.Key<Int>,
         default: E
     ): PersistedValue.EnumValued<E> =
@@ -193,7 +193,7 @@ abstract class PreferencesDataStoreRepository(
             save = { save(key, it) }
         )
 
-    private fun getPersistedValue(
+    protected fun getPersistedValue(
         key: Preferences.Key<String>,
         default: Uri?
     ): PersistedValue.UriValued =
