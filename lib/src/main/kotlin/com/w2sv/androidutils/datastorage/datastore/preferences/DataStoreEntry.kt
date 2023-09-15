@@ -30,11 +30,4 @@ interface DataStoreEntry<K, V> {
             override val defaultValue: Uri?
         ) : UriValued
     }
-
-    interface ObjectValued<T>: DataStoreEntry<String, T?> {
-        open class Impl<T>(
-            override val preferencesKey: Preferences.Key<String>,
-            override val defaultValue: T?
-        ) : ObjectValued<T?>
-    }
 }

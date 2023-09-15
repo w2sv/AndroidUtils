@@ -172,6 +172,36 @@ abstract class PreferencesDataStoreRepository(
             }
         }
     }
+
+    private fun <T> getPersistedValue(
+        key: Preferences.Key<T>,
+        default: T
+    ): PersistedValue.UniTyped<T> =
+        PersistedValue.UniTyped(
+            default = default,
+            flow = getFlow(key, default),
+            save = { save(key, it) }
+        )
+
+    private inline fun <reified E : Enum<E>> getPersistedValue(
+        key: Preferences.Key<Int>,
+        default: E
+    ): PersistedValue.EnumValued<E> =
+        PersistedValue.EnumValued(
+            default = default,
+            flow = getEnumFlow<E>(key, default),
+            save = { save(key, it) }
+        )
+
+    private fun getPersistedValue(
+        key: Preferences.Key<String>,
+        default: Uri?
+    ): PersistedValue.UriValued =
+        PersistedValue.UriValued(
+            default = default,
+            flow = getUriFlow(key, default),
+            save = { save(key, it) }
+        )
 }
 
 private const val DEFAULT_STRING_VALUE = ""
