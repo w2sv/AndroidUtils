@@ -44,28 +44,30 @@ open class UnconfirmedStateMap<K, V>(
         syncState: suspend (Map<K, V>) -> Unit
     ) : this(coroutineScope, appliedFlowMap, makeSynchronousMutableMap(appliedFlowMap), syncState)
 
+    val dissimilarKeys: Set<K> get() = _dissimilarKeys
+
     /**
      * Tracking of keys which correspond to values, differing between [appliedFlowMap] and this
      * for efficient syncing/resetting.
      */
-    private val dissimilarKeys = mutableSetOf<K>()
+    private val _dissimilarKeys = mutableSetOf<K>()
 
     // ==============
     // Modification
     // ==============
 
     /**
-     * Inherently updates [dissimilarKeys] and [statesDissimilar] in an asynchronous fashion.
+     * Inherently updates [_dissimilarKeys] and [statesDissimilar] in an asynchronous fashion.
      */
     override fun put(key: K, value: V): V? =
         map.put(key, value)
             .also {
                 coroutineScope.launch {
                     when (value == appliedFlowMap.getValue(key).first()) {
-                        true -> dissimilarKeys.remove(key)
-                        false -> dissimilarKeys.add(key)
+                        true -> _dissimilarKeys.remove(key)
+                        false -> _dissimilarKeys.add(key)
                     }
-                    _statesDissimilar.value = dissimilarKeys.isNotEmpty()
+                    _statesDissimilar.value = _dissimilarKeys.isNotEmpty()
                 }
             }
 
@@ -82,11 +84,11 @@ open class UnconfirmedStateMap<K, V>(
     override suspend fun sync() = withSubsequentInternalReset {
         i { "Syncing $logIdentifier" }
 
-        syncState(filterKeys { it in dissimilarKeys })
+        syncState(filterKeys { it in _dissimilarKeys })
     }
 
     override suspend fun reset() = withSubsequentInternalReset {
-        dissimilarKeys
+        _dissimilarKeys
             .forEach {
                 // Call map.put directly to prevent unnecessary state updates
                 map[it] = appliedFlowMap.getValue(it).first()
@@ -96,7 +98,7 @@ open class UnconfirmedStateMap<K, V>(
     private inline fun withSubsequentInternalReset(f: () -> Unit) {
         f()
 
-        dissimilarKeys.clear()
+        _dissimilarKeys.clear()
         _statesDissimilar.value = false
     }
 }

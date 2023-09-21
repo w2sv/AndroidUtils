@@ -22,3 +22,13 @@ fun CoroutineScope.launchDelayed(
         delay(timeMillis)
         block()
     }
+
+fun <T> CoroutineScope.collectFromFlow(
+    flow: Flow<T>,
+    context: CoroutineContext = EmptyCoroutineContext,
+    start: CoroutineStart = CoroutineStart.DEFAULT,
+    flowCollector: FlowCollector<T>
+): Job =
+    launch(context, start) {
+        flow.collect(flowCollector)
+    }
