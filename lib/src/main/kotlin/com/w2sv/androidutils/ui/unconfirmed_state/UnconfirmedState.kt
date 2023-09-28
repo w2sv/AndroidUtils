@@ -7,13 +7,14 @@ import kotlinx.coroutines.flow.StateFlow
  * Base class for classes, encapsulating states being displayed by the UI but pending
  * confirmation, which in turn triggers the synchronization with the respective repository.
  */
-abstract class UnconfirmedState<T> {
+abstract class UnconfirmedState {
     val statesDissimilar: StateFlow<Boolean>
         get() = _statesDissimilar
     protected val _statesDissimilar = MutableStateFlow(false)
 
-    protected val logIdentifier: String get() = this::class.java.simpleName
-
     abstract suspend fun sync()
-    abstract suspend fun reset()
+    abstract fun reset()
+
+    protected val logIdentifier: String
+        get() = this::class.java.simpleName
 }

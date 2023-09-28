@@ -2,30 +2,33 @@ package com.w2sv.androidutils.ui.unconfirmed_state
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
-import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.launch
 import slimber.log.i
 
-typealias UnconfirmedStates = List<UnconfirmedState<*>>
+typealias UnconfirmedStates = List<UnconfirmedState>
 
 open class UnconfirmedStatesComposition(
-    unconfirmedStates: UnconfirmedStates,
+    private val unconfirmedStates: UnconfirmedStates,
     private val coroutineScope: CoroutineScope,
     private val onStateSynced: suspend () -> Unit = {}
 ) : UnconfirmedStates by unconfirmedStates,
-    UnconfirmedState<UnconfirmedStates>() {
+    UnconfirmedState() {
 
     private val changedStateInstanceIndices = mutableSetOf<Int>()
-    private val changedStateInstances get() = changedStateInstanceIndices.map { this[it] }
+    private val changedStateInstances
+        get() = changedStateInstanceIndices.map(::get)
 
     init {
         // Update [changedStateInstanceIndices] and [_statesDissimilar] upon change of one of
         // the held element's [statesDissimilar]
         coroutineScope.launch {
-            mapIndexed { i, it -> it.statesDissimilar.transform { emit(it to i) } }
+            mapIndexed { i, instance ->
+                instance.statesDissimilar.map { i to it }
+            }
                 .merge()
-                .collect { (statesDissimilar, i) ->
+                .collect { (i, statesDissimilar) ->
                     if (statesDissimilar) {
                         changedStateInstanceIndices.add(i)
                     } else {
@@ -46,7 +49,7 @@ open class UnconfirmedStatesComposition(
         onStateSynced()
     }
 
-    override suspend fun reset() {
+    override fun reset() {
         i { "Resetting $logIdentifier" }
 
         changedStateInstances.forEach {
@@ -56,7 +59,4 @@ open class UnconfirmedStatesComposition(
 
     fun launchSync(): Job =
         coroutineScope.launch { sync() }
-
-    fun launchReset(): Job =
-        coroutineScope.launch { reset() }
 }
