@@ -5,7 +5,7 @@ agp = '8.1.1'
 minSdk = '23'
 compileSdk = '34'
 
-lifecycle = '2.6.1'
+lifecycle = '2.6.2'
 
 [libraries]
 androidx-core = 'androidx.core:core-ktx:1.10.1'
