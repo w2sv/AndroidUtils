@@ -11,21 +11,21 @@ interface DataStoreEntry<K, V> {
     val defaultValue: V
 
     interface UniType<T> : DataStoreEntry<T, T> {
-        open class Impl<T>(
+        data class Impl<T>(
             override val preferencesKey: Preferences.Key<T>,
             override val defaultValue: T
         ) : UniType<T>
     }
 
     interface EnumValued<E : Enum<E>> : DataStoreEntry<Int, E> {
-        open class Impl<E : Enum<E>>(
+        data class Impl<E : Enum<E>>(
             override val preferencesKey: Preferences.Key<Int>,
             override val defaultValue: E
         ) : EnumValued<E>
     }
 
     interface UriValued : DataStoreEntry<String, Uri?> {
-        open class Impl(
+        data class Impl(
             override val preferencesKey: Preferences.Key<String>,
             override val defaultValue: Uri?
         ) : UriValued
