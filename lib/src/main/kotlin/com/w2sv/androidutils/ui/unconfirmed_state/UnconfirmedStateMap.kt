@@ -13,8 +13,7 @@ abstract class KeyedUnconfirmedState<K> : UnconfirmedState() {
         get() = _dissimilarKeys
 
     /**
-     * Tracking of keys which correspond to values, differing between [appliedStateMap] and this
-     * for efficient syncing/resetting.
+     * Keys whose values have changed.
      */
     protected val _dissimilarKeys = mutableSetOf<K>()
 
@@ -118,7 +117,7 @@ open class UnconfirmedStateFlowMap<K, V>(
     private val syncState: suspend (Map<K, V>) -> Unit,
     private val onStateSynced: suspend (Map<K, StateFlow<V>>) -> Unit = {}
 ) : KeyedUnconfirmedState<K>(),
-    Map<K, StateFlow<V>> by map {
+    Map<K, MutableStateFlow<V>> by map {
 
     companion object {
         fun <K, V> fromAppliedFlowMap(
@@ -127,25 +126,33 @@ open class UnconfirmedStateFlowMap<K, V>(
             coroutineScope: CoroutineScope,
             syncState: suspend (Map<K, V>) -> Unit,
             onStateSynced: suspend (Map<K, StateFlow<V>>) -> Unit = {}
-        ): UnconfirmedStateFlowMap<K, V> {
-            val appliedStateFlowMap = appliedFlowMap.mapValues { (k, v) ->
-                v.stateIn(coroutineScope, SharingStarted.Eagerly, getDefaultValue(k))
-            }
+        ): UnconfirmedStateFlowMap<K, V> =
+            fromAppliedStateFlowMap(
+                appliedStateFlowMap = appliedFlowMap.mapValues { (k, v) ->
+                    v.stateIn(coroutineScope, SharingStarted.Eagerly, getDefaultValue(k))
+                },
+                syncState = syncState,
+                onStateSynced = onStateSynced
+            )
 
-            return UnconfirmedStateFlowMap(
+        fun <K, V> fromAppliedStateFlowMap(
+            appliedStateFlowMap: Map<K, StateFlow<V>>,
+            syncState: suspend (Map<K, V>) -> Unit,
+            onStateSynced: suspend (Map<K, StateFlow<V>>) -> Unit = {}
+        ): UnconfirmedStateFlowMap<K, V> =
+            UnconfirmedStateFlowMap(
                 map = appliedStateFlowMap.mapValues { (_, v) -> MutableStateFlow(v.value) },
                 appliedStateFlowMap = appliedStateFlowMap,
                 syncState = syncState,
                 onStateSynced = onStateSynced
             )
-        }
     }
 
     // ==============
     // Modification
     // ==============
 
-    fun changeValue(key: K, value: V) {
+    operator fun set(key: K, value: V) {
         map.getValue(key).value = value
 
         when (value == appliedStateFlowMap.getValue(key).value) {
