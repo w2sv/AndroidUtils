@@ -21,7 +21,7 @@ androidx-datastore-preferences = 'androidx.datastore:datastore-preferences:1.0.0
 
 slimber = 'com.github.PaulWoitaschek:Slimber:2.0.0'
 
-junit = "org.junit.jupiter:junit-jupiter:5.10.0"
+junit = "org.junit.jupiter:junit-jupiter:5.10.1"
 
 kotlinutils = 'com.github.w2sv:KotlinUtils:0.0.7-rc2'
 
