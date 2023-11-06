@@ -1,7 +1,6 @@
 package com.w2sv.androidutils.datastorage.datastore.preferences
 
 import android.net.Uri
-import androidx.datastore.preferences.core.Preferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
@@ -41,7 +40,7 @@ abstract class PersistedValue<K, V>(
             save = save
         )
 
-    class UriValued(default: Uri?, flow: Flow<Uri?>, save: suspend (Uri?) -> Unit):
+    class UriValued(default: Uri?, flow: Flow<Uri?>, save: suspend (Uri?) -> Unit) :
         PersistedValue<String, Uri?>(
             flow = flow,
             default = default,

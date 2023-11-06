@@ -1,36 +1,31 @@
 package com.w2sv.androidutils.ui.unconfirmed_state
 
 import com.w2sv.androidutils.coroutines.collectFromFlow
-import com.w2sv.androidutils.coroutines.getValueSynchronously
+import com.w2sv.androidutils.datastorage.datastore.preferences.PersistedValue
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
 import slimber.log.i
 
 open class UnconfirmedStateFlow<T>(
     coroutineScope: CoroutineScope,
     private val appliedStateFlow: StateFlow<T>,
-    initialValue: T = appliedStateFlow.getValueSynchronously(),
     private val syncState: suspend (T) -> Unit
 ) : UnconfirmedState(),
-    MutableStateFlow<T> by MutableStateFlow(initialValue) {
+    MutableStateFlow<T> by MutableStateFlow(appliedStateFlow.value) {
 
+    /**
+     * Construct from [PersistedValue].
+     */
     constructor(
         coroutineScope: CoroutineScope,
-        appliedFlow: Flow<T>,
-        getDefaultValue: () -> T,
-        syncState: suspend (T) -> Unit
+        persistedValue: PersistedValue<*, T>,
+        started: SharingStarted
     ) : this(
         coroutineScope = coroutineScope,
-        appliedStateFlow = appliedFlow.stateIn(
-            coroutineScope,
-            SharingStarted.Eagerly,
-            getDefaultValue()
-        ),
-        syncState = syncState
+        appliedStateFlow = persistedValue.stateIn(coroutineScope, started),
+        syncState = persistedValue.save
     )
 
     init {
