@@ -28,4 +28,4 @@ kotlinutils = 'com.github.w2sv:KotlinUtils:0.0.7-rc2'
 [plugins]
 android-library = { id = 'com.android.library', version.ref = 'agp' }
 kotlin = { id = 'org.jetbrains.kotlin.android', version.ref = 'kotlin' }
-mannodermaus = { id = 'de.mannodermaus.android-junit5', version = '1.9.3.0' }
+mannodermaus = { id = 'de.mannodermaus.android-junit5', version = '1.10.0.0' }
