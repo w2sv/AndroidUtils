@@ -10,7 +10,7 @@ import slimber.log.i
 
 open class UnconfirmedStateFlow<T>(
     coroutineScope: CoroutineScope,
-    private val appliedStateFlow: StateFlow<T>,
+    val appliedStateFlow: StateFlow<T>,
     private val syncState: suspend (T) -> Unit
 ) : UnconfirmedState(),
     MutableStateFlow<T> by MutableStateFlow(appliedStateFlow.value) {
@@ -21,7 +21,7 @@ open class UnconfirmedStateFlow<T>(
     constructor(
         coroutineScope: CoroutineScope,
         persistedValue: PersistedValue<*, T>,
-        started: SharingStarted
+        started: SharingStarted = SharingStarted.Eagerly
     ) : this(
         coroutineScope = coroutineScope,
         appliedStateFlow = persistedValue.stateIn(coroutineScope, started),
