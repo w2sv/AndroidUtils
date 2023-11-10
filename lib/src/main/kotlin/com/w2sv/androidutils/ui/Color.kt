@@ -12,8 +12,8 @@ fun @receiver:FloatRange(0.0, 1.0) Float.toRGBChannelInt(): Int =
     (this * 255).roundToInt()
 
 @ColorInt
-fun getAlphaSetColor(@ColorInt color: Int, @FloatRange(0.0, 1.0) opacity: Float): Int =
+fun getAlphaSetColor(@ColorInt color: Int, @FloatRange(0.0, 1.0) alpha: Float): Int =
     ColorUtils.setAlphaComponent(
         color,
-        opacity.toRGBChannelInt()
+        alpha.toRGBChannelInt()
     )
