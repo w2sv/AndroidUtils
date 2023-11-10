@@ -1,5 +1,6 @@
 package com.w2sv.androidutils.ui.unconfirmed_state
 
+import com.w2sv.androidutils.coroutines.stateInWithSynchronousInitial
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,7 +44,7 @@ open class UnconfirmedStateMap<K, V>(
      */
     constructor(
         persistedStateFlowMap: Map<K, StateFlow<V>>,
-        makeMap: (Map<K, Flow<V>>) -> MutableMap<K, V>,
+        makeMap: (Map<K, StateFlow<V>>) -> MutableMap<K, V>,
         syncState: suspend (Map<K, V>) -> Unit,
         onStateSynced: suspend (Map<K, V>) -> Unit = {}
     ) : this(
@@ -52,6 +53,30 @@ open class UnconfirmedStateMap<K, V>(
         syncState = syncState,
         onStateSynced = onStateSynced
     )
+
+    companion object {
+        fun <K, V> fromPersistedFlowMapWithSynchronousInitial(
+            persistedFlowMap: Map<K, StateFlow<V>>,
+            scope: CoroutineScope,
+            makeMap: (Map<K, V>) -> MutableMap<K, V>,
+            syncState: suspend (Map<K, V>) -> Unit,
+            onStateSynced: suspend (Map<K, V>) -> Unit = {}
+        ): UnconfirmedStateMap<K, V> {
+            val persistedStateFlowMap = persistedFlowMap.mapValues { (_, v) ->
+                v.stateInWithSynchronousInitial(
+                    scope,
+                    SharingStarted.Eagerly
+                )
+            }
+
+            return UnconfirmedStateMap(
+                map = makeMap(persistedFlowMap.mapValues { (_, v) -> v.value }),
+                persistedStateFlowMap = persistedStateFlowMap,
+                syncState = syncState,
+                onStateSynced = onStateSynced
+            )
+        }
+    }
 
     // ==============
     // Modification

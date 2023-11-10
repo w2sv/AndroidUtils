@@ -31,7 +31,10 @@ fun MutableStateFlow<Boolean>.toggle() {
     value = !value
 }
 
-fun <T> Flow<T>.stateInWithInitial(scope: CoroutineScope, started: SharingStarted): StateFlow<T> =
+fun <T> Flow<T>.stateInWithSynchronousInitial(
+    scope: CoroutineScope,
+    started: SharingStarted
+): StateFlow<T> =
     stateIn(scope = scope, started = started, initialValue = getValueSynchronously())
 
 /**
@@ -45,10 +48,10 @@ class DerivedStateFlow<T>(
 ) : StateFlow<T> {
 
     override val replayCache: List<T>
-        get () = listOf(value)
+        get() = listOf(value)
 
     override val value: T
-        get () = getValue()
+        get() = getValue()
 
     @InternalCoroutinesApi
     override suspend fun collect(collector: FlowCollector<T>): Nothing {
@@ -63,7 +66,11 @@ fun <T1, R> StateFlow<T1>.mapState(transform: (a: T1) -> R): StateFlow<R> {
     )
 }
 
-fun <T1, T2, R> combineStates(flow: StateFlow<T1>, flow2: StateFlow<T2>, transform: (a: T1, b: T2) -> R): StateFlow<R> {
+fun <T1, T2, R> combineStates(
+    flow: StateFlow<T1>,
+    flow2: StateFlow<T2>,
+    transform: (a: T1, b: T2) -> R
+): StateFlow<R> {
     return DerivedStateFlow(
         getValue = { transform(flow.value, flow2.value) },
         flow = combine(flow, flow2) { a, b -> transform(a, b) }
