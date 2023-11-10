@@ -56,7 +56,7 @@ open class UnconfirmedStateMap<K, V>(
 
     companion object {
         fun <K, V> fromPersistedFlowMapWithSynchronousInitial(
-            persistedFlowMap: Map<K, StateFlow<V>>,
+            persistedFlowMap: Map<K, Flow<V>>,
             scope: CoroutineScope,
             makeMap: (Map<K, V>) -> MutableMap<K, V>,
             syncState: suspend (Map<K, V>) -> Unit,
@@ -70,7 +70,7 @@ open class UnconfirmedStateMap<K, V>(
             }
 
             return UnconfirmedStateMap(
-                map = makeMap(persistedFlowMap.mapValues { (_, v) -> v.value }),
+                map = makeMap(persistedStateFlowMap.mapValues { (_, v) -> v.value }),
                 persistedStateFlowMap = persistedStateFlowMap,
                 syncState = syncState,
                 onStateSynced = onStateSynced
