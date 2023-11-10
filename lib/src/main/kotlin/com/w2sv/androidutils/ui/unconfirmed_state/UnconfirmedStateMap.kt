@@ -8,14 +8,15 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import slimber.log.i
 
-abstract class KeyedUnconfirmedState<K> : UnconfirmedState() {
-    val dissimilarKeys: Set<K>
-        get() = _dissimilarKeys
+abstract class MappedUnconfirmedState<K> : UnconfirmedState() {
 
     /**
      * Keys whose values have changed.
      */
     protected val _dissimilarKeys = mutableSetOf<K>()
+
+    val dissimilarKeys: Set<K>
+        get() = _dissimilarKeys
 
     protected fun resetDissimilarityTrackers() {
         _dissimilarKeys.clear()
@@ -23,42 +24,31 @@ abstract class KeyedUnconfirmedState<K> : UnconfirmedState() {
     }
 }
 
+/**
+ * @param map Delegate. Represents the non-persisted, temporary state.
+ * @param persistedStateFlowMap Representation of the persisted state. Holds the same keys as [map].
+ * @param syncState To save the temporary state, such that [persistedStateFlowMap] and [map] are in sync. Receives only [map] key-value pairs, whose values have changed with respect to the persisted state, held by [persistedStateFlowMap].
+ * @param onStateSynced Possibility to invoke a callback upon the temporary and the persisted states having been synced. Receives contrarily to [syncState] the entire map.
+ */
 open class UnconfirmedStateMap<K, V>(
     private val map: MutableMap<K, V>,
-    private val appliedStateFlowMap: Map<K, StateFlow<V>>,
+    val persistedStateFlowMap: Map<K, StateFlow<V>>,
     private val syncState: suspend (Map<K, V>) -> Unit,
     private val onStateSynced: suspend (Map<K, V>) -> Unit = {}
-) : KeyedUnconfirmedState<K>(),
+) : MappedUnconfirmedState<K>(),
     MutableMap<K, V> by map {
 
+    /**
+     * Enables passing of [makeMap] function instead of having to invoke [persistedStateFlowMap] twice, which would require a capturing of it as val or scope function receiver.
+     */
     constructor(
-        appliedStateFlowMap: Map<K, StateFlow<V>>,
+        persistedStateFlowMap: Map<K, StateFlow<V>>,
         makeMap: (Map<K, Flow<V>>) -> MutableMap<K, V>,
         syncState: suspend (Map<K, V>) -> Unit,
         onStateSynced: suspend (Map<K, V>) -> Unit = {}
     ) : this(
-        map = makeMap(appliedStateFlowMap),
-        appliedStateFlowMap = appliedStateFlowMap,
-        syncState = syncState,
-        onStateSynced = onStateSynced
-    )
-
-    constructor(
-        coroutineScope: CoroutineScope,
-        appliedFlowMap: Map<K, Flow<V>>,
-        getDefaultValue: (K) -> V,
-        makeMap: (Map<K, Flow<V>>) -> MutableMap<K, V>,
-        syncState: suspend (Map<K, V>) -> Unit,
-        onStateSynced: suspend (Map<K, V>) -> Unit = {}
-    ) : this(
-        appliedStateFlowMap = appliedFlowMap.mapValues { (k, v) ->
-            v.stateIn(
-                coroutineScope,
-                SharingStarted.Eagerly,
-                getDefaultValue(k)
-            )
-        },
-        makeMap = makeMap,
+        map = makeMap(persistedStateFlowMap),
+        persistedStateFlowMap = persistedStateFlowMap,
         syncState = syncState,
         onStateSynced = onStateSynced
     )
@@ -68,12 +58,12 @@ open class UnconfirmedStateMap<K, V>(
     // ==============
 
     /**
-     * Inherently updates [_dissimilarKeys] and [statesDissimilar] in an asynchronous fashion.
+     * Inherently updates [_dissimilarKeys] and [statesDissimilar].
      */
     override fun put(key: K, value: V): V? =
         map.put(key, value)
             .also {
-                when (value == appliedStateFlowMap.getValue(key).value) {
+                when (value == persistedStateFlowMap.getValue(key).value) {
                     true -> _dissimilarKeys.remove(key)
                     false -> _dissimilarKeys.add(key)
                 }
@@ -105,44 +95,50 @@ open class UnconfirmedStateMap<K, V>(
         _dissimilarKeys
             .forEach {
                 // Call map.put rather than this.put, to prevent unnecessary state updates
-                map[it] = appliedStateFlowMap.getValue(it).value
+                map[it] = persistedStateFlowMap.getValue(it).value
             }
         resetDissimilarityTrackers()
     }
 }
 
+/**
+ * @param map Delegate. Represents the non-persisted, temporary state.
+ * @param persistedStateFlowMap Representation of the persisted state. Holds the same keys as [map].
+ * @param syncState To save the temporary state, such that [persistedStateFlowMap] and [map] are in sync. Receives only [map] key-value pairs, whose values have changed with respect to the persisted state, held by [persistedStateFlowMap].
+ * @param onStateSynced Possibility to invoke a callback upon the temporary and the persisted states having been synced. Receives contrarily to [syncState] the entire map.
+ */
 open class UnconfirmedStateFlowMap<K, V>(
     private val map: Map<K, MutableStateFlow<V>>,
-    private val appliedStateFlowMap: Map<K, StateFlow<V>>,
+    private val persistedStateFlowMap: Map<K, StateFlow<V>>,
     private val syncState: suspend (Map<K, V>) -> Unit,
     private val onStateSynced: suspend (Map<K, StateFlow<V>>) -> Unit = {}
-) : KeyedUnconfirmedState<K>(),
+) : MappedUnconfirmedState<K>(),
     Map<K, MutableStateFlow<V>> by map {
 
     companion object {
-        fun <K, V> fromAppliedFlowMap(
-            appliedFlowMap: Map<K, Flow<V>>,
+        fun <K, V> fromPersistedFlowMap(
+            persistedFlowMap: Map<K, Flow<V>>,
             getDefaultValue: (K) -> V,
             coroutineScope: CoroutineScope,
             syncState: suspend (Map<K, V>) -> Unit,
             onStateSynced: suspend (Map<K, StateFlow<V>>) -> Unit = {}
         ): UnconfirmedStateFlowMap<K, V> =
-            fromAppliedStateFlowMap(
-                appliedStateFlowMap = appliedFlowMap.mapValues { (k, v) ->
+            fromPersistedStateFlowMap(
+                persistedStateFlowMap = persistedFlowMap.mapValues { (k, v) ->
                     v.stateIn(coroutineScope, SharingStarted.Eagerly, getDefaultValue(k))
                 },
                 syncState = syncState,
                 onStateSynced = onStateSynced
             )
 
-        fun <K, V> fromAppliedStateFlowMap(
-            appliedStateFlowMap: Map<K, StateFlow<V>>,
+        fun <K, V> fromPersistedStateFlowMap(
+            persistedStateFlowMap: Map<K, StateFlow<V>>,
             syncState: suspend (Map<K, V>) -> Unit,
             onStateSynced: suspend (Map<K, StateFlow<V>>) -> Unit = {}
         ): UnconfirmedStateFlowMap<K, V> =
             UnconfirmedStateFlowMap(
-                map = appliedStateFlowMap.mapValues { (_, v) -> MutableStateFlow(v.value) },
-                appliedStateFlowMap = appliedStateFlowMap,
+                map = persistedStateFlowMap.mapValues { (_, v) -> MutableStateFlow(v.value) },
+                persistedStateFlowMap = persistedStateFlowMap,
                 syncState = syncState,
                 onStateSynced = onStateSynced
             )
@@ -155,7 +151,7 @@ open class UnconfirmedStateFlowMap<K, V>(
     operator fun set(key: K, value: V) {
         map.getValue(key).value = value
 
-        when (value == appliedStateFlowMap.getValue(key).value) {
+        when (value == persistedStateFlowMap.getValue(key).value) {
             true -> _dissimilarKeys.remove(key)
             false -> _dissimilarKeys.add(key)
         }
@@ -181,7 +177,7 @@ open class UnconfirmedStateFlowMap<K, V>(
         _dissimilarKeys
             .forEach {
                 // Call map.put rather than this.put, to prevent unnecessary state updates
-                map.getValue(it).value = appliedStateFlowMap.getValue(it).value
+                map.getValue(it).value = persistedStateFlowMap.getValue(it).value
             }
         resetDissimilarityTrackers()
     }

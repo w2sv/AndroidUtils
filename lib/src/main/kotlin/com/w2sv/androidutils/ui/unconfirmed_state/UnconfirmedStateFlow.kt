@@ -8,29 +8,29 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import slimber.log.i
 
-open class UnconfirmedStateFlow<T>(
-    coroutineScope: CoroutineScope,
+class UnconfirmedStateFlow<T>(
+    scope: CoroutineScope,
     val appliedStateFlow: StateFlow<T>,
     private val syncState: suspend (T) -> Unit
 ) : UnconfirmedState(),
     MutableStateFlow<T> by MutableStateFlow(appliedStateFlow.value) {
 
     /**
-     * Construct from [PersistedValue].
+     * For construction from [PersistedValue].
      */
     constructor(
         coroutineScope: CoroutineScope,
         persistedValue: PersistedValue<*, T>,
         started: SharingStarted = SharingStarted.Eagerly
     ) : this(
-        coroutineScope = coroutineScope,
+        scope = coroutineScope,
         appliedStateFlow = persistedValue.stateIn(coroutineScope, started),
         syncState = persistedValue.save
     )
 
     init {
         // Update [statesDissimilar] whenever a new value is collected
-        coroutineScope.collectFromFlow(this) { newValue ->
+        scope.collectFromFlow(this) { newValue ->
             _statesDissimilar.value = newValue != appliedStateFlow.value
         }
     }
