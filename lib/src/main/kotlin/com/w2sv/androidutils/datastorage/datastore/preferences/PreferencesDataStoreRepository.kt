@@ -3,6 +3,8 @@
 package com.w2sv.androidutils.datastorage.datastore.preferences
 
 import android.net.Uri
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.Preferences
@@ -13,6 +15,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import slimber.log.i
+import java.time.LocalDateTime
 
 abstract class PreferencesDataStoreRepository(
     val dataStore: DataStore<Preferences>
@@ -72,10 +75,33 @@ abstract class PreferencesDataStoreRepository(
     fun getUriFlow(entry: DataStoreEntry.UriValued): Flow<Uri?> =
         getUriFlow(entry.preferencesKey, entry.defaultValue)
 
-    suspend fun save(preferencesKey: Preferences.Key<String>, value: Uri?) {
+    // ================
+    // LocalDateTime
+    // ================
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getLocalDateTimeFlow(
+        preferencesKey: Preferences.Key<String>,
+        defaultValue: LocalDateTime?
+    ): Flow<LocalDateTime?> =
+        dataStore.data.map {
+            it[preferencesKey]?.let { string ->
+                if (string == DEFAULT_STRING_VALUE)
+                    null
+                else
+                    LocalDateTime.parse(string)
+            }
+                ?: defaultValue
+        }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getLocalDateTimeFlow(entry: DataStoreEntry.LocalDateTimeValued): Flow<LocalDateTime?> =
+        getLocalDateTimeFlow(entry.preferencesKey, entry.defaultValue)
+
+    suspend fun <T> saveStringRepresentation(preferencesKey: Preferences.Key<String>, value: T?) {
         withContext(Dispatchers.IO) {
             dataStore.edit {
-                it.save(preferencesKey, value)
+                it.saveStringRepresentation(preferencesKey, value)
             }
         }
     }
@@ -140,15 +166,25 @@ abstract class PreferencesDataStoreRepository(
             getUriFlow(it.preferencesKey, it.defaultValue)
         }
 
-    suspend fun <DSE : DataStoreEntry.UriValued> saveUriValuedMap(map: Map<DSE, Uri?>) {
+    suspend fun <DSE : DataStoreEntry.UriValued> saveStringRepresentations(map: Map<DSE, Any?>) {
         withContext(Dispatchers.IO) {
             dataStore.edit {
                 map.forEach { (entry, value) ->
-                    it.save(entry.preferencesKey, value)
+                    it.saveStringRepresentation(entry.preferencesKey, value)
                 }
             }
         }
     }
+
+    // ============
+    // LocalDateTime Maps
+    // ============
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun <DSE : DataStoreEntry.LocalDateTimeValued> getLocalDateTimeFlowMap(entries: Iterable<DSE>): Map<DSE, Flow<LocalDateTime?>> =
+        entries.associateWith {
+            getLocalDateTimeFlow(it.preferencesKey, it.defaultValue)
+        }
 
     // ============
     // EnumValued Maps
@@ -196,11 +232,22 @@ abstract class PreferencesDataStoreRepository(
     protected fun getPersistedValue(
         key: Preferences.Key<String>,
         default: Uri?
-    ): PersistedValue.UriValued =
-        PersistedValue.UriValued(
+    ): PersistedValue.StringRepresentationSaved<Uri> =
+        PersistedValue.StringRepresentationSaved(
             default = default,
             flow = getUriFlow(key, default),
-            save = { save(key, it) }
+            save = { saveStringRepresentation(key, it) }
+        )
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    protected fun getPersistedValue(
+        key: Preferences.Key<String>,
+        default: LocalDateTime?
+    ): PersistedValue.StringRepresentationSaved<LocalDateTime> =
+        PersistedValue.StringRepresentationSaved(
+            default = default,
+            flow = getLocalDateTimeFlow(key, default),
+            save = { saveStringRepresentation(key, it) }
         )
 }
 
@@ -211,7 +258,10 @@ private fun <T> MutablePreferences.save(preferencesKey: Preferences.Key<T>, valu
     i { "Saved ${preferencesKey.name}=$value" }
 }
 
-private fun MutablePreferences.save(preferencesKey: Preferences.Key<String>, value: Uri?) {
+private fun MutablePreferences.saveStringRepresentation(
+    preferencesKey: Preferences.Key<String>,
+    value: Any?
+) {
     save(preferencesKey, value?.toString() ?: DEFAULT_STRING_VALUE)
 }
 

@@ -2,6 +2,7 @@ package com.w2sv.androidutils.datastorage.datastore.preferences
 
 import android.net.Uri
 import androidx.datastore.preferences.core.Preferences
+import java.time.LocalDateTime
 
 /**
  * Interfaces for classes which are to be managed as map by a [PreferencesDataStoreRepository].
@@ -29,5 +30,12 @@ interface DataStoreEntry<K, V> {
             override val preferencesKey: Preferences.Key<String>,
             override val defaultValue: Uri?
         ) : UriValued
+    }
+
+    interface LocalDateTimeValued : DataStoreEntry<String, LocalDateTime?> {
+        data class Impl(
+            override val preferencesKey: Preferences.Key<String>,
+            override val defaultValue: LocalDateTime?
+        ) : LocalDateTimeValued
     }
 }
