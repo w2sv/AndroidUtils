@@ -209,6 +209,10 @@ abstract class PreferencesDataStoreRepository(
         }
     }
 
+    // ============
+    // Persisted Values
+    // ============
+
     protected fun <T> getPersistedValue(
         key: Preferences.Key<T>,
         default: T
@@ -229,22 +233,22 @@ abstract class PreferencesDataStoreRepository(
             save = { save(key, it) }
         )
 
-    protected fun getPersistedValue(
+    protected fun getPersistedUri(
         key: Preferences.Key<String>,
         default: Uri?
-    ): PersistedValue.StringRepresentationSaved<Uri> =
-        PersistedValue.StringRepresentationSaved(
+    ): PersistedValue.StringRepresentationPersisted<Uri> =
+        PersistedValue.StringRepresentationPersisted(
             default = default,
             flow = getUriFlow(key, default),
             save = { saveStringRepresentation(key, it) }
         )
 
     @RequiresApi(Build.VERSION_CODES.O)
-    protected fun getPersistedValue(
+    protected fun getPersistedLocalDateTime(
         key: Preferences.Key<String>,
         default: LocalDateTime?
-    ): PersistedValue.StringRepresentationSaved<LocalDateTime> =
-        PersistedValue.StringRepresentationSaved(
+    ): PersistedValue.StringRepresentationPersisted<LocalDateTime> =
+        PersistedValue.StringRepresentationPersisted(
             default = default,
             flow = getLocalDateTimeFlow(key, default),
             save = { saveStringRepresentation(key, it) }

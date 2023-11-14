@@ -39,7 +39,7 @@ abstract class PersistedValue<K, V>(
             save = save
         )
 
-    class StringRepresentationSaved<T>(default: T?, flow: Flow<T?>, save: suspend (T?) -> Unit) :
+    class StringRepresentationPersisted<T>(default: T?, flow: Flow<T?>, save: suspend (T?) -> Unit) :
         PersistedValue<String, T?>(
             flow = flow,
             default = default,
