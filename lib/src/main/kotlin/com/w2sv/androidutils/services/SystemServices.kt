@@ -3,6 +3,7 @@
 package com.w2sv.androidutils.services
 
 import android.app.ActivityManager
+import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.location.LocationManager
@@ -16,10 +17,17 @@ inline fun <reified T : Service> Context.isServiceRunning() =
         .getRunningServices(Integer.MAX_VALUE)
         .any { it.service.className == T::class.java.name }
 
-val Context.isLocationEnabled: Boolean
-    get() = LocationManagerCompat.isLocationEnabled(getSystemService(LocationManager::class.java))
+fun LocationManager.isLocationEnabledCompat(): Boolean =
+    LocationManagerCompat.isLocationEnabled(this)
 
-fun Context.getWifiManager(): WifiManager = getSystemService(WifiManager::class.java)
+fun Context.getLocationManager(): LocationManager =
+    getSystemService(LocationManager::class.java)
+
+fun Context.getWifiManager(): WifiManager =
+    getSystemService(WifiManager::class.java)
+
+fun Context.getNotificationManager(): NotificationManager =
+    getSystemService(NotificationManager::class.java)
 
 fun Context.getConnectivityManager(): ConnectivityManager =
     getSystemService(ConnectivityManager::class.java)

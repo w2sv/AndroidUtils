@@ -1,7 +1,7 @@
 package com.w2sv.androidutils.livedata
 
 import androidx.lifecycle.MutableLiveData
-import com.w2sv.androidutils.lifecycle.toggle
+import com.w2sv.androidutils.lifecycle.extensions.toggle
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
