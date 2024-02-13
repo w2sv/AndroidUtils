@@ -10,8 +10,10 @@ import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.w2sv.kotlinutils.extensions.getByOrdinal
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import slimber.log.i
@@ -131,7 +133,7 @@ abstract class PreferencesDataStoreRepository(
     ) {
         withContext(Dispatchers.IO) {
             dataStore.edit {
-                it.save(preferencesKey, value)
+                it.save(preferencesKey, value.ordinal)
             }
         }
     }
@@ -203,54 +205,115 @@ abstract class PreferencesDataStoreRepository(
         withContext(Dispatchers.IO) {
             dataStore.edit {
                 map.forEach { (entry, value) ->
-                    it.save(entry.preferencesKey, value)
+                    it.save(entry.preferencesKey, value.ordinal)
                 }
             }
         }
     }
 
     // ============
-    // Persisted Values
+    // DataStoreFlow
     // ============
 
-    protected fun <T> getPersistedValue(
+    protected fun <T> dataStoreFlow(
         key: Preferences.Key<T>,
         default: T
-    ): PersistedValue.UniTyped<T> =
-        PersistedValue.UniTyped(
+    ): DataStoreFlow<T> =
+        DataStoreFlow(
             default = default,
             flow = getFlow(key, default),
             save = { save(key, it) }
         )
 
-    protected inline fun <reified E : Enum<E>> getPersistedValue(
+    protected inline fun <reified E : Enum<E>> dataStoreFlow(
         key: Preferences.Key<Int>,
         default: E
-    ): PersistedValue.EnumValued<E> =
-        PersistedValue.EnumValued(
+    ): DataStoreFlow<E> =
+        DataStoreFlow(
             default = default,
             flow = getEnumFlow<E>(key, default),
             save = { save(key, it) }
         )
 
-    protected fun getPersistedUri(
+    protected fun dataStoreUriFlow(
         key: Preferences.Key<String>,
         default: Uri?
-    ): PersistedValue.StringRepresentationPersisted<Uri> =
-        PersistedValue.StringRepresentationPersisted(
+    ): DataStoreFlow<Uri?> =
+        DataStoreFlow(
             default = default,
             flow = getUriFlow(key, default),
             save = { saveStringRepresentation(key, it) }
         )
 
     @RequiresApi(Build.VERSION_CODES.O)
-    protected fun getPersistedLocalDateTime(
+    protected fun dataStoreLocalDateTimeFlow(
         key: Preferences.Key<String>,
         default: LocalDateTime?
-    ): PersistedValue.StringRepresentationPersisted<LocalDateTime> =
-        PersistedValue.StringRepresentationPersisted(
+    ): DataStoreFlow<LocalDateTime?> =
+        DataStoreFlow(
             default = default,
             flow = getLocalDateTimeFlow(key, default),
+            save = { saveStringRepresentation(key, it) }
+        )
+
+    // ============
+    // DataStoreStateFlow
+    // ============
+
+    protected fun <T> dataStoreStateFlow(
+        key: Preferences.Key<T>,
+        default: T,
+        scope: CoroutineScope,
+        sharingStarted: SharingStarted,
+    ): DataStoreStateFlow<T> =
+        DataStoreStateFlow(
+            flow = getFlow(key, default),
+            default = default,
+            scope = scope,
+            sharingStarted = sharingStarted,
+            save = { save(key, it) }
+        )
+
+    protected inline fun <reified E : Enum<E>> dataStoreStateFlow(
+        key: Preferences.Key<Int>,
+        default: E,
+        scope: CoroutineScope,
+        sharingStarted: SharingStarted,
+    ): DataStoreStateFlow<E> =
+        DataStoreStateFlow(
+            flow = getEnumFlow<E>(key, default),
+            default = default,
+            scope = scope,
+            sharingStarted = sharingStarted,
+            save = { save(key, it) }
+        )
+
+    protected fun dataStoreUriStateFlow(
+        key: Preferences.Key<String>,
+        default: Uri?,
+        scope: CoroutineScope,
+        sharingStarted: SharingStarted,
+    ): DataStoreStateFlow<Uri?> =
+        DataStoreStateFlow(
+            flow = getUriFlow(key, default),
+            default = default,
+            scope = scope,
+            sharingStarted = sharingStarted,
+            save = { saveStringRepresentation(key, it) }
+        )
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    protected fun dataStoreLocalDateTimeStateFlow(
+        key: Preferences.Key<String>,
+        default: LocalDateTime?,
+        scope: CoroutineScope,
+        sharingStarted: SharingStarted,
+    ): DataStoreStateFlow<LocalDateTime?> =
+        DataStoreStateFlow(
+            default = default,
+            flow = getLocalDateTimeFlow(key, default),
+            scope = scope,
+            sharingStarted = sharingStarted,
             save = { saveStringRepresentation(key, it) }
         )
 }
@@ -267,8 +330,4 @@ private fun MutablePreferences.saveStringRepresentation(
     value: Any?
 ) {
     save(preferencesKey, value?.toString() ?: DEFAULT_STRING_VALUE)
-}
-
-private fun MutablePreferences.save(preferencesKey: Preferences.Key<Int>, value: Enum<*>) {
-    save(preferencesKey, value.ordinal)
 }

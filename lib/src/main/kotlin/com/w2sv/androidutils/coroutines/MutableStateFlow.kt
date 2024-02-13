@@ -7,3 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 fun <T> MutableStateFlow<T?>.reset() {
     value = null
 }
+
+fun MutableStateFlow<Boolean>.toggle() {
+    value = !value
+}

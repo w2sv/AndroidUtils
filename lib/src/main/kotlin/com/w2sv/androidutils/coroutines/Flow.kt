@@ -27,10 +27,6 @@ fun <K, V> Map<K, Flow<V>>.getSynchronousMap(): Map<K, V> =
         }
     }
 
-fun MutableStateFlow<Boolean>.toggle() {
-    value = !value
-}
-
 fun <T> Flow<T>.stateInWithSynchronousInitial(
     scope: CoroutineScope,
     started: SharingStarted
