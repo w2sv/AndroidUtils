@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.w2sv.androidutils.datastorage.datastore.preferences
+package com.w2sv.androidutils.datastorage.datastore
 
 import android.net.Uri
 import android.os.Build
@@ -14,12 +14,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.withContext
 import slimber.log.i
 import java.time.LocalDateTime
 
-abstract class PreferencesDataStoreRepository(
+abstract class DataStoreRepository(
     val dataStore: DataStore<Preferences>
 ) {
 
@@ -145,6 +147,23 @@ abstract class PreferencesDataStoreRepository(
     fun <DSE : DataStoreEntry.UniType<V>, V> getFlowMap(properties: Iterable<DSE>): Map<DSE, Flow<V>> =
         properties.associateWith { property ->
             getFlow(property.preferencesKey, property.defaultValue)
+        }
+
+    fun <DSE : DataStoreEntry.UniType<V>, V> getStateFlowMap(
+        properties: Iterable<DSE>,
+        scope: CoroutineScope,
+        sharingStarted: SharingStarted
+    ): Map<DSE, StateFlow<V>> =
+        properties.associateWith { property ->
+            getFlow(
+                preferencesKey = property.preferencesKey,
+                defaultValue = property.defaultValue
+            )
+                .stateIn(
+                    scope = scope,
+                    started = sharingStarted,
+                    initialValue = property.defaultValue
+                )
         }
 
     suspend fun <DSE : DataStoreEntry.UniType<V>, V> saveMap(

@@ -1,11 +1,12 @@
-package com.w2sv.androidutils.datastorage.datastore.preferences
+@file:Suppress("unused")
+
+package com.w2sv.androidutils.datastorage.datastore
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 
 class DataStoreFlow<V>(
     flow: Flow<V>,
