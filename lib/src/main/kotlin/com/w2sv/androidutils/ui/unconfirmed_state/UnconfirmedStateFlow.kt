@@ -2,6 +2,7 @@ package com.w2sv.androidutils.ui.unconfirmed_state
 
 import com.w2sv.androidutils.coroutines.collectFromFlow
 import com.w2sv.androidutils.datastorage.datastore.preferences.DataStoreFlow
+import com.w2sv.androidutils.datastorage.datastore.preferences.DataStoreStateFlow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -20,12 +21,24 @@ class UnconfirmedStateFlow<T>(
      */
     constructor(
         coroutineScope: CoroutineScope,
-        persistedValue: DataStoreFlow<*, T>,
+        dataStoreFlow: DataStoreFlow<T>,
         started: SharingStarted = SharingStarted.Eagerly
     ) : this(
         scope = coroutineScope,
-        appliedStateFlow = persistedValue.stateIn(coroutineScope, started),
-        syncState = persistedValue.save
+        appliedStateFlow = dataStoreFlow.stateIn(coroutineScope, started),
+        syncState = dataStoreFlow.save
+    )
+
+    /**
+     * For construction from [DataStoreFlow].
+     */
+    constructor(
+        coroutineScope: CoroutineScope,
+        dataStoreStateFlow: DataStoreStateFlow<T>,
+    ) : this(
+        scope = coroutineScope,
+        appliedStateFlow = dataStoreStateFlow,
+        syncState = dataStoreStateFlow.save
     )
 
     init {
