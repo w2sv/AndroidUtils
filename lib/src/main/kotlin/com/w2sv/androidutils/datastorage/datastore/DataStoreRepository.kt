@@ -120,7 +120,13 @@ abstract class DataStoreRepository(
     ): Flow<E> =
         dataStore.data.map {
             it[preferencesKey]
-                ?.let { ordinal -> getByOrdinal<E>(ordinal) }
+                ?.let { ordinal ->
+                    try {
+                        getByOrdinal<E>(ordinal)
+                    } catch (e: IndexOutOfBoundsException) {
+                        defaultValue
+                    }
+                }
                 ?: defaultValue
         }
 
@@ -291,6 +297,22 @@ abstract class DataStoreRepository(
             scope = scope,
             sharingStarted = sharingStarted,
             save = { save(key, it) }
+        )
+
+    protected fun <S, T> dataStoreStateFlow(
+        toSaveValue: (T) -> S,
+        fromSaveValue: (S) -> T,
+        key: Preferences.Key<S>,
+        default: T,
+        scope: CoroutineScope,
+        sharingStarted: SharingStarted,
+    ): DataStoreStateFlow<T> =
+        DataStoreStateFlow(
+            flow = getFlow(key, toSaveValue(default)).map { fromSaveValue(it) },
+            default = default,
+            scope = scope,
+            sharingStarted = sharingStarted,
+            save = { save(key, toSaveValue(it)) }
         )
 
     protected inline fun <reified E : Enum<E>> dataStoreStateFlow(
