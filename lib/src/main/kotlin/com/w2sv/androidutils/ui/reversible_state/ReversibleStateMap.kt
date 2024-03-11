@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.w2sv.androidutils.ui.unconfirmed_state
+package com.w2sv.androidutils.ui.reversible_state
 
 import com.w2sv.androidutils.coroutines.stateInWithSynchronousInitial
 import kotlinx.coroutines.CoroutineScope
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import slimber.log.i
 
-abstract class MappedUnconfirmedState<K> : UnconfirmedState() {
+abstract class MappedReversibleState<K> : ReversibleState() {
 
     /**
      * Keys whose values have changed.
@@ -34,13 +34,13 @@ abstract class MappedUnconfirmedState<K> : UnconfirmedState() {
  * @param onStateSynced Possibility to invoke a callback upon the temporary and the persisted states having been synced. Receives contrarily to [syncState] the entire map.
  * @param onStateReset Callback invoked after state having been reset. Receives the reset map.
  */
-open class UnconfirmedStateMap<K, V>(
+open class ReversibleStateMap<K, V>(
     private val map: MutableMap<K, V>,
     val persistedStateFlowMap: Map<K, StateFlow<V>>,
     private val syncState: suspend (Map<K, V>) -> Unit,
     private val onStateSynced: suspend (Map<K, V>) -> Unit = {},
     private val onStateReset: (Map<K, V>) -> Unit = {}
-) : MappedUnconfirmedState<K>(),
+) : MappedReversibleState<K>(),
     MutableMap<K, V> by map {
 
     /**
@@ -68,7 +68,7 @@ open class UnconfirmedStateMap<K, V>(
             syncState: suspend (Map<K, V>) -> Unit,
             onStateSynced: suspend (Map<K, V>) -> Unit = {},
             onStateReset: (Map<K, V>) -> Unit = {}
-        ): UnconfirmedStateMap<K, V> {
+        ): ReversibleStateMap<K, V> {
             val persistedStateFlowMap = persistedFlowMap.mapValues { (_, v) ->
                 v.stateInWithSynchronousInitial(
                     scope,
@@ -76,7 +76,7 @@ open class UnconfirmedStateMap<K, V>(
                 )
             }
 
-            return UnconfirmedStateMap(
+            return ReversibleStateMap(
                 map = makeMap(persistedStateFlowMap.mapValues { (_, v) -> v.value }),
                 persistedStateFlowMap = persistedStateFlowMap,
                 syncState = syncState,
@@ -142,13 +142,13 @@ open class UnconfirmedStateMap<K, V>(
  * @param onStateSynced Possibility to invoke a callback upon the temporary and the persisted states having been synced. Receives contrarily to [syncState] the entire map.
  * @param onStateReset Callback invoked after state having been reset. Receives the reset map.
  */
-open class UnconfirmedStateFlowMap<K, V>(
+open class ReversibleStateFlowMap<K, V>(
     private val map: Map<K, MutableStateFlow<V>>,
     private val persistedStateFlowMap: Map<K, StateFlow<V>>,
     private val syncState: suspend (Map<K, V>) -> Unit,
     private val onStateSynced: suspend (Map<K, StateFlow<V>>) -> Unit = {},
     private val onStateReset: (Map<K, StateFlow<V>>) -> Unit = {}
-) : MappedUnconfirmedState<K>(),
+) : MappedReversibleState<K>(),
     Map<K, MutableStateFlow<V>> by map {
 
     companion object {
@@ -159,7 +159,7 @@ open class UnconfirmedStateFlowMap<K, V>(
             syncState: suspend (Map<K, V>) -> Unit,
             onStateSynced: suspend (Map<K, StateFlow<V>>) -> Unit = {},
             onStateReset: (Map<K, StateFlow<V>>) -> Unit = {}
-        ): UnconfirmedStateFlowMap<K, V> =
+        ): ReversibleStateFlowMap<K, V> =
             fromPersistedStateFlowMap(
                 persistedStateFlowMap = persistedFlowMap.mapValues { (k, v) ->
                     v.stateIn(coroutineScope, SharingStarted.Eagerly, getDefaultValue(k))
@@ -174,8 +174,8 @@ open class UnconfirmedStateFlowMap<K, V>(
             syncState: suspend (Map<K, V>) -> Unit,
             onStateSynced: suspend (Map<K, StateFlow<V>>) -> Unit = {},
             onStateReset: (Map<K, StateFlow<V>>) -> Unit = {}
-        ): UnconfirmedStateFlowMap<K, V> =
-            UnconfirmedStateFlowMap(
+        ): ReversibleStateFlowMap<K, V> =
+            ReversibleStateFlowMap(
                 map = persistedStateFlowMap.mapValues { (_, v) -> MutableStateFlow(v.value) },
                 persistedStateFlowMap = persistedStateFlowMap,
                 syncState = syncState,

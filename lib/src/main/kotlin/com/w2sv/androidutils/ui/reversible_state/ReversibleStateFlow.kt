@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.w2sv.androidutils.ui.unconfirmed_state
+package com.w2sv.androidutils.ui.reversible_state
 
 import com.w2sv.androidutils.coroutines.collectFromFlow
 import com.w2sv.androidutils.datastorage.datastore.DataStoreFlow
@@ -11,12 +11,12 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import slimber.log.i
 
-class UnconfirmedStateFlow<T>(
+class ReversibleStateFlow<T>(
     scope: CoroutineScope,
     val appliedStateFlow: StateFlow<T>,
     private val syncState: suspend (T) -> Unit,
     private val onStateReset: (T) -> Unit = {}
-) : UnconfirmedState(),
+) : ReversibleState(),
     MutableStateFlow<T> by MutableStateFlow(appliedStateFlow.value) {
 
     /**

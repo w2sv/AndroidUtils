@@ -1,4 +1,4 @@
-package com.w2sv.androidutils.ui.unconfirmed_state
+package com.w2sv.androidutils.ui.reversible_state
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -7,15 +7,15 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 import slimber.log.i
 
-typealias UnconfirmedStates = List<UnconfirmedState>
+typealias ReversibleStates = List<ReversibleState>
 
-open class UnconfirmedStatesComposition(
-    private val unconfirmedStates: UnconfirmedStates,
+open class ReversibleStatesComposition(
+    private val reversibleStates: ReversibleStates,
     private val coroutineScope: CoroutineScope,
-    private val onStateSynced: suspend (UnconfirmedStates) -> Unit = {},
-    private val onStateReset: (UnconfirmedStates) -> Unit = {}
-) : UnconfirmedStates by unconfirmedStates,
-    UnconfirmedState() {
+    private val onStateSynced: suspend (ReversibleStates) -> Unit = {},
+    private val onStateReset: (ReversibleStates) -> Unit = {}
+) : ReversibleStates by reversibleStates,
+    ReversibleState() {
 
     private val changedStateInstanceIndices = mutableSetOf<Int>()
     private val changedStateInstances
