@@ -12,7 +12,8 @@ typealias UnconfirmedStates = List<UnconfirmedState>
 open class UnconfirmedStatesComposition(
     private val unconfirmedStates: UnconfirmedStates,
     private val coroutineScope: CoroutineScope,
-    private val onStateSynced: suspend () -> Unit = {}
+    private val onStateSynced: suspend (UnconfirmedStates) -> Unit = {},
+    private val onStateReset: (UnconfirmedStates) -> Unit = {}
 ) : UnconfirmedStates by unconfirmedStates,
     UnconfirmedState() {
 
@@ -46,7 +47,7 @@ open class UnconfirmedStatesComposition(
         changedStateInstances.forEach {
             it.sync()
         }
-        onStateSynced()
+        onStateSynced(this)
     }
 
     override fun reset() {
@@ -55,6 +56,8 @@ open class UnconfirmedStatesComposition(
         changedStateInstances.forEach {
             it.reset()
         }
+
+        onStateReset(this)
     }
 
     fun launchSync(): Job =
