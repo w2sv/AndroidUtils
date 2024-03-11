@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.w2sv.androidutils.datastorage.datastore
+package com.w2sv.androidutils.datastorage.preferences_datastore
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow

@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.w2sv.androidutils.datastorage.datastore
+package com.w2sv.androidutils.datastorage.preferences_datastore
 
 import android.net.Uri
 import android.os.Build
@@ -21,7 +21,7 @@ import kotlinx.coroutines.withContext
 import slimber.log.i
 import java.time.LocalDateTime
 
-abstract class DataStoreRepository(
+abstract class PreferencesDataStoreRepository(
     val dataStore: DataStore<Preferences>
 ) {
 

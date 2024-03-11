@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import com.w2sv.androidutils.permissions.getPackagePermissions
 
 abstract class CoupledPermissionsHandler(
     activity: ComponentActivity,
@@ -28,7 +29,7 @@ abstract class CoupledPermissionsHandler(
         }
 
     override val requiredByAndroidSdk: Boolean =
-        activity.getPackageUsedPermissions().let { requestedPermissions ->
+        activity.getPackagePermissions().let { requestedPermissions ->
             permissions.any { requestedPermissions.contains(it) }
         }
 

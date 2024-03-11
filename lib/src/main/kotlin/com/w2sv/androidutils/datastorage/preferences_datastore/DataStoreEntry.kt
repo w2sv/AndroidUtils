@@ -1,13 +1,13 @@
 @file:Suppress("unused")
 
-package com.w2sv.androidutils.datastorage.datastore
+package com.w2sv.androidutils.datastorage.preferences_datastore
 
 import android.net.Uri
 import androidx.datastore.preferences.core.Preferences
 import java.time.LocalDateTime
 
 /**
- * Interfaces for classes which are to be managed as map by a [DataStoreRepository].
+ * Interfaces for classes which are to be managed as map by a [PreferencesDataStoreRepository].
  */
 interface DataStoreEntry<K, V> {
     val preferencesKey: Preferences.Key<K>

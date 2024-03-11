@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import com.w2sv.androidutils.permissions.getPackagePermissions
 
 abstract class SingularPermissionHandler(
     activity: ComponentActivity,
@@ -30,7 +31,7 @@ abstract class SingularPermissionHandler(
             permission
         )
 
-    override val requiredByAndroidSdk: Boolean = activity.getPackageUsedPermissions()
+    override val requiredByAndroidSdk: Boolean = activity.getPackagePermissions()
         .contains(permission)
 
     override fun permissionNewlyGranted(activityResult: Boolean): Boolean =
