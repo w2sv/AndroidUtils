@@ -9,6 +9,7 @@ import utils.InstantExecutorExtension
 
 @ExtendWith(InstantExecutorExtension::class)
 internal class LiveDataKtTest {
+
     @Test
     fun toggleBooleanLiveData() {
         with(MutableLiveData(true)){
