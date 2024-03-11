@@ -12,7 +12,7 @@ internal class LiveDataKtTest {
 
     @Test
     fun toggleBooleanLiveData() {
-        with(MutableLiveData(true)){
+        with(MutableLiveData(true)) {
             toggle()
             Assertions.assertEquals(value, false)
         }
