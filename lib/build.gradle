@@ -39,7 +39,7 @@ afterEvaluate {
 
                 groupId = 'com.github.w2sv'
                 artifactId = 'androidutils'
-                version = '0.0.1'
+                version = version
             }
         }
     }

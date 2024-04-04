@@ -54,20 +54,72 @@ class DerivedStateFlow<T>(
     }
 }
 
-fun <T1, R> StateFlow<T1>.mapState(transform: (a: T1) -> R): StateFlow<R> {
-    return DerivedStateFlow(
+fun <T1, R> StateFlow<T1>.mapState(transform: (a: T1) -> R): StateFlow<R> =
+    DerivedStateFlow(
         getValue = { transform(value) },
         flow = map { a -> transform(a) }
     )
-}
 
 fun <T1, T2, R> combineStates(
     flow1: StateFlow<T1>,
     flow2: StateFlow<T2>,
     transform: (a: T1, b: T2) -> R
-): StateFlow<R> {
-    return DerivedStateFlow(
+): StateFlow<R> =
+    DerivedStateFlow(
         getValue = { transform(flow1.value, flow2.value) },
         flow = combine(flow1, flow2) { a, b -> transform(a, b) }
     )
-}
+
+fun <T1, T2, T3, R> combineStates(
+    flow1: StateFlow<T1>,
+    flow2: StateFlow<T2>,
+    flow3: StateFlow<T3>,
+    transform: (a: T1, b: T2, c: T3) -> R
+): StateFlow<R> =
+    DerivedStateFlow(
+        getValue = { transform(flow1.value, flow2.value, flow3.value) },
+        flow = combine(flow1, flow2, flow3) { a, b, c -> transform(a, b, c) }
+    )
+
+fun <T1, T2, T3, T4, R> combineStates(
+    flow1: StateFlow<T1>,
+    flow2: StateFlow<T2>,
+    flow3: StateFlow<T3>,
+    flow4: StateFlow<T4>,
+    transform: (a: T1, b: T2, c: T3, d: T4) -> R
+): StateFlow<R> =
+    DerivedStateFlow(
+        getValue = { transform(flow1.value, flow2.value, flow3.value, flow4.value) },
+        flow = combine(flow1, flow2, flow3, flow4) { a, b, c, d -> transform(a, b, c, d) }
+    )
+
+fun <T1, T2, T3, T4, T5, R> combineStates(
+    flow1: StateFlow<T1>,
+    flow2: StateFlow<T2>,
+    flow3: StateFlow<T3>,
+    flow4: StateFlow<T4>,
+    flow5: StateFlow<T5>,
+    transform: (a: T1, b: T2, c: T3, d: T4, e: T5) -> R
+): StateFlow<R> =
+    DerivedStateFlow(
+        getValue = { transform(flow1.value, flow2.value, flow3.value, flow4.value, flow5.value) },
+        flow = combine(flow1, flow2, flow3, flow4, flow5) { a, b, c, d, e ->
+            transform(
+                a,
+                b,
+                c,
+                d,
+                e
+            )
+        }
+    )
+
+inline fun <reified T, R> combineStates(
+    vararg flows: StateFlow<T>,
+    crossinline transform: (Array<T>) -> R
+): StateFlow<R> = DerivedStateFlow(
+    getValue = { transform(flows.map { it.value }.toTypedArray()) },
+    flow = combine(*flows) {
+        transform(it)
+    }
+)
