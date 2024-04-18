@@ -132,7 +132,7 @@ abstract class PreferencesDataStoreRepository(
     // Simple Maps
     // ============
 
-    fun <Key, Value, DSE : DataStoreEntry.UniType<Value>> dataStoreFlowMap(keyToDse: Map<Key, DSE>): DataStoreFlowMap<Key, Value, DSE> =
+    fun <K, V> dataStoreFlowMap(keyToDse: Map<K, DataStoreEntry.UniType<V>>): DataStoreFlowMap<K, V> =
         DataStoreFlowMap(
             map = keyToDse.mapValues { (_, dse) ->
                 getFlow(dse)

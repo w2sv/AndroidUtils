@@ -7,17 +7,17 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 
-class DataStoreFlowMap<Key, Value, DSE : DataStoreEntry<*, Value>>(
-    map: Map<Key, Flow<Value>>,
-    private val keyToDse: Map<Key, DSE>,
-    private val saveEntry: suspend (DSE, Value) -> Unit
+class DataStoreFlowMap<K, V>(
+    map: Map<K, Flow<V>>,
+    private val keyToDse: Map<K, DataStoreEntry.UniType<V>>,
+    private val saveEntry: suspend (DataStoreEntry.UniType<V>, V) -> Unit
 ) :
-    Map<Key, Flow<Value>> by map {
+    Map<K, Flow<V>> by map {
 
-    fun stateIn(scope: CoroutineScope, started: SharingStarted): Map<Key, StateFlow<Value>> =
+    fun stateIn(scope: CoroutineScope, started: SharingStarted): Map<K, StateFlow<V>> =
         mapValues { (k, v) -> v.stateIn(scope, started, keyToDse.getValue(k).defaultValue) }
 
-    suspend fun save(map: Map<Key, Value>) {
+    suspend fun save(map: Map<K, V>) {
         map.forEach { (k, v) ->
             saveEntry(keyToDse.getValue(k), v)
         }
