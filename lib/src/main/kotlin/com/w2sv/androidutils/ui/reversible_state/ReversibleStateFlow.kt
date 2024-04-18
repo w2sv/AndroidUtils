@@ -23,13 +23,13 @@ class ReversibleStateFlow<T>(
      * For construction from [DataStoreFlow].
      */
     constructor(
-        coroutineScope: CoroutineScope,
+        scope: CoroutineScope,
         dataStoreFlow: DataStoreFlow<T>,
         started: SharingStarted = SharingStarted.Eagerly,
         onStateReset: (T) -> Unit = {}
     ) : this(
-        scope = coroutineScope,
-        appliedStateFlow = dataStoreFlow.stateIn(coroutineScope, started),
+        scope = scope,
+        appliedStateFlow = dataStoreFlow.stateIn(scope, started),
         syncState = dataStoreFlow.save,
         onStateReset = onStateReset
     )
@@ -38,11 +38,11 @@ class ReversibleStateFlow<T>(
      * For construction from [DataStoreFlow].
      */
     constructor(
-        coroutineScope: CoroutineScope,
+        scope: CoroutineScope,
         dataStoreStateFlow: DataStoreStateFlow<T>,
         onStateReset: (T) -> Unit = {}
     ) : this(
-        scope = coroutineScope,
+        scope = scope,
         appliedStateFlow = dataStoreStateFlow,
         syncState = dataStoreStateFlow.save,
         onStateReset = onStateReset

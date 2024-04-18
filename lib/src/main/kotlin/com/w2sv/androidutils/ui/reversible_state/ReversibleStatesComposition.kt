@@ -11,7 +11,7 @@ typealias ReversibleStates = List<ReversibleState>
 
 open class ReversibleStatesComposition(
     private val reversibleStates: ReversibleStates,
-    private val coroutineScope: CoroutineScope,
+    private val scope: CoroutineScope,
     private val onStateSynced: suspend (ReversibleStates) -> Unit = {},
     private val onStateReset: (ReversibleStates) -> Unit = {}
 ) : ReversibleStates by reversibleStates,
@@ -24,7 +24,7 @@ open class ReversibleStatesComposition(
     init {
         // Update [changedStateInstanceIndices] and [_statesDissimilar] upon change of one of
         // the held element's [statesDissimilar]
-        coroutineScope.launch {
+        scope.launch {
             mapIndexed { i, instance ->
                 instance.statesDissimilar.map { i to it }
             }
@@ -61,5 +61,5 @@ open class ReversibleStatesComposition(
     }
 
     fun launchSync(): Job =
-        coroutineScope.launch { sync() }
+        scope.launch { sync() }
 }
