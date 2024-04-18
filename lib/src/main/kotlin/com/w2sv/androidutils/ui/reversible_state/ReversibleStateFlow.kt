@@ -3,8 +3,8 @@
 package com.w2sv.androidutils.ui.reversible_state
 
 import com.w2sv.androidutils.coroutines.collectFromFlow
-import com.w2sv.androidutils.datastorage.preferences_datastore.DataStoreFlow
-import com.w2sv.androidutils.datastorage.preferences_datastore.DataStoreStateFlow
+import com.w2sv.androidutils.datastorage.preferences_datastore.flow.DataStoreFlow
+import com.w2sv.androidutils.datastorage.preferences_datastore.flow.DataStoreStateFlow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

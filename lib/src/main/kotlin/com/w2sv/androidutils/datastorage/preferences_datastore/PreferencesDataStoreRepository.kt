@@ -9,6 +9,8 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import com.w2sv.androidutils.datastorage.preferences_datastore.flow.DataStoreFlow
+import com.w2sv.androidutils.datastorage.preferences_datastore.flow.DataStoreStateFlow
 import com.w2sv.kotlinutils.extensions.getByOrdinal
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -295,7 +297,7 @@ abstract class PreferencesDataStoreRepository(
             flow = getFlow(key, default),
             default = default,
             scope = scope,
-            sharingStarted = sharingStarted,
+            started = sharingStarted,
             save = { save(key, it) }
         )
 
@@ -311,7 +313,7 @@ abstract class PreferencesDataStoreRepository(
             flow = getFlow(key, toSaveValue(default)).map { fromSaveValue(it) },
             default = default,
             scope = scope,
-            sharingStarted = sharingStarted,
+            started = sharingStarted,
             save = { save(key, toSaveValue(it)) }
         )
 
@@ -325,7 +327,7 @@ abstract class PreferencesDataStoreRepository(
             flow = getEnumFlow<E>(key, default),
             default = default,
             scope = scope,
-            sharingStarted = sharingStarted,
+            started = sharingStarted,
             save = { save(key, it) }
         )
 
@@ -339,7 +341,7 @@ abstract class PreferencesDataStoreRepository(
             flow = getUriFlow(key, default),
             default = default,
             scope = scope,
-            sharingStarted = sharingStarted,
+            started = sharingStarted,
             save = { saveStringRepresentation(key, it) }
         )
 
@@ -354,7 +356,7 @@ abstract class PreferencesDataStoreRepository(
             default = default,
             flow = getLocalDateTimeFlow(key, default),
             scope = scope,
-            sharingStarted = sharingStarted,
+            started = sharingStarted,
             save = { saveStringRepresentation(key, it) }
         )
 }
