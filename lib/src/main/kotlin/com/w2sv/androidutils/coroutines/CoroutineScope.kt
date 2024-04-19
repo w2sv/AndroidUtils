@@ -24,6 +24,9 @@ fun CoroutineScope.launchDelayed(
         block()
     }
 
+/**
+ * A shorthand for [CoroutineScope].launch { [flow].collect([flowCollector]) }
+ */
 fun <T> CoroutineScope.collectFromFlow(
     flow: Flow<T>,
     context: CoroutineContext = EmptyCoroutineContext,
@@ -34,6 +37,9 @@ fun <T> CoroutineScope.collectFromFlow(
         flow.collect(flowCollector)
     }
 
+/**
+ * A shorthand for [CoroutineScope].launch { [Flow.collectLatest] ([action]) }
+ */
 fun <T> CoroutineScope.collectLatestFromFlow(
     flow: Flow<T>,
     context: CoroutineContext = EmptyCoroutineContext,
