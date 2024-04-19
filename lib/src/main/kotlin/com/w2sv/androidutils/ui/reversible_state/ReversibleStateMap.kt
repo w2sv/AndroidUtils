@@ -46,18 +46,18 @@ class ReversibleStateMap<K, V>(
     MutableMap<K, V> by map {
 
     /**
-     * Enables passing of [makeMap] function instead of having to invoke [appliedStateFlowMap] twice, which would require a capturing of it as val or scope function receiver.
+     * Enables passing of [makeMap] function instead of having to invoke [appliedStateMap] twice, which would require a capturing of it as val or scope function receiver.
      */
     constructor(
-        appliedStateFlowMap: Map<K, StateFlow<V>>,
+        appliedStateMap: Map<K, StateFlow<V>>,
         makeMap: (Map<K, V>) -> MutableMap<K, V>,
         syncState: suspend (Map<K, V>) -> Unit,
         onStateSynced: suspend (Map<K, V>) -> Unit = {},
         onStateReset: (Map<K, V>) -> Unit = {},
         appliedStateMapActualityAssuranceScope: CoroutineScope? = null
     ) : this(
-        map = makeMap(appliedStateFlowMap.value),
-        appliedStateMap = appliedStateFlowMap,
+        map = makeMap(appliedStateMap.value),
+        appliedStateMap = appliedStateMap,
         syncState = syncState,
         onStateSynced = onStateSynced,
         onStateReset = onStateReset,
