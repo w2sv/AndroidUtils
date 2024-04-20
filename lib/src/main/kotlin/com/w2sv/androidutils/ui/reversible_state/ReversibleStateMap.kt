@@ -96,7 +96,7 @@ class ReversibleStateMap<K, V>(
         appliedStateMapActualityAssuranceScope?.let { scope ->
             appliedStateMap.forEach { (k, v) ->
                 scope.collectFromFlow(v.take(2)) {
-                    map[k] = it
+                    put(k, it)
                 }
             }
         }
