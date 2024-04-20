@@ -8,23 +8,26 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.runBlocking
 
-fun <K, V> Map<K, Flow<V>>.synchronous(): Map<K, V> =
+fun <K, V> Map<K, Flow<V>>.mapValuesToFirstBlocking(): Map<K, V> =
     runBlocking {
         mapValues {
             it.value.first()
         }
     }
 
-val <K, V> Map<K, StateFlow<V>>.value: Map<K, V>
-    get() = mapValues { it.value.value }
+fun <K, V> Map<K, StateFlow<V>>.mapValuesToCurrentValue(): Map<K, V> =
+    mapValues { it.value.value }
 
-fun <T> Map<T, StateFlow<Boolean>>.valueEnabledKeys(): List<T> =
+fun <T> Map<T, StateFlow<Boolean>>.valueEnabledKeys(): Set<T> =
     keys.filter { getValue(it).value }
 
-suspend fun <K> Map<K, Flow<Boolean>>.enabledKeys(): List<K> =
+suspend fun <K> Map<K, Flow<Boolean>>.enabledKeys(): Set<K> =
     keys.filter { getValue(it).first() }
 
-fun <K, V> Map<K, Flow<V>>.stateIn(
+private inline fun <T> Set<T>.filter(predicate: (T) -> Boolean): Set<T> =
+    filterTo(mutableSetOf(), predicate)
+
+fun <K, V> Map<K, Flow<V>>.statesIn(
     scope: CoroutineScope,
     started: SharingStarted,
     initialValue: V

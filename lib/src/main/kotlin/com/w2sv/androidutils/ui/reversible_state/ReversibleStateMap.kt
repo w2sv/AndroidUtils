@@ -4,12 +4,10 @@ package com.w2sv.androidutils.ui.reversible_state
 
 import com.w2sv.androidutils.coroutines.collectFromFlow
 import com.w2sv.androidutils.coroutines.stateInWithSynchronousInitial
-import com.w2sv.androidutils.coroutines.value
+import com.w2sv.androidutils.coroutines.mapValuesToCurrentValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.take
 import slimber.log.i
 
 abstract class MappedReversibleState<K> : ReversibleState() {
@@ -41,7 +39,7 @@ class ReversibleStateMap<K, V>(
     private val syncState: suspend (Map<K, V>) -> Unit,
     private val onStateSynced: suspend (Map<K, V>) -> Unit = {},
     private val onStateReset: (Map<K, V>) -> Unit = {},
-    appliedStateMapActualityAssuranceScope: CoroutineScope? = null
+    appliedStateMapBasedStateAlignmentAssuranceScope: CoroutineScope? = null
 ) : MappedReversibleState<K>(),
     MutableMap<K, V> by map {
 
@@ -54,14 +52,14 @@ class ReversibleStateMap<K, V>(
         syncState: suspend (Map<K, V>) -> Unit,
         onStateSynced: suspend (Map<K, V>) -> Unit = {},
         onStateReset: (Map<K, V>) -> Unit = {},
-        appliedStateMapActualityAssuranceScope: CoroutineScope? = null
+        appliedStateMapBasedStateAlignmentAssuranceScope: CoroutineScope? = null
     ) : this(
-        map = makeMap(appliedStateMap.value),
+        map = makeMap(appliedStateMap.mapValuesToCurrentValue()),
         appliedStateMap = appliedStateMap,
         syncState = syncState,
         onStateSynced = onStateSynced,
         onStateReset = onStateReset,
-        appliedStateMapActualityAssuranceScope = appliedStateMapActualityAssuranceScope
+        appliedStateMapBasedStateAlignmentAssuranceScope = appliedStateMapBasedStateAlignmentAssuranceScope
     )
 
     companion object {
@@ -72,30 +70,27 @@ class ReversibleStateMap<K, V>(
             syncState: suspend (Map<K, V>) -> Unit,
             onStateSynced: suspend (Map<K, V>) -> Unit = {},
             onStateReset: (Map<K, V>) -> Unit = {},
-            appliedStateMapActualityAssuranceScope: CoroutineScope? = null
+            appliedStateMapBasedStateAlignmentAssuranceScope: CoroutineScope? = null
         ): ReversibleStateMap<K, V> {
             val appliedStateFlowMap = appliedFlowMap.mapValues { (_, v) ->
-                v.stateInWithSynchronousInitial(
-                    scope,
-                    SharingStarted.Eagerly
-                )
+                v.stateInWithSynchronousInitial(scope)
             }
 
             return ReversibleStateMap(
-                map = makeMap(appliedStateFlowMap.value),
+                map = makeMap(appliedStateFlowMap.mapValuesToCurrentValue()),
                 appliedStateMap = appliedStateFlowMap,
                 syncState = syncState,
                 onStateSynced = onStateSynced,
                 onStateReset = onStateReset,
-                appliedStateMapActualityAssuranceScope = appliedStateMapActualityAssuranceScope
+                appliedStateMapBasedStateAlignmentAssuranceScope = appliedStateMapBasedStateAlignmentAssuranceScope
             )
         }
     }
 
     init {
-        appliedStateMapActualityAssuranceScope?.let { scope ->
+        appliedStateMapBasedStateAlignmentAssuranceScope?.let { scope ->
             appliedStateMap.forEach { (k, v) ->
-                scope.collectFromFlow(v.take(2)) {
+                scope.collectFromFlow(v) {
                     put(k, it)
                 }
             }
@@ -205,9 +200,9 @@ class ReversibleStateMap<K, V>(
 //    // ==============
 //
 //    operator fun set(key: K, value: V) {
-//        map.getValue(key).value = value
+//        map.mapValuesToCurrentValue(key).value = value
 //
-//        when (value == persistedStateFlowMap.getValue(key).value) {
+//        when (value == persistedStateFlowMap.mapValuesToCurrentValue(key).value) {
 //            true -> _dissimilarKeys.remove(key)
 //            false -> _dissimilarKeys.add(key)
 //        }
@@ -233,7 +228,7 @@ class ReversibleStateMap<K, V>(
 //        _dissimilarKeys
 //            .forEach {
 //                // Call map.put rather than this.put, to prevent unnecessary state updates
-//                map.getValue(it).value = persistedStateFlowMap.getValue(it).value
+//                map.mapValuesToCurrentValue(it).value = persistedStateFlowMap.mapValuesToCurrentValue(it).value
 //            }
 //        resetDissimilarityTrackers()
 //        onStateReset(this)

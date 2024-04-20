@@ -14,7 +14,6 @@ fun <T> Flow<T>.firstBlocking(): T =
     runBlocking { first() }
 
 fun <T> Flow<T>.stateInWithSynchronousInitial(
-    scope: CoroutineScope,
-    started: SharingStarted
+    scope: CoroutineScope
 ): StateFlow<T> =
-    stateIn(scope = scope, started = started, initialValue = firstBlocking())
+    stateIn(scope = scope, started = SharingStarted.Eagerly, initialValue = firstBlocking())
