@@ -16,7 +16,7 @@ class ReversibleStateFlow<T>(
     val appliedState: StateFlow<T>,
     private val syncState: suspend (T) -> Unit,
     private val onStateReset: (T) -> Unit = {},
-    appliedStateBasedStateAlignmentPostInit: Boolean = true
+    : Boolean = true
 ) : ReversibleState(),
     MutableStateFlow<T> by MutableStateFlow(appliedState.value) {
 
