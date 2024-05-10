@@ -11,6 +11,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.w2sv.androidutils.datastorage.preferences_datastore.flow.DataStoreFlow
 import com.w2sv.androidutils.datastorage.preferences_datastore.flow.DataStoreFlowMap
+import com.w2sv.androidutils.datastorage.preferences_datastore.flow.DataStoreStateFlowMap
 import com.w2sv.kotlinutils.extensions.getByOrdinal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -203,9 +204,12 @@ abstract class PreferencesDataStoreRepository(
 
     protected inline fun <reified E : Enum<E>> dataStoreFlow(
         key: Preferences.Key<Int>, default: E
-    ): DataStoreFlow<E> = DataStoreFlow(default = default,
-        flow = getEnumFlow<E>(key, default),
-        save = { save(key, it) })
+    ): DataStoreFlow<E> =
+        DataStoreFlow(
+            default = default,
+            flow = getEnumFlow<E>(key, default),
+            save = { save(key, it) }
+        )
 
     protected fun dataStoreUriFlow(
         key: Preferences.Key<String>, default: Uri?

@@ -17,18 +17,32 @@ class DataStoreFlowMap<K, V>(
     /**
      * Converts values to [StateFlow]s with [DataStoreEntry] default values.
      */
-    fun stateIn(scope: CoroutineScope, started: SharingStarted): Map<K, StateFlow<V>> =
-        mapValues { (k, v) -> v.stateIn(scope, started, keyToDse.getValue(k).defaultValue) }
+    fun stateIn(scope: CoroutineScope, started: SharingStarted): DataStoreStateFlowMap<K, V> =
+        DataStoreStateFlowMap(
+            map = mapValues { (k, v) ->
+                v.stateIn(
+                    scope,
+                    started,
+                    keyToDse.getValue(k).defaultValue
+                )
+            },
+            keyToDse = keyToDse,
+            saveEntry = saveEntry
+        )
 
     /**
-     * Converts values to [StateFlow]s.
+     * Converts values to [StateFlow]s with configurable default values through [getDefault].
      */
     fun stateIn(
         scope: CoroutineScope,
         started: SharingStarted,
         getDefault: (K) -> V
-    ): Map<K, StateFlow<V>> =
-        mapValues { (k, v) -> v.stateIn(scope, started, getDefault(k)) }
+    ): DataStoreStateFlowMap<K, V> =
+        DataStoreStateFlowMap(
+            map = mapValues { (k, v) -> v.stateIn(scope, started, getDefault(k)) },
+            keyToDse = keyToDse,
+            saveEntry = saveEntry
+        )
 
     suspend fun save(map: Map<K, V>) {
         map.forEach { (k, v) ->
