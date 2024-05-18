@@ -22,7 +22,7 @@ fun Context.openUrl(url: String) {
     )
 }
 
-fun Context.openUrlWithActivityNotFoundHandling(
+fun Context.openUrlWithActivityNotFoundExceptionHandling(
     url: String,
     onActivityNotFoundException: (Context) -> Unit = {
         showToast(
@@ -33,6 +33,17 @@ fun Context.openUrlWithActivityNotFoundHandling(
 ) {
     try {
         openUrl(url)
+    } catch (e: ActivityNotFoundException) {
+        onActivityNotFoundException(this)
+    }
+}
+
+fun Context.startActivityWithActivityNotFoundExceptionHandling(
+    intent: Intent,
+    onActivityNotFoundException: (Context) -> Unit
+) {
+    try {
+        startActivity(intent)
     } catch (e: ActivityNotFoundException) {
         onActivityNotFoundException(this)
     }
