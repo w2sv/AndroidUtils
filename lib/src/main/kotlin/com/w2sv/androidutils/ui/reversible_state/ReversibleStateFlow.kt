@@ -6,6 +6,7 @@ import com.w2sv.androidutils.coroutines.collectFromFlow
 import com.w2sv.androidutils.datastorage.preferences_datastore.flow.DataStoreFlow
 import com.w2sv.androidutils.datastorage.preferences_datastore.flow.DataStoreStateFlow
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -74,9 +75,8 @@ class ReversibleStateFlow<T>(
         _statesDissimilar.value = false
     }
 
-    fun launchSync() {
+    fun launchSync(): Job =
         scope.launch { sync() }
-    }
 
     override fun reset() {
         i { "Resetting $logIdentifier" }
