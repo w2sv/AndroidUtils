@@ -9,10 +9,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import slimber.log.i
 
 class ReversibleStateFlow<T>(
-    scope: CoroutineScope,
+    private val scope: CoroutineScope,
     val appliedState: StateFlow<T>,
     private val syncState: suspend (T) -> Unit,
     private val onStateReset: (T) -> Unit = {},
@@ -71,6 +72,10 @@ class ReversibleStateFlow<T>(
 
         syncState(value)
         _statesDissimilar.value = false
+    }
+
+    fun launchSync() {
+        scope.launch { sync() }
     }
 
     override fun reset() {
