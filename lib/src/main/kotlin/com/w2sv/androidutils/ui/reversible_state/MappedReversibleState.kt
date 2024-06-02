@@ -1,6 +1,6 @@
 package com.w2sv.androidutils.ui.reversible_state
 
-abstract class MappedReversibleState<K> : ReversibleState() {
+abstract class MappedReversibleState<K, V> : AbstractReversibleState() {
 
     /**
      * Keys whose values have changed.

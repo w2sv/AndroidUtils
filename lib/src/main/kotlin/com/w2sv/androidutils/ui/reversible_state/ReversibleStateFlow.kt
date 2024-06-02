@@ -13,14 +13,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import slimber.log.i
 
-open class ReversibleStateFlow<T>(
+class ReversibleStateFlow<T>(
     private val scope: CoroutineScope,
-    val appliedState: StateFlow<T>,
+    val appliedStateFlow: StateFlow<T>,
     private val syncState: suspend (T) -> Unit,
     private val onStateReset: (T) -> Unit = {},
     doAppliedStateBasedStateAlignmentPostInit: Boolean = true
-) : ReversibleState(),
-    MutableStateFlow<T> by MutableStateFlow(appliedState.value) {
+) : AbstractReversibleState(),
+    MutableStateFlow<T> by MutableStateFlow(appliedStateFlow.value) {
 
     /**
      * For construction from [DataStoreFlow].
@@ -33,7 +33,7 @@ open class ReversibleStateFlow<T>(
         doAppliedStateBasedStateAlignmentPostInit: Boolean = true
     ) : this(
         scope = scope,
-        appliedState = dataStoreFlow.stateIn(scope, started),
+        appliedStateFlow = dataStoreFlow.stateIn(scope, started),
         syncState = dataStoreFlow.save,
         onStateReset = onStateReset,
         doAppliedStateBasedStateAlignmentPostInit = doAppliedStateBasedStateAlignmentPostInit
@@ -49,7 +49,7 @@ open class ReversibleStateFlow<T>(
         doAppliedStateBasedStateAlignmentPostInit: Boolean = true
     ) : this(
         scope = scope,
-        appliedState = dataStoreStateFlow,
+        appliedStateFlow = dataStoreStateFlow,
         syncState = dataStoreStateFlow.save,
         onStateReset = onStateReset,
         doAppliedStateBasedStateAlignmentPostInit = doAppliedStateBasedStateAlignmentPostInit
@@ -57,14 +57,14 @@ open class ReversibleStateFlow<T>(
 
     init {
         if (doAppliedStateBasedStateAlignmentPostInit) {
-            scope.collectFromFlow(appliedState) {
+            scope.collectFromFlow(appliedStateFlow) {
                 value = it  // Triggers statesDissimilar update
             }
         }
 
         // Update [statesDissimilar] whenever a new value is collected
         scope.collectFromFlow(this) {
-            _statesDissimilar.value = it != appliedState.value
+            _statesDissimilar.value = it != appliedStateFlow.value
         }
     }
 
@@ -81,7 +81,7 @@ open class ReversibleStateFlow<T>(
     override fun reset() {
         i { "Resetting $logIdentifier" }
 
-        value = appliedState.value  // Triggers statesDissimilar update
+        value = appliedStateFlow.value  // Triggers statesDissimilar update
         onStateReset(value)
     }
 }

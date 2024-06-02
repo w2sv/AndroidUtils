@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 import slimber.log.i
 
-typealias ReversibleStates = List<ReversibleState>
+typealias ReversibleStates = List<AbstractReversibleState>
 
 open class ReversibleStatesComposition(
     private val reversibleStates: ReversibleStates,
@@ -15,7 +15,7 @@ open class ReversibleStatesComposition(
     private val onStateSynced: suspend (ReversibleStates) -> Unit = {},
     private val onStateReset: (ReversibleStates) -> Unit = {}
 ) : ReversibleStates by reversibleStates,
-    ReversibleState() {
+    AbstractReversibleState() {
 
     private val changedStateInstanceIndices = mutableSetOf<Int>()
     private val changedStateInstances

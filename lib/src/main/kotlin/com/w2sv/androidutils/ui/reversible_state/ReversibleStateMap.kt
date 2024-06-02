@@ -17,14 +17,14 @@ import slimber.log.i
  * @param onStateSynced Possibility to invoke a callback upon the temporary and the persisted states having been synced. Receives contrarily to [syncState] the entire map.
  * @param onStateReset Callback invoked after state having been reset. Receives the reset map.
  */
-open class ReversibleStateMap<K, V>(
+class ReversibleStateMap<K, V>(
     private val map: MutableMap<K, V>,
     val appliedStateMap: Map<K, StateFlow<V>>,
     private val syncState: suspend (Map<K, V>) -> Unit,
     private val onStateSynced: suspend (Map<K, V>) -> Unit = {},
     private val onStateReset: (Map<K, V>) -> Unit = {},
     appliedStateMapBasedStateAlignmentScope: CoroutineScope? = null
-) : MappedReversibleState<K>(),
+) : MappedReversibleState<K, V>(),
     MutableMap<K, V> by map {
 
     /**
