@@ -10,22 +10,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import slimber.log.i
 
-abstract class MappedReversibleState<K> : ReversibleState() {
-
-    /**
-     * Keys whose values have changed.
-     */
-    protected val _dissimilarKeys = mutableSetOf<K>()
-
-    val dissimilarKeys: Set<K>
-        get() = _dissimilarKeys
-
-    protected fun resetDissimilarityTrackers() {
-        _dissimilarKeys.clear()
-        _statesDissimilar.value = false
-    }
-}
-
 /**
  * @param map Delegate. Represents the non-persisted, temporary state.
  * @param appliedStateMap Persisted state. Holds the same keys as [map].
@@ -33,13 +17,13 @@ abstract class MappedReversibleState<K> : ReversibleState() {
  * @param onStateSynced Possibility to invoke a callback upon the temporary and the persisted states having been synced. Receives contrarily to [syncState] the entire map.
  * @param onStateReset Callback invoked after state having been reset. Receives the reset map.
  */
-class ReversibleStateMap<K, V>(
+open class ReversibleStateMap<K, V>(
     private val map: MutableMap<K, V>,
     val appliedStateMap: Map<K, StateFlow<V>>,
     private val syncState: suspend (Map<K, V>) -> Unit,
     private val onStateSynced: suspend (Map<K, V>) -> Unit = {},
     private val onStateReset: (Map<K, V>) -> Unit = {},
-    appliedStateMapBasedStateAlignmentAssuranceScope: CoroutineScope? = null
+    appliedStateMapBasedStateAlignmentScope: CoroutineScope? = null
 ) : MappedReversibleState<K>(),
     MutableMap<K, V> by map {
 
@@ -52,25 +36,25 @@ class ReversibleStateMap<K, V>(
         syncState: suspend (Map<K, V>) -> Unit,
         onStateSynced: suspend (Map<K, V>) -> Unit = {},
         onStateReset: (Map<K, V>) -> Unit = {},
-        appliedStateMapBasedStateAlignmentAssuranceScope: CoroutineScope? = null
+        appliedStateMapBasedStateAlignmentScope: CoroutineScope? = null
     ) : this(
         map = makeMap(appliedStateMap.mapValuesToCurrentValue()),
         appliedStateMap = appliedStateMap,
         syncState = syncState,
         onStateSynced = onStateSynced,
         onStateReset = onStateReset,
-        appliedStateMapBasedStateAlignmentAssuranceScope = appliedStateMapBasedStateAlignmentAssuranceScope
+        appliedStateMapBasedStateAlignmentScope = appliedStateMapBasedStateAlignmentScope
     )
 
     companion object {
-        fun <K, V> fromPersistedFlowMapWithSynchronousInitial(
+        fun <K, V> fromAppliedFlowMapWithSynchronousInitial(
             appliedFlowMap: Map<K, Flow<V>>,
             scope: CoroutineScope,
             makeMap: (Map<K, V>) -> MutableMap<K, V>,
             syncState: suspend (Map<K, V>) -> Unit,
             onStateSynced: suspend (Map<K, V>) -> Unit = {},
             onStateReset: (Map<K, V>) -> Unit = {},
-            appliedStateMapBasedStateAlignmentAssuranceScope: CoroutineScope? = null
+            appliedStateMapBasedStateAlignmentScope: CoroutineScope? = null
         ): ReversibleStateMap<K, V> {
             val appliedStateFlowMap = appliedFlowMap.mapValues { (_, v) ->
                 v.stateInWithSynchronousInitial(scope)
@@ -82,13 +66,13 @@ class ReversibleStateMap<K, V>(
                 syncState = syncState,
                 onStateSynced = onStateSynced,
                 onStateReset = onStateReset,
-                appliedStateMapBasedStateAlignmentAssuranceScope = appliedStateMapBasedStateAlignmentAssuranceScope
+                appliedStateMapBasedStateAlignmentScope = appliedStateMapBasedStateAlignmentScope
             )
         }
     }
 
     init {
-        appliedStateMapBasedStateAlignmentAssuranceScope?.let { scope ->
+        appliedStateMapBasedStateAlignmentScope?.let { scope ->
             appliedStateMap.forEach { (k, v) ->
                 scope.collectFromFlow(v) {
                     put(k, it)
