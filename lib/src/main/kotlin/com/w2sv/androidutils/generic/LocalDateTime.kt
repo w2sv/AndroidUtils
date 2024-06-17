@@ -19,7 +19,7 @@ fun localDateTimeFromSecondsUnixTimeStamp(
         zoneId
     )
 
-private fun localDateTimeFromUnixMilliSecondsTimeStamp(
+fun localDateTimeFromUnixMilliSecondsTimeStamp(
     msTimeStamp: Long,
     zoneId: ZoneId = ZoneId.systemDefault()
 ): LocalDateTime =
