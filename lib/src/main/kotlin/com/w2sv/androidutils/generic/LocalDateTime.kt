@@ -10,12 +10,21 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 
-fun localDateTimeFromUnixTimeStamp(
-    secondTimestamp: Long,
+fun localDateTimeFromSecondsUnixTimeStamp(
+    secondsTimestamp: Long,
     zoneId: ZoneId = ZoneId.systemDefault()
 ): LocalDateTime =
     LocalDateTime.ofInstant(
-        Instant.ofEpochSecond(secondTimestamp),
+        Instant.ofEpochSecond(secondsTimestamp),
+        zoneId
+    )
+
+private fun localDateTimeFromUnixMilliSecondsTimeStamp(
+    msTimeStamp: Long,
+    zoneId: ZoneId = ZoneId.systemDefault()
+): LocalDateTime =
+    LocalDateTime.ofInstant(
+        Instant.ofEpochMilli(msTimeStamp),
         zoneId
     )
 

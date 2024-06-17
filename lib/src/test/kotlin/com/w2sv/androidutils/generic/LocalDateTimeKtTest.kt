@@ -19,7 +19,7 @@ class LocalDateTimeTest {
     fun testLocalDateTimeFromUnixTimeStamp() {
         val unixTimestamp = 1699041284L
         val expectedDateTime = LocalDateTime.of(2023, 11, 3, 20, 54, 44)
-        val dateTime = localDateTimeFromUnixTimeStamp(unixTimestamp)
+        val dateTime = localDateTimeFromSecondsUnixTimeStamp(unixTimestamp)
 
         assertEquals(expectedDateTime, dateTime)
     }
