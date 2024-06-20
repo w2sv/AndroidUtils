@@ -23,7 +23,7 @@ slimber = 'com.github.PaulWoitaschek:Slimber:2.0.0'
 
 junit = "org.junit.jupiter:junit-jupiter:5.10.2"
 
-kotlinutils = 'com.github.w2sv:KotlinUtils:0.0.7-rc2'
+kotlinutils = 'com.github.w2sv:KotlinUtils:0.1.1-rc1'
 
 [plugins]
 android-library = { id = 'com.android.library', version.ref = 'agp' }

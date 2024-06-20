@@ -2,9 +2,9 @@
 
 package com.w2sv.androidutils.ui.reversible_state
 
-import com.w2sv.androidutils.coroutines.collectFromFlow
-import com.w2sv.androidutils.coroutines.stateInWithSynchronousInitial
-import com.w2sv.androidutils.coroutines.mapValuesToCurrentValue
+import com.w2sv.kotlinutils.coroutines.collectFromFlow
+import com.w2sv.kotlinutils.coroutines.mapValuesToCurrentValue
+import com.w2sv.kotlinutils.coroutines.stateInWithSynchronousInitial
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow

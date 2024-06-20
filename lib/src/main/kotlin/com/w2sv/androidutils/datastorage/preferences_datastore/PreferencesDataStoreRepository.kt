@@ -11,7 +11,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.w2sv.androidutils.datastorage.preferences_datastore.flow.DataStoreFlow
 import com.w2sv.androidutils.datastorage.preferences_datastore.flow.DataStoreFlowMap
-import com.w2sv.kotlinutils.extensions.getByOrdinal
+import com.w2sv.kotlinutils.generic.enumEntryByOrdinal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -107,7 +107,7 @@ abstract class PreferencesDataStoreRepository(
     ): Flow<E> = dataStore.data.map {
         it[preferencesKey]?.let { ordinal ->
             try {
-                getByOrdinal<E>(ordinal)
+                enumEntryByOrdinal<E>(ordinal)
             } catch (e: IndexOutOfBoundsException) {
                 defaultValue
             }

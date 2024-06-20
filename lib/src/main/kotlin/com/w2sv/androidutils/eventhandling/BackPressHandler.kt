@@ -2,7 +2,7 @@
 
 package com.w2sv.androidutils.eventhandling
 
-import com.w2sv.androidutils.coroutines.launchDelayed
+import com.w2sv.kotlinutils.coroutines.launchDelayed
 import kotlinx.coroutines.CoroutineScope
 
 class BackPressHandler(
