@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.w2sv.androidutils.appwidgets
+package com.w2sv.androidutils.appwidget
 
 import android.view.View
 import android.widget.RemoteViews

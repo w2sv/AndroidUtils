@@ -10,7 +10,6 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import com.w2sv.androidutils.R
-import com.w2sv.androidutils.notifying.showToast
 
 fun Context.openUrl(url: String) {
     startActivity(

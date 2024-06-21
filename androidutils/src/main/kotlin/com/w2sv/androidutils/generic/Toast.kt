@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.w2sv.androidutils.notifying
+package com.w2sv.androidutils.generic
 
 import android.content.Context
 import android.widget.Toast
