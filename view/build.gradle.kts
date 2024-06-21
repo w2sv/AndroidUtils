@@ -9,7 +9,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.w2sv.androidutils"
+    namespace = "com.w2sv.androidutils.views"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -45,8 +45,8 @@ android {
 publishing {
     publications {
         register<MavenPublication>("release") {
-            groupId = "com.w2sv.androidutils"
-            artifactId = "androidutils"
+            groupId = "com.w2sv.androidutils.views"
+            artifactId = "views"
             version = version.toString()
             afterEvaluate {
                 from(components["release"])
@@ -73,8 +73,9 @@ publishing {
 
 dependencies {
     implementation(libs.androidx.core)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.resources)
+    implementation(libs.androidx.fragment)
+    implementation(libs.androidx.coordinatorlayout)
+    implementation(libs.androidx.lifecycle.viewmodel)
 
     implementation(libs.slimber)
     implementation(libs.kotlinutils)

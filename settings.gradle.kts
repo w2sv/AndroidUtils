@@ -17,3 +17,5 @@ dependencyResolutionManagement {
 }
 
 include(":androidutils")
+include(":view")
+include(":lifecycle")
