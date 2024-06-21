@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.w2sv.androidutils.permissions
+package com.w2sv.androidutils.generic
 
 import android.content.Context
 import android.content.pm.PackageInfo

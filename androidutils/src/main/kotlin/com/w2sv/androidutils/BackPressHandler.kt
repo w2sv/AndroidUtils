@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.w2sv.androidutils.eventhandling
+package com.w2sv.androidutils
 
 import com.w2sv.kotlinutils.coroutines.launchDelayed
 import kotlinx.coroutines.CoroutineScope

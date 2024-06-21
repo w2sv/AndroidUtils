@@ -11,7 +11,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 
 /**
- * [BroadcastReceiver] registering itself upon instantiation and unregistering itself in [onDestroy]
+ * [BroadcastReceiver] registering itself upon instantiation and unregistering itself in [onDestroy].
  */
 abstract class SelfManagingLocalBroadcastReceiver(
     private val broadcastManager: LocalBroadcastManager,
