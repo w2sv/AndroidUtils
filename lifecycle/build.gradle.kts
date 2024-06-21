@@ -83,4 +83,5 @@ dependencies {
     implementation(libs.kotlinutils)
 
     testImplementation(libs.junit)
+    testImplementation(libs.androidx.arch.core.runtime)
 }

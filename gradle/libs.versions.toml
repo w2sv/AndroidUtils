@@ -19,6 +19,7 @@ androidx-localbroadcastmanager = "androidx.localbroadcastmanager:localbroadcastm
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata-core-ktx", version.ref = "lifecycle" }
+androidx-arch-core-runtime = "androidx.arch.core:core-runtime:2.2.0"
 
 slimber = "com.github.PaulWoitaschek:Slimber:2.0.0"
 kotlinutils = "com.github.w2sv:KotlinUtils:0.1.1-rc1"
