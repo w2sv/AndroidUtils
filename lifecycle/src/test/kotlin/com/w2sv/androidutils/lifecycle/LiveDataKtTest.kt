@@ -1,10 +1,10 @@
 package com.w2sv.androidutils.lifecycle
 
 import androidx.lifecycle.MutableLiveData
+import com.w2sv.androidutils.test.junit5.InstantExecutorExtension
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import utils.InstantExecutorExtension
 
 @ExtendWith(InstantExecutorExtension::class)
 internal class LiveDataKtTest {

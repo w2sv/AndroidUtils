@@ -11,6 +11,8 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/androidutils" />
             <option value="$PROJECT_DIR$/lifecycle" />
+            <option value="$PROJECT_DIR$/test" />
+            <option value="$PROJECT_DIR$/test/junit5" />
             <option value="$PROJECT_DIR$/view" />
           </set>
         </option>

@@ -19,3 +19,4 @@ dependencyResolutionManagement {
 include(":androidutils")
 include(":view")
 include(":lifecycle")
+include(":test:junit5")
