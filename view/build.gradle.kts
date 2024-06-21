@@ -58,7 +58,7 @@ publishing {
                         name.set("Janek Zangenberg")
                     }
                 }
-                description.set("Utilities for Android development.")
+                description.set("View utilities for Android development.")
                 url.set("https://github.com/w2sv/AndroidUtils")
                 licenses {
                     license {
@@ -72,11 +72,9 @@ publishing {
 }
 
 dependencies {
-    implementation(libs.androidx.core)
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.coordinatorlayout)
     implementation(libs.androidx.lifecycle.viewmodel)
 
     implementation(libs.slimber)
-    implementation(libs.kotlinutils)
 }

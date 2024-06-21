@@ -47,7 +47,7 @@ publishing {
     publications {
         register<MavenPublication>("release") {
             groupId = "com.w2sv.androidutils.lifecycle"
-            artifactId = "views"
+            artifactId = "lifecycle"
             version = version.toString()
             afterEvaluate {
                 from(components["release"])
@@ -59,7 +59,7 @@ publishing {
                         name.set("Janek Zangenberg")
                     }
                 }
-                description.set("Utilities for Android development.")
+                description.set("Lifecycle utilities for Android development.")
                 url.set("https://github.com/w2sv/AndroidUtils")
                 licenses {
                     license {
@@ -73,14 +73,12 @@ publishing {
 }
 
 dependencies {
-    implementation(libs.androidx.core)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.lifecycle.livedata)
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.androidx.localbroadcastmanager)
 
     implementation(libs.slimber)
-    implementation(libs.kotlinutils)
 
     testImplementation(libs.junit)
     testImplementation(libs.androidx.arch.core.runtime)

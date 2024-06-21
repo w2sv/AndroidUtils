@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import com.w2sv.androidutils.views.R
 import kotlin.math.min
 import kotlin.reflect.KClass
 
