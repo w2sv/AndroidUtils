@@ -6,7 +6,7 @@
 [![](https://jitci.com/gh/w2sv/AndroidUtils/svg)](https://jitci.com/gh/w2sv/AndroidUtils)
 ![GitHub](https://img.shields.io/github/license/w2sv/AndroidUtils)
 
-A collection of utils for Android Development
+A collection of utilities for Android Development. Duh.
 
 ## Installation with gradle & jitpack
 
