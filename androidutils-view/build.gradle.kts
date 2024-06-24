@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.android.library)
-    alias(libs.plugins.androidJUnit5)
     `maven-publish`
 }
 
@@ -10,7 +9,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.w2sv.androidutils.test.junit5"
+    namespace = "com.w2sv.androidutils.views"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -46,8 +45,8 @@ android {
 publishing {
     publications {
         register<MavenPublication>("release") {
-            groupId = "com.w2sv.androidutils.test.junit5"
-            artifactId = "junit5"
+            groupId = "com.w2sv.androidutils"
+            artifactId = "views"
             version = version.toString()
             afterEvaluate {
                 from(components["release"])
@@ -59,7 +58,7 @@ publishing {
                         name.set("Janek Zangenberg")
                     }
                 }
-                description.set("Lifecycle utilities for Android development.")
+                description.set("View utilities for Android development.")
                 url.set("https://github.com/w2sv/AndroidUtils")
                 licenses {
                     license {
@@ -73,6 +72,9 @@ publishing {
 }
 
 dependencies {
-    api(libs.junit5)
-    implementation(libs.androidx.arch.core.runtime)
+    implementation(libs.androidx.fragment)
+    implementation(libs.androidx.coordinatorlayout)
+    implementation(libs.androidx.lifecycle.viewmodel)
+
+    implementation(libs.slimber)
 }

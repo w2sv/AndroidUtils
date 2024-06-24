@@ -9,11 +9,11 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/androidutils" />
-            <option value="$PROJECT_DIR$/lifecycle" />
-            <option value="$PROJECT_DIR$/test" />
-            <option value="$PROJECT_DIR$/test/junit5" />
-            <option value="$PROJECT_DIR$/view" />
+            <option value="$PROJECT_DIR$/androidutils-core" />
+            <option value="$PROJECT_DIR$/androidutils-lifecycle" />
+            <option value="$PROJECT_DIR$/androidutils-test" />
+            <option value="$PROJECT_DIR$/androidutils-test/junit5" />
+            <option value="$PROJECT_DIR$/androidutils-view" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

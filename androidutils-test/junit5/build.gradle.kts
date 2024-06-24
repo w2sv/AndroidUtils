@@ -10,7 +10,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.w2sv.androidutils.lifecycle"
+    namespace = "com.w2sv.androidutils.test.junit5"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -46,8 +46,8 @@ android {
 publishing {
     publications {
         register<MavenPublication>("release") {
-            groupId = "com.w2sv.androidutils.lifecycle"
-            artifactId = "lifecycle"
+            groupId = "com.w2sv.androidutils.test"
+            artifactId = "junit5"
             version = version.toString()
             afterEvaluate {
                 from(components["release"])
@@ -73,12 +73,6 @@ publishing {
 }
 
 dependencies {
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.lifecycle.livedata)
-    implementation(libs.androidx.lifecycle.runtime)
-    implementation(libs.androidx.localbroadcastmanager)
-
-    implementation(libs.slimber)
-
-    testImplementation(project(":test:junit5"))
+    api(libs.junit5)
+    implementation(libs.androidx.arch.core.runtime)
 }

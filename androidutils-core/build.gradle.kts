@@ -46,7 +46,7 @@ publishing {
     publications {
         register<MavenPublication>("release") {
             groupId = "com.w2sv.androidutils"
-            artifactId = "androidutils"
+            artifactId = "core"
             version = version.toString()
             afterEvaluate {
                 from(components["release"])
