@@ -7,24 +7,27 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
-
-fun Context.openUrl(url: String) {
-    startActivity(
-        Intent(
-            Intent.ACTION_VIEW,
-            Uri.parse(url)
-        )
-            .addCategory(Intent.CATEGORY_BROWSABLE)
-    )
-}
+import com.w2sv.androidutils.widget.showToast
 
 fun Context.openUrl(
     url: String,
-    onActivityNotFoundException: (Context) -> Unit
+    onActivityNotFoundException: (Context) -> Unit = {
+        showToast(
+            R.string.on_activity_not_found_exception_message,
+            Toast.LENGTH_LONG
+        )
+    }
 ) {
     try {
-        openUrl(url)
+        startActivity(
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(url)
+            )
+                .addCategory(Intent.CATEGORY_BROWSABLE)
+        )
     } catch (e: ActivityNotFoundException) {
         onActivityNotFoundException(this)
     }

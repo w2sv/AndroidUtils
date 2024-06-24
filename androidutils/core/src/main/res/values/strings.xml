@@ -1,0 +1,3 @@
+<resources>
+    <string name="on_activity_not_found_exception_message">Couldn\'t find a browser to open the URL with</string>
+</resources>
