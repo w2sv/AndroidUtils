@@ -6,12 +6,17 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 
-val Context.activity: Activity?
-    get() =
-        this as? Activity ?: (this as? ContextWrapper)?.baseContext?.activity
-
-fun Context.requireActivity(): Activity = activity!!
+@Throws(IllegalStateException::class)
+fun Context.findActivity(): Activity {
+    var context = this
+    while (context is ContextWrapper) {
+        if (context is Activity) return context
+        context = context.baseContext
+    }
+    throw IllegalStateException("Couldn't get Activity")
+}
 
 @Suppress("UNCHECKED_CAST")
+@Throws(ClassCastException::class, IllegalStateException::class)
 fun <A : Activity> Context.requireCastActivity(): A =
-    requireActivity() as A
+    findActivity() as A

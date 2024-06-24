@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
-import android.widget.Toast
 import androidx.activity.result.ActivityResult
 
 fun Context.openUrl(url: String) {
@@ -20,14 +19,9 @@ fun Context.openUrl(url: String) {
     )
 }
 
-fun Context.openUrlWithActivityNotFoundExceptionHandling(
+fun Context.openUrl(
     url: String,
-    onActivityNotFoundException: (Context) -> Unit = {
-        showToast(
-            getString(R.string.couldn_t_find_a_browser_to_open_the_url_with),
-            Toast.LENGTH_LONG
-        )
-    }
+    onActivityNotFoundException: (Context) -> Unit
 ) {
     try {
         openUrl(url)
@@ -36,7 +30,7 @@ fun Context.openUrlWithActivityNotFoundExceptionHandling(
     }
 }
 
-fun Context.startActivityWithActivityNotFoundExceptionHandling(
+fun Context.startActivity(
     intent: Intent,
     onActivityNotFoundException: (Context) -> Unit
 ) {
@@ -47,13 +41,13 @@ fun Context.startActivityWithActivityNotFoundExceptionHandling(
     }
 }
 
-fun goToAppSettings(context: Context) {
-    context.startActivity(
+fun Context.openAppSettings() {
+    startActivity(
         Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
             .setData(
                 Uri.fromParts(
                     "package",
-                    context.packageName,
+                    packageName,
                     null
                 )
             )
