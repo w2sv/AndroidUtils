@@ -22,9 +22,9 @@ Add the dependency:
 
 ```kotlin
 dependencies {
-    implementation("com.github.w2sv:ReversibleStateKt:version")
+    implementation("com.github.w2sv.AndroidUtils:artifact:version")
     // Or get the latest snapshot of a certain branch:
-    implementation("com.github.w2sv:ReversibleStateKt:branchname-snapshot")
+    implementation("com.github.w2sv.AndroidUtils:artifact:branchname-snapshot")
 }
 ```
 
