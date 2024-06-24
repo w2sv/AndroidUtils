@@ -80,5 +80,5 @@ dependencies {
 
     implementation(libs.slimber)
 
-    testImplementation(project(":androidutils-test:junit5"))
+    testImplementation(project(":androidutils:test:junit5"))
 }

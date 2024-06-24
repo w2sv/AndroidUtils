@@ -16,7 +16,7 @@ dependencyResolutionManagement {
     }
 }
 
-include(":androidutils-core")
-include(":androidutils-view")
-include(":androidutils-lifecycle")
-include(":androidutils-test:junit5")
+include(":androidutils:core")
+include(":androidutils:view")
+include(":androidutils:lifecycle")
+include(":androidutils:test:junit5")
