@@ -7,12 +7,12 @@ java = "17"
 minSdk = "23"
 compileSdk = "34"
 
-lifecycle = "2.8.2"
+lifecycle = "2.8.3"
 
 [libraries]
 androidx-core = "androidx.core:core-ktx:1.13.1"
 androidx-activity = "androidx.activity:activity-ktx:1.9.0"
-androidx-fragment = "androidx.fragment:fragment-ktx:1.8.0"
+androidx-fragment = "androidx.fragment:fragment-ktx:1.8.1"
 androidx-resources = "androidx.appcompat:appcompat-resources:1.7.0"
 androidx-coordinatorlayout = "androidx.coordinatorlayout:coordinatorlayout:1.2.0"
 androidx-localbroadcastmanager = "androidx.localbroadcastmanager:localbroadcastmanager:1.1.0"
@@ -24,7 +24,7 @@ androidx-arch-core-runtime = "androidx.arch.core:core-runtime:2.2.0"
 slimber = "com.github.PaulWoitaschek:Slimber:2.0.0"
 kotlinutils = "com.github.w2sv:KotlinUtils:0.1.1-rc1"
 
-junit5 = "org.junit.jupiter:junit-jupiter:5.10.2"
+junit5 = "org.junit.jupiter:junit-jupiter:5.10.3"
 
 [plugins]
 android-library = { id = "com.android.library", version.ref = "agp" }

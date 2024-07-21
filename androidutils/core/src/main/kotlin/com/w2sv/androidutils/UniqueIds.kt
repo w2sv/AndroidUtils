@@ -4,9 +4,7 @@ package com.w2sv.androidutils
 
 import java.util.PriorityQueue
 
-open class UniqueIds(baseSeed: Int) : PriorityQueue<Int>() {
-
-    private val idBase: Int = baseSeed * 1000
+open class UniqueIds(private val idBase: Int) : PriorityQueue<Int>() {
 
     fun addNewId(): Int =
         getNewId()
@@ -14,11 +12,12 @@ open class UniqueIds(baseSeed: Int) : PriorityQueue<Int>() {
                 add(it)
             }
 
-    fun addMultipleNewIds(n: Int): ArrayList<Int> =
-        ArrayList((0 until n)
-            .map { addNewId() })
+    fun addNewIds(count: Int): List<Int> =
+        (0 until count)
+            .map { addNewId() }
 
     private fun getNewId(): Int =
-        lastOrNull()?.let { it + 1 }
+        lastOrNull()
+            ?.let { it + 1 }
             ?: idBase
 }
