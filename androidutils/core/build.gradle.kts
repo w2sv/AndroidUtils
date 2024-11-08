@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.android.library)
+    alias(libs.plugins.ktlint)
     `maven-publish`
 }
 
@@ -77,5 +78,5 @@ dependencies {
     implementation(libs.androidx.resources)
 
     implementation(libs.slimber)
-    implementation(libs.kotlinutils)
+    implementation(libs.w2sv.kotlinutils)
 }
