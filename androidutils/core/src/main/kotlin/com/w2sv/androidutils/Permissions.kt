@@ -11,10 +11,13 @@ import androidx.core.content.ContextCompat
 fun Context.hasPermission(permission: String): Boolean =
     ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 
-fun Context.getPackagePermissions(): Set<String> =
-    packageManager.getPackageInfoCompat(packageName)
+/**
+ * @see [PackageInfo.requestedPermissions]
+ */
+fun Context.getPackagePermissions(): Array<String>? =
+    packageManager
+        .getPackageInfoCompat(packageName)
         .requestedPermissions
-        .toSet()
 
 fun PackageManager.getPackageInfoCompat(packageName: String): PackageInfo =
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
