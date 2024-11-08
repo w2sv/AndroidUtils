@@ -21,8 +21,9 @@ inline fun <reified T : Parcelable> Intent.getParcelableArrayCompat(name: String
  */
 fun Intent.getIntExtraOrNull(name: String, defaultValue: Int): Int? =
     getIntExtra(name, defaultValue).run {
-        if (equals(defaultValue))
+        if (equals(defaultValue)) {
             null
-        else
+        } else {
             this
+        }
     }

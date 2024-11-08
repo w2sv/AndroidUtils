@@ -7,7 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 
 class BackPressHandler(
     private val coroutineScope: CoroutineScope,
-    private val confirmationWindowDuration: Long,
+    private val confirmationWindowDuration: Long
 ) {
     private var pressedOnce: Boolean = false
         set(value) {

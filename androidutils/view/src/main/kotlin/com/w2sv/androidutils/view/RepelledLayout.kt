@@ -21,7 +21,6 @@ abstract class RepelledLayout<out V : View>(
         attrs
     ),
     CoordinatorLayout.AttachedBehavior {
-
     private val translationCoefficient: Float
 
     init {
@@ -43,7 +42,6 @@ abstract class RepelledLayout<out V : View>(
 
     inner class Behavior(context: Context?, attrs: AttributeSet?) :
         CoordinatorLayout.Behavior<View?>(context, attrs) {
-
         override fun layoutDependsOn(
             parent: CoordinatorLayout,
             child: View,
@@ -60,10 +58,11 @@ abstract class RepelledLayout<out V : View>(
                 .apply {
                     clearAnimation()
 
-                    val translation = min(
-                        0f,
-                        (dependency.translationY - dependency.height) * translationCoefficient
-                    )
+                    val translation =
+                        min(
+                            0f,
+                            (dependency.translationY - dependency.height) * translationCoefficient
+                        )
                     translationY = translation
                     setPadding(0, -translation.toInt(), 0, 0)
                 }

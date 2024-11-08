@@ -8,7 +8,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(InstantExecutorExtension::class)
 internal class LiveDataKtTest {
-
     @Test
     fun toggleBooleanLiveData() {
         with(MutableLiveData(true)) {

@@ -33,10 +33,7 @@ fun Context.openUrl(
     }
 }
 
-fun Context.startActivity(
-    intent: Intent,
-    onActivityNotFoundException: (Context) -> Unit
-) {
+fun Context.startActivity(intent: Intent, onActivityNotFoundException: (Context) -> Unit) {
     try {
         startActivity(intent)
     } catch (e: ActivityNotFoundException) {

@@ -17,10 +17,11 @@ fun Context.getPackagePermissions(): Set<String> =
         .toSet()
 
 fun PackageManager.getPackageInfoCompat(packageName: String): PackageInfo =
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         getPackageInfo(
             packageName,
             PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS.toLong())
         )
-    else
+    } else {
         getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
+    }

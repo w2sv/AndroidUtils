@@ -5,7 +5,6 @@ package com.w2sv.androidutils
 import java.util.PriorityQueue
 
 open class UniqueIds(private val idBase: Int) : PriorityQueue<Int>() {
-
     fun addNewId(): Int =
         getNewId()
             .also {

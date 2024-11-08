@@ -18,9 +18,9 @@ abstract class SelfManagingLocalBroadcastReceiver(
     intentFilter: IntentFilter
 ) : BroadcastReceiver(),
     DefaultLifecycleObserver {
-
     constructor(
-        context: Context, intentFilter: IntentFilter
+        context: Context,
+        intentFilter: IntentFilter
     ) : this(LocalBroadcastManager.getInstance(context), intentFilter)
 
     init {
@@ -44,9 +44,10 @@ abstract class SelfManagingLocalBroadcastReceiver(
         intentFilter: IntentFilter,
         private val callback: (Context?, Intent?) -> Unit
     ) : SelfManagingLocalBroadcastReceiver(broadcastManager, intentFilter) {
-
         constructor(
-            context: Context, intentFilter: IntentFilter, callback: (Context?, Intent?) -> Unit
+            context: Context,
+            intentFilter: IntentFilter,
+            callback: (Context?, Intent?) -> Unit
         ) : this(LocalBroadcastManager.getInstance(context), intentFilter, callback)
 
         override fun onReceive(context: Context?, intent: Intent?) {

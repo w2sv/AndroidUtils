@@ -46,16 +46,17 @@ fun crossVisualize(hideViews: Iterable<View>, showViews: Iterable<View>) {
 
 fun View.increaseTouchArea(pixels: Int) {
     post {
-        (parent as View).touchDelegate = TouchDelegate(
-            getHitRect()
-                .apply {
-                    top -= pixels
-                    bottom += pixels
-                    left -= pixels
-                    right += pixels
-                },
-            this
-        )
+        (parent as View).touchDelegate =
+            TouchDelegate(
+                getHitRect()
+                    .apply {
+                        top -= pixels
+                        bottom += pixels
+                        left -= pixels
+                        right += pixels
+                    },
+                this
+            )
     }
 }
 

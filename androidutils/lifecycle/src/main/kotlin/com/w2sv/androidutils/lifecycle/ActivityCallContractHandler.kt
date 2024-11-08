@@ -21,7 +21,6 @@ interface ActivityCallContractHandler<I, O> : DefaultLifecycleObserver {
         override val resultRegistry: ActivityResultRegistry,
         override val resultContract: ActivityResultContract<I, O>
     ) : ActivityCallContractHandler<I, O> {
-
         /**
          * Enable construction from [activity]
          */
