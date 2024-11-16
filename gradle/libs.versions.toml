@@ -1,6 +1,6 @@
 [versions]
 kotlin = "2.0.21"
-agp = "8.6.1"
+agp = "8.7.2"
 java = "17"
 
 minSdk = "23"
@@ -22,9 +22,9 @@ androidx-lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata-
 androidx-arch-core-runtime = "androidx.arch.core:core-runtime:2.2.0"
 
 slimber = "com.github.PaulWoitaschek:Slimber:2.0.0"
-w2sv-kotlinutils = "com.github.w2sv:KotlinUtils:0.1.4-rc1"
+w2sv-kotlinutils = "com.github.w2sv:KotlinUtils:0.1.5-rc2"
 
-junit5 = "org.junit.jupiter:junit-jupiter:5.10.3"
+junit5 = "org.junit.jupiter:junit-jupiter:5.11.3"
 
 [plugins]
 android-library = { id = "com.android.library", version.ref = "agp" }
