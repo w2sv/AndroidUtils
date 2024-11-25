@@ -7,7 +7,7 @@ minSdk = "23"
 compileSdk = "35"
 
 lifecycle = "2.8.7"
-ktlint = "12.1.1"
+ktlint = "12.1.2"
 
 [libraries]
 androidx-core = "androidx.core:core-ktx:1.15.0"
