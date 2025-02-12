@@ -12,7 +12,7 @@ ktlint = "12.1.1"
 [libraries]
 androidx-core = "androidx.core:core-ktx:1.15.0"
 androidx-activity = "androidx.activity:activity-ktx:1.9.3"
-androidx-fragment = "androidx.fragment:fragment-ktx:1.8.5"
+androidx-fragment = "androidx.fragment:fragment-ktx:1.8.6"
 androidx-resources = "androidx.appcompat:appcompat-resources:1.7.0"
 androidx-coordinatorlayout = "androidx.coordinatorlayout:coordinatorlayout:1.2.0"
 androidx-localbroadcastmanager = "androidx.localbroadcastmanager:localbroadcastmanager:1.1.0"
