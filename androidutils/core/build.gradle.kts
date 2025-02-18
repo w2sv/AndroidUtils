@@ -26,13 +26,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-//    @Suppress("UnstableApiUsage")
-//    testOptions {
-//        unitTests {
-//            isIncludeAndroidResources = true
-//            isReturnDefaultValues = true
-//        }
-//    }
+    @Suppress("UnstableApiUsage")
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+            isReturnDefaultValues = true
+        }
+    }
     buildFeatures {
         buildConfig = false
     }
@@ -76,7 +76,8 @@ dependencies {
     implementation(libs.androidx.core)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.resources)
-
     implementation(libs.slimber)
     implementation(libs.w2sv.kotlinutils)
+
+    testImplementation(libs.bundles.unitTest)
 }
