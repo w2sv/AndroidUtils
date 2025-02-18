@@ -5,6 +5,9 @@ VERSION := $(shell grep -Po '^version=\K.*' gradle.properties)
 update-dependencies:
 	@./gradlew versionCatalogUpdate
 
+format:
+	@./gradlew ktlintFormat
+
 publish:
 	@echo "###### Assembling & running checks ######"
 	@./gradlew build

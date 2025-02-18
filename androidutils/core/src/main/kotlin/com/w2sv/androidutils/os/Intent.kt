@@ -27,3 +27,17 @@ fun Intent.getIntExtraOrNull(name: String, defaultValue: Int): Int? =
             this
         }
     }
+
+fun Intent.logString(): String =
+    buildString {
+        append("Action=$action")
+        if (flags != 0) {
+            append(" | Flags=$flags")
+        }
+        if (categories?.isNotEmpty() == true) {
+            append(" | Categories=$categories")
+        }
+        if (extras?.isEmpty == false) {
+            append(" | Extras=${extras?.toMapString()}")
+        }
+    }
