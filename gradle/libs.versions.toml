@@ -1,52 +1,51 @@
 [versions]
-kotlin = "2.1.10"
-agp = "8.7.3"
-# @keep
-java = "17"
-# @keep
-minSdk = "23"
+agp = "8.8.1"
+androidxTextExtJunit = "1.2.1"
 # @keep
 compileSdk = "35"
+# @keep
+java = "17"
 junit4 = "4.13.2"
 junit5 = "5.11.4"
+kotlin = "2.1.10"
+ktlint = "12.1.2"
 lifecycle = "2.8.7"
-ktlint = "12.1.1"
-androidxTextExtJunit = "1.2.1"
+# @keep
+minSdk = "23"
 versionCatalogUpdate = "0.8.5"
 versions = "0.52.0"
 
 [libraries]
-androidx-core = "androidx.core:core-ktx:1.15.0"
 androidx-activity = "androidx.activity:activity-ktx:1.10.0"
-androidx-fragment = "androidx.fragment:fragment-ktx:1.8.6"
-androidx-resources = "androidx.appcompat:appcompat-resources:1.7.0"
+androidx-arch-core-runtime = "androidx.arch.core:core-runtime:2.2.0"
 androidx-coordinatorlayout = "androidx.coordinatorlayout:coordinatorlayout:1.2.0"
-androidx-localbroadcastmanager = "androidx.localbroadcastmanager:localbroadcastmanager:1.1.0"
+androidx-core = "androidx.core:core-ktx:1.15.0"
+androidx-fragment = "androidx.fragment:fragment-ktx:1.8.6"
+androidx-lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata-core-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
-androidx-lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata-core-ktx", version.ref = "lifecycle" }
-androidx-arch-core-runtime = "androidx.arch.core:core-runtime:2.2.0"
-
-slimber = "com.github.PaulWoitaschek:Slimber:2.0.0"
-w2sv-kotlinutils = "com.github.w2sv:KotlinUtils:0.1.5-rc2"
-roboelectric = "org.robolectric:robolectric:4.14.1"
-kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+androidx-localbroadcastmanager = "androidx.localbroadcastmanager:localbroadcastmanager:1.1.0"
+androidx-resources = "androidx.appcompat:appcompat-resources:1.7.0"
+androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "androidxTextExtJunit" }
 junit4 = { module = "junit:junit", version.ref = "junit4" }
 junit5 = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit5" }
-androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "androidxTextExtJunit" }
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+roboelectric = "org.robolectric:robolectric:4.14.1"
+slimber = "com.github.PaulWoitaschek:Slimber:2.0.0"
+w2sv-kotlinutils = "com.github.w2sv:KotlinUtils:0.1.5-rc2"
 
 [bundles]
 unitTest = [
-    "junit4",
-    "roboelectric",
-    "kotlin-test-junit",
     "androidx-test-ext-junit",
+    "junit4",
+    "kotlin-test-junit",
+    "roboelectric",
 ]
 
 [plugins]
 android-library = { id = "com.android.library", version.ref = "agp" }
+androidJUnit5 = "de.mannodermaus.android-junit5:1.11.3.0"
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-androidJUnit5 = { id = "de.mannodermaus.android-junit5", version = "1.11.3.0" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 versionCatalogUpdate = { id = "nl.littlerobots.version-catalog-update", version.ref = "versionCatalogUpdate" }
 versions = { id = "com.github.ben-manes.versions", version.ref = "versions" }
