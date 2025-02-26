@@ -16,7 +16,7 @@ versionCatalogUpdate = "0.8.5"
 versions = "0.52.0"
 
 [libraries]
-androidx-activity = "androidx.activity:activity-ktx:1.10.0"
+androidx-activity = "androidx.activity:activity-ktx:1.10.1"
 androidx-arch-core-runtime = "androidx.arch.core:core-runtime:2.2.0"
 androidx-coordinatorlayout = "androidx.coordinatorlayout:coordinatorlayout:1.2.0"
 androidx-core = "androidx.core:core-ktx:1.15.0"
