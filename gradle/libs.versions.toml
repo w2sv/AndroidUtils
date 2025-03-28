@@ -12,7 +12,7 @@ ktlint = "12.1.2"
 lifecycle = "2.8.7"
 # @keep
 minSdk = "23"
-versionCatalogUpdate = "0.8.5"
+versionCatalogUpdate = "1.0.0"
 versions = "0.52.0"
 
 [libraries]
