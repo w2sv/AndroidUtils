@@ -7,7 +7,7 @@ compileSdk = "35"
 java = "17"
 junit4 = "4.13.2"
 junit5 = "5.11.4"
-kotlin = "2.1.10"
+kotlin = "2.2.0"
 ktlint = "12.1.2"
 lifecycle = "2.8.7"
 # @keep
