@@ -44,7 +44,7 @@ unitTest = [
 
 [plugins]
 android-library = { id = "com.android.library", version.ref = "agp" }
-androidJUnit5 = "de.mannodermaus.android-junit5:1.11.3.0"
+androidJUnit5 = "de.mannodermaus.android-junit5:1.13.1.0"
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 versionCatalogUpdate = { id = "nl.littlerobots.version-catalog-update", version.ref = "versionCatalogUpdate" }
