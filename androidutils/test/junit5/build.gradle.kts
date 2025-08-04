@@ -77,6 +77,6 @@ publishing {
 }
 
 dependencies {
-    api(libs.junit5)
+    api(libs.junit.jupiter.api)
     implementation(libs.androidx.arch.core.runtime)
 }

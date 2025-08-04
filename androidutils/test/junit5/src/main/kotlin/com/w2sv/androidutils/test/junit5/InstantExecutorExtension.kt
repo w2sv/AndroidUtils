@@ -8,8 +8,7 @@ import org.junit.jupiter.api.extension.BeforeEachCallback
 import org.junit.jupiter.api.extension.ExtensionContext
 
 /**
- * @see
- *      https://jeroenmols.com/blog/2019/01/17/livedatajunit5/
+ * https://jeroenmols.com/blog/2019/01/17/livedatajunit5/
  */
 @SuppressLint("RestrictedApi")
 class InstantExecutorExtension :
