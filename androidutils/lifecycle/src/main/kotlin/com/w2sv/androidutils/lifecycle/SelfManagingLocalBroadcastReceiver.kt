@@ -13,10 +13,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 /**
  * [BroadcastReceiver] registering itself upon instantiation and unregistering itself in [onDestroy].
  */
-abstract class SelfManagingLocalBroadcastReceiver(
-    private val broadcastManager: LocalBroadcastManager,
-    intentFilter: IntentFilter
-) : BroadcastReceiver(),
+abstract class SelfManagingLocalBroadcastReceiver(private val broadcastManager: LocalBroadcastManager, intentFilter: IntentFilter) :
+    BroadcastReceiver(),
     DefaultLifecycleObserver {
     constructor(
         context: Context,

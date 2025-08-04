@@ -26,12 +26,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    @Suppress("UnstableApiUsage")
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
-            isReturnDefaultValues = true
-        }
+    testOptions.unitTests {
+        isIncludeAndroidResources = true
+        isReturnDefaultValues = true
     }
     buildFeatures {
         buildConfig = false
@@ -40,6 +37,9 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+    publishing {
+        singleVariant("release")
     }
 }
 

@@ -11,11 +11,7 @@ import com.w2sv.androidutils.views.R
 import kotlin.math.min
 import kotlin.reflect.KClass
 
-abstract class RepelledLayout<out V : View>(
-    context: Context,
-    private val attrs: AttributeSet,
-    private val repellingViewClass: KClass<V>
-) :
+abstract class RepelledLayout<out V : View>(context: Context, private val attrs: AttributeSet, private val repellingViewClass: KClass<V>) :
     LinearLayout(
         context,
         attrs
@@ -40,8 +36,7 @@ abstract class RepelledLayout<out V : View>(
             }
     }
 
-    inner class Behavior(context: Context?, attrs: AttributeSet?) :
-        CoordinatorLayout.Behavior<View?>(context, attrs) {
+    inner class Behavior(context: Context, attrs: AttributeSet?) : CoordinatorLayout.Behavior<View?>(context, attrs) {
         override fun layoutDependsOn(
             parent: CoordinatorLayout,
             child: View,

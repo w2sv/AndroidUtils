@@ -5,10 +5,7 @@ package com.w2sv.androidutils
 import com.w2sv.kotlinutils.coroutines.launchDelayed
 import kotlinx.coroutines.CoroutineScope
 
-class BackPressHandler(
-    private val coroutineScope: CoroutineScope,
-    private val confirmationWindowDuration: Long
-) {
+class BackPressHandler(private val coroutineScope: CoroutineScope, private val confirmationWindowDuration: Long) {
     private var pressedOnce: Boolean = false
         set(value) {
             if (value) {
