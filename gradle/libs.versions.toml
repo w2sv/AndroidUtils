@@ -32,7 +32,7 @@ junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.re
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 roboelectric = "org.robolectric:robolectric:4.15.1"
 slimber = "com.github.PaulWoitaschek:Slimber:2.0.0"
-w2sv-kotlinutils = "com.github.w2sv:KotlinUtils:0.1.8-rc1"
+w2sv-kotlinutils = "com.github.w2sv:KotlinUtils:0.1.9"
 
 [bundles]
 unitTest = [
