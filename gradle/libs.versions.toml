@@ -9,7 +9,7 @@ junit4 = "4.13.2"
 junit5 = "5.13.4"
 kotlin = "2.2.0"
 ktlint = "13.0.0"
-lifecycle = "2.9.2"
+lifecycle = "2.10.0"
 # @keep
 minSdk = "23"
 versionCatalogUpdate = "1.0.0"
