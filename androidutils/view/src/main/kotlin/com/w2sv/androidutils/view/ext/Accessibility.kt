@@ -17,7 +17,12 @@ fun View.increaseTouchArea(all: Int) {
  * Expands this view's touch target by adjusting the hit rect.
  * Call after the view is attached; runs via `post` to ensure layout.
  */
-fun View.increaseTouchArea(left: Int = 0, top: Int = 0, right: Int = 0, bottom: Int = 0) {
+fun View.increaseTouchArea(
+    left: Int = 0,
+    top: Int = 0,
+    right: Int = 0,
+    bottom: Int = 0
+) {
     post {
         val parentView = parent as? View ?: return@post
 
