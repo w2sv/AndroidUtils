@@ -76,7 +76,6 @@ dependencies {
     implementation(libs.androidx.core)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.resources)
-    implementation(libs.slimber)
     implementation(libs.w2sv.kotlinutils)
 
     testImplementation(libs.bundles.unitTest)

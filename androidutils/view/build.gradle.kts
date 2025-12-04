@@ -79,6 +79,4 @@ dependencies {
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.coordinatorlayout)
     implementation(libs.androidx.lifecycle.viewmodel)
-
-    implementation(libs.slimber)
 }
