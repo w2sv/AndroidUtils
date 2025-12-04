@@ -1,0 +1,27 @@
+@file:Suppress("unused")
+
+package com.w2sv.androidutils.view.ext
+
+import android.view.View
+
+fun View.show() {
+    visibility = View.VISIBLE
+}
+
+fun View.remove() {
+    visibility = View.GONE
+}
+
+fun View.hide() {
+    visibility = View.INVISIBLE
+}
+
+fun crossVisualize(hideView: View, showView: View) {
+    hideView.hide()
+    showView.show()
+}
+
+fun crossVisualize(hideViews: Iterable<View>, showViews: Iterable<View>) {
+    hideViews.forEach { it.hide() }
+    showViews.forEach { it.show() }
+}
