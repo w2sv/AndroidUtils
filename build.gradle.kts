@@ -11,3 +11,9 @@ plugins {
 versionCatalogUpdate {
     versionSelector(VersionSelectors.PREFER_STABLE)
 }
+
+rootProject.layout.projectDirectory.file("version.txt").asFile.let { versionFile ->
+    if (versionFile.exists()) {
+        version = versionFile.readText().trim()
+    }
+}
