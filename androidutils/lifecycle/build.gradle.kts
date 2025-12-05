@@ -45,6 +45,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    @Suppress("DEPRECATION")
+    kotlinOptions {
+        jvmTarget = "11" // THIS forces main code to target JVM 11
+    }
 //    @Suppress("UnstableApiUsage")
 //    testOptions {
 //        unitTests {
