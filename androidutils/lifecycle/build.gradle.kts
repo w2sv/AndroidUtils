@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.android.library)
@@ -8,6 +10,22 @@ plugins {
 
 kotlin {
     jvmToolchain(libs.versions.java.get().toInt())
+}
+
+// Run unit tests (which respect the java toolchain, as they run on the JVM) on Java 17, which is required by JUnit5
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
+// Compile unit test code with JVM 11 to fix inconsistency
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile>().configureEach {
+    if (name.contains("UnitTest", ignoreCase = true)) {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
+        }
+    }
 }
 
 android {
@@ -24,8 +42,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 //    @Suppress("UnstableApiUsage")
 //    testOptions {
@@ -43,7 +61,9 @@ android {
         }
     }
     publishing {
-        singleVariant("release")
+        singleVariant("release") {
+            withSourcesJar()
+        }
     }
 }
 
