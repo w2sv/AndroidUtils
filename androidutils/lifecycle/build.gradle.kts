@@ -1,15 +1,8 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.ktlint)
+    id("w2sv.android-library")
     alias(libs.plugins.androidJUnit5)
-    `maven-publish`
-}
-
-kotlin {
-    jvmToolchain(libs.versions.java.get().toInt())
 }
 
 // Run unit tests (which respect the java toolchain, as they run on the JVM) on Java 17, which is required by JUnit5
@@ -29,45 +22,9 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile>().configureEa
 }
 
 android {
-    namespace = "com.w2sv.androidutils.lifecycle"
-    compileSdk = libs.versions.compileSdk.get().toInt()
-
-    defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
     @Suppress("DEPRECATION")
     kotlinOptions {
         jvmTarget = "11" // THIS forces main code to target JVM 11
-    }
-//    @Suppress("UnstableApiUsage")
-//    testOptions {
-//        unitTests {
-//            isIncludeAndroidResources = true
-//            isReturnDefaultValues = true
-//        }
-//    }
-    buildFeatures {
-        buildConfig = false
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-    publishing {
-        singleVariant("release") {
-            withSourcesJar()
-        }
     }
 }
 
@@ -105,9 +62,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata)
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.androidx.localbroadcastmanager)
-}
 
-dependencies {
     testImplementation(libs.junit.jupiter.api)
     testRuntimeOnly(libs.junit.jupiter.engine)
     testImplementation(project(":androidutils:test:junit5"))

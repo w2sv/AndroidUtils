@@ -1,51 +1,5 @@
 plugins {
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.ktlint)
-    `maven-publish`
-}
-
-kotlin {
-    jvmToolchain(libs.versions.java.get().toInt())
-}
-
-android {
-    namespace = "com.w2sv.androidutils.views"
-    compileSdk = libs.versions.compileSdk.get().toInt()
-
-    defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-//    @Suppress("UnstableApiUsage")
-//    testOptions {
-//        unitTests {
-//            isIncludeAndroidResources = true
-//            isReturnDefaultValues = true
-//        }
-//    }
-    buildFeatures {
-        buildConfig = false
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-    publishing {
-        singleVariant("release") {
-            withSourcesJar()
-        }
-    }
+    id("w2sv.android-library")
 }
 
 publishing {

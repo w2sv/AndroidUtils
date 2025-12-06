@@ -9,6 +9,7 @@ import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
+import com.w2sv.androidutils.core.R
 import com.w2sv.androidutils.widget.showToast
 
 fun Context.openUrl(
