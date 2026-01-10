@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.w2sv.androidutils
+package com.w2sv.androidutils.content
 
 import android.content.Context
 

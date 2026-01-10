@@ -1,4 +1,4 @@
-package com.w2sv.androidutils
+package com.w2sv.androidutils.service
 
 import android.app.Service
 import android.content.Intent

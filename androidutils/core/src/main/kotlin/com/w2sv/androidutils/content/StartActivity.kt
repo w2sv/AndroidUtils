@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.w2sv.androidutils
+package com.w2sv.androidutils.content
 
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -8,7 +8,7 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
-import androidx.activity.result.ActivityResult
+import androidx.core.net.toUri
 import com.w2sv.androidutils.core.R
 import com.w2sv.androidutils.widget.showToast
 
@@ -23,10 +23,7 @@ fun Context.openUrl(
 ) {
     try {
         startActivity(
-            Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse(url)
-            )
+            Intent(Intent.ACTION_VIEW, url.toUri())
                 .addCategory(Intent.CATEGORY_BROWSABLE)
         )
     } catch (e: ActivityNotFoundException) {
@@ -54,11 +51,3 @@ fun Context.openAppSettings() {
             )
     )
 }
-
-val ActivityResult.uris: List<Uri>?
-    get() =
-        data?.let { intent ->
-            intent.clipData?.let { clipData ->
-                (0 until clipData.itemCount).map { clipData.getItemAt(it).uri }
-            }
-        }

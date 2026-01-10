@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.w2sv.androidutils
+package com.w2sv.androidutils.net
 
 import android.content.Context
 import android.content.pm.PackageManager
@@ -11,13 +11,15 @@ fun Uri.hasPermission(
     context: Context,
     permissionCode: Int,
     readPermission: String? = null,
-    writePermission: String? = null
+    writePermission: String? = null,
+    pid: Int = Binder.getCallingPid(),
+    uid: Int = Binder.getCallingUid()
 ): Boolean =
     context.checkUriPermission(
         this,
         readPermission,
         writePermission,
-        Binder.getCallingPid(),
-        Binder.getCallingUid(),
+        pid,
+        uid,
         permissionCode
     ) == PackageManager.PERMISSION_GRANTED

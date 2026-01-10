@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.w2sv.androidutils
+package com.w2sv.androidutils.activity
 
 import android.app.Activity
 import androidx.core.view.WindowCompat

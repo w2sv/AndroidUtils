@@ -1,4 +1,4 @@
-package com.w2sv.androidutils.os
+package com.w2sv.androidutils.content
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,7 +8,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class IntentExtensionsTest {
+class IntentKtTest {
 
     @Test
     fun `test intent with action only`() {
