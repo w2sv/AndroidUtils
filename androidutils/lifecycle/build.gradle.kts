@@ -22,10 +22,8 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile>().configureEa
 }
 
 android {
-    @Suppress("DEPRECATION")
-    kotlinOptions {
-        jvmTarget = "11" // THIS forces main code to target JVM 11
-    }
+    // THIS forces main code to target JVM 11
+    kotlin.compilerOptions.jvmTarget.set(JvmTarget.JVM_11)
 }
 
 publishing {
