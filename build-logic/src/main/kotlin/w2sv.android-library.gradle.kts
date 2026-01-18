@@ -1,11 +1,8 @@
 plugins {
     id("com.android.library")
-    id("org.jetbrains.kotlin.android")
     id("org.jlleitschuh.gradle.ktlint")
     `maven-publish`
 }
-
-kotlin { jvmToolchain(11) }
 
 android {
     namespace = "com.w2sv.${path.removePrefix(":").replace(':', '.')}"
