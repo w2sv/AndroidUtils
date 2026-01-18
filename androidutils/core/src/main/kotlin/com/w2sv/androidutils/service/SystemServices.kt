@@ -5,17 +5,12 @@ package com.w2sv.androidutils.service
 import android.app.ActivityManager
 import android.app.Service
 import android.content.Context
-import android.location.LocationManager
-import androidx.core.location.LocationManagerCompat
 
 @Suppress("DEPRECATION")
 inline fun <reified T : Service> Context.isServiceRunning() =
     systemService<ActivityManager>()
         .getRunningServices(Integer.MAX_VALUE)
         .any { it.service.className == T::class.java.name }
-
-fun LocationManager.isLocationEnabledCompat(): Boolean =
-    LocationManagerCompat.isLocationEnabled(this)
 
 /**
  * @return a system service of type [T].
