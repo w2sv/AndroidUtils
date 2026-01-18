@@ -13,7 +13,7 @@ import androidx.core.location.LocationManagerCompat
 
 @Suppress("DEPRECATION")
 inline fun <reified T : Service> Context.isServiceRunning() =
-    (getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager)
+    systemService<ActivityManager>()
         .getRunningServices(Integer.MAX_VALUE)
         .any { it.service.className == T::class.java.name }
 
@@ -21,13 +21,29 @@ fun LocationManager.isLocationEnabledCompat(): Boolean =
     LocationManagerCompat.isLocationEnabled(this)
 
 fun Context.getLocationManager(): LocationManager =
-    getSystemService(LocationManager::class.java)
+    systemService()
 
 fun Context.getWifiManager(): WifiManager =
-    getSystemService(WifiManager::class.java)
+    systemService()
 
 fun Context.getNotificationManager(): NotificationManager =
-    getSystemService(NotificationManager::class.java)
+    systemService()
 
 fun Context.getConnectivityManager(): ConnectivityManager =
-    getSystemService(ConnectivityManager::class.java)
+    systemService()
+
+/**
+ * @return a system service of type [T].
+ *
+ * This is a type-safe, concise alternative to `getSystemService(Class)`, avoiding ::class.java shenanigans.
+ *
+ * Example:
+ * ```
+ * val statusBarManager = context.systemService<StatusBarManager>()
+ * ```
+ *
+ * @see Context.getSystemService
+ * @throws IllegalStateException if the service is not available on the device.
+ */
+inline fun <reified T> Context.systemService(): T =
+    getSystemService(T::class.java) ?: error("System service ${T::class.java.simpleName} not available")
