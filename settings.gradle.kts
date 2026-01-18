@@ -21,3 +21,5 @@ include(":androidutils:core")
 include(":androidutils:view")
 include(":androidutils:lifecycle")
 include(":androidutils:test:junit5")
+
+rootProject.name = "AndroidUtils"
