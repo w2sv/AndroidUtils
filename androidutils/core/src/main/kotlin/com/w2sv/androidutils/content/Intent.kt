@@ -68,7 +68,7 @@ fun Intent.getIntExtraOrNull(name: String, defaultValue: Int): Int? =
  *
  * Empty or default values are omitted for conciseness.
  */
-fun Intent.logString(): String =
+fun Intent.toDebugString(): String =
     buildString {
         append("Action=$action")
         if (data != null) append(" | Data=$data")
@@ -77,6 +77,6 @@ fun Intent.logString(): String =
         if (categories?.isNotEmpty() == true) append(" | Categories=$categories")
         if (component != null) append(" | Component=$component")
         if (`package` != null) append(" | Package=${`package`}")
-        if (selector != null) append(" | Selector=${selector.logString()}")
+        if (selector != null) append(" | Selector=${selector?.toDebugString()}")
         if (extras?.isEmpty == false) append(" | Extras=${extras?.toMapString()}")
     }

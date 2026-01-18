@@ -15,7 +15,7 @@ class IntentKtTest {
         val intent = Intent().apply {
             action = "com.example.ACTION_TEST"
         }
-        assertEquals("Action=com.example.ACTION_TEST", intent.logString())
+        assertEquals("Action=com.example.ACTION_TEST", intent.toDebugString())
     }
 
     @Test
@@ -24,7 +24,7 @@ class IntentKtTest {
             action = "com.example.ACTION_TEST"
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
-        assertEquals("Action=com.example.ACTION_TEST | Flags=268435456", intent.logString())
+        assertEquals("Action=com.example.ACTION_TEST | Flags=268435456", intent.toDebugString())
     }
 
     @Test
@@ -33,7 +33,7 @@ class IntentKtTest {
             action = "com.example.ACTION_TEST"
             addCategory("com.example.CATEGORY_SAMPLE")
         }
-        assertEquals("Action=com.example.ACTION_TEST | Categories={com.example.CATEGORY_SAMPLE}", intent.logString())
+        assertEquals("Action=com.example.ACTION_TEST | Categories={com.example.CATEGORY_SAMPLE}", intent.toDebugString())
     }
 
     @Test
@@ -46,7 +46,7 @@ class IntentKtTest {
             action = "com.example.ACTION_TEST"
             putExtras(bundle)
         }
-        assertEquals("Action=com.example.ACTION_TEST | Extras={key1=value1, key2=42}", intent.logString())
+        assertEquals("Action=com.example.ACTION_TEST | Extras={key1=value1, key2=42}", intent.toDebugString())
     }
 
     @Test
@@ -63,7 +63,7 @@ class IntentKtTest {
         }
         assertEquals(
             "Action=com.example.ACTION_TEST | Flags=268435456 | Categories={com.example.CATEGORY_SAMPLE} | Extras={key1=value1, key2=42}",
-            intent.logString()
+            intent.toDebugString()
         )
     }
 }
