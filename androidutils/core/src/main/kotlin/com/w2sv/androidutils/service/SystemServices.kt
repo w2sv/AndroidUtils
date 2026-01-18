@@ -3,12 +3,9 @@
 package com.w2sv.androidutils.service
 
 import android.app.ActivityManager
-import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.location.LocationManager
-import android.net.ConnectivityManager
-import android.net.wifi.WifiManager
 import androidx.core.location.LocationManagerCompat
 
 @Suppress("DEPRECATION")
@@ -19,18 +16,6 @@ inline fun <reified T : Service> Context.isServiceRunning() =
 
 fun LocationManager.isLocationEnabledCompat(): Boolean =
     LocationManagerCompat.isLocationEnabled(this)
-
-fun Context.getLocationManager(): LocationManager =
-    systemService()
-
-fun Context.getWifiManager(): WifiManager =
-    systemService()
-
-fun Context.getNotificationManager(): NotificationManager =
-    systemService()
-
-fun Context.getConnectivityManager(): ConnectivityManager =
-    systemService()
 
 /**
  * @return a system service of type [T].
