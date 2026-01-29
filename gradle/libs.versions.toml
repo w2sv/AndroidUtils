@@ -24,7 +24,7 @@ junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.re
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit5" }
 junit4 = { module = "junit:junit", version.ref = "junit4" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
-roboelectric = "org.robolectric:robolectric:4.16"
+roboelectric = "org.robolectric:robolectric:4.16.1"
 w2sv-kotlinutils = "com.github.w2sv:KotlinUtils:0.1.11"
 
 [bundles]
