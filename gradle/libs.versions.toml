@@ -6,7 +6,7 @@ junit5 = "6.0.2"
 kotlin = "2.3.0"
 ktlint = "14.0.1"
 lifecycle = "2.10.0"
-versionCatalogUpdate = "1.0.1"
+versionCatalogUpdate = "1.1.0"
 
 [libraries]
 androidx-activity = "androidx.activity:activity-ktx:1.12.2"
