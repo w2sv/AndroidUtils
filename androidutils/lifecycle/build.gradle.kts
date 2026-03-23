@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("w2sv.android-library")
-    alias(libs.plugins.androidJUnit5)
+    alias(libs.plugins.mannodermaus.android.junit5)
 }
 
 // Run unit tests (which respect the java toolchain, as they run on the JVM) on Java 17, which is required by JUnit5
@@ -56,9 +56,9 @@ publishing {
 }
 
 dependencies {
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.lifecycle.livedata)
-    implementation(libs.androidx.lifecycle.runtime)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.lifecycle.livedata.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.localbroadcastmanager)
 
     testImplementation(libs.junit.jupiter.api)

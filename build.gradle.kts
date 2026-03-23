@@ -2,7 +2,7 @@ import nl.littlerobots.vcu.plugin.resolver.VersionSelectors
 
 plugins {
     alias(libs.plugins.android.library) apply false
-    alias(libs.plugins.androidJUnit5) apply false
+    alias(libs.plugins.mannodermaus.android.junit5) apply false
     alias(libs.plugins.ktlint)
     alias(libs.plugins.versionCatalogUpdate)
 }

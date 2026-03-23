@@ -1,6 +1,6 @@
 plugins {
     id("w2sv.android-library")
-    alias(libs.plugins.androidJUnit5)
+    alias(libs.plugins.mannodermaus.android.junit5)
 }
 
 publishing {

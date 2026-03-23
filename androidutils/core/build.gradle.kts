@@ -32,9 +32,9 @@ publishing {
 }
 
 dependencies {
-    implementation(libs.androidx.core)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.resources)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.appcompat.resources)
     implementation(libs.w2sv.kotlinutils)
 
     testImplementation(libs.bundles.unitTest)
