@@ -4,19 +4,11 @@ package com.w2sv.androidutils.appwidget
 
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
-import android.content.ComponentName
 import android.content.Context
+import com.w2sv.androidutils.content.componentName
 
-fun AppWidgetManager.getAppWidgetIds(context: Context, appWidgetProviderClass: Class<out AppWidgetProvider>): IntArray =
-    getAppWidgetIds(
-        context.packageName,
-        appWidgetProviderClass
-    )
-
-fun AppWidgetManager.getAppWidgetIds(packageName: String, appWidgetProviderClass: Class<out AppWidgetProvider>): IntArray =
-    getAppWidgetIds(
-        ComponentName(
-            packageName,
-            appWidgetProviderClass.name
-        )
-    )
+/**
+ * @see AppWidgetManager.getAppWidgetIds
+ */
+inline fun <reified T : AppWidgetProvider> AppWidgetManager.appWidgetIds(context: Context): IntArray =
+    getAppWidgetIds(componentName<T>(context))
