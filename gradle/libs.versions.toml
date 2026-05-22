@@ -2,7 +2,7 @@
 agp = "9.1.0"
 androidx-lifecycle = "2.10.0"
 junit-junit = "4.13.2"
-junit-jupiter = "6.0.3"
+junit-jupiter = "6.1.0"
 kotlin = "2.3.20"
 ktlint = "14.2.0"
 
