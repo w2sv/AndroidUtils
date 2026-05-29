@@ -2,7 +2,7 @@
 
 ![Maven Central Version](https://img.shields.io/maven-central/v/io.github.w2sv/androidutils-core)
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/w2sv/AndroidUtils?include_prereleases)
-[![Build](https://github.com/w2sv/AndroidUtils/actions/workflows/workflow.yaml/badge.svg)](https://github.com/w2sv/AndroidUtils/actions/workflows/workflow.yaml)
+[![Build](https://github.com/w2sv/AndroidUtils/actions/workflows/build.yaml/badge.svg)](https://github.com/w2sv/AndroidUtils/actions/workflows/build.yaml)
 ![GitHub](https://img.shields.io/github/license/w2sv/AndroidUtils)
 
 Small Android utility libraries published as separate artifacts.
