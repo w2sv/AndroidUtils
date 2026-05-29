@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.w2sv.androidutils.view.dialogs
+package com.w2sv.androidutils.view
 
 import android.app.AlertDialog
 import android.content.Context

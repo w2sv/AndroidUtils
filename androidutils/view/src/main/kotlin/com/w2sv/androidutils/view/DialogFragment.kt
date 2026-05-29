@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.w2sv.androidutils.view.dialogs
+package com.w2sv.androidutils.view
 
 import androidx.annotation.MainThread
 import androidx.fragment.app.DialogFragment

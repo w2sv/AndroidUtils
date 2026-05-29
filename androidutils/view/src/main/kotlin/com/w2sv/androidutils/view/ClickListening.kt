@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.w2sv.androidutils.view.ext
+package com.w2sv.androidutils.view
 
 import android.view.View
 import androidx.annotation.MainThread
