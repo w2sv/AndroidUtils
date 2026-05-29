@@ -1,56 +1,47 @@
 # AndroidUtils
 
+![Maven Central Version](https://img.shields.io/maven-central/v/io.github.w2sv/androidutils-core)
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/w2sv/AndroidUtils?include_prereleases)
-[![](https://jitpack.io/v/w2sv/AndroidUtils.svg)](https://jitpack.io/#w2sv/AndroidUtils)
 [![Build](https://github.com/w2sv/AndroidUtils/actions/workflows/workflow.yaml/badge.svg)](https://github.com/w2sv/AndroidUtils/actions/workflows/workflow.yaml)
-[![](https://jitci.com/gh/w2sv/AndroidUtils/svg)](https://jitci.com/gh/w2sv/AndroidUtils)
 ![GitHub](https://img.shields.io/github/license/w2sv/AndroidUtils)
 
 A collection of utilities for Android Development. Duh.
 
-## Installation with gradle & jitpack
+## Modules
 
-Add the Jitpack repository in your build configuration:
+| Artifact | Description |
+|--------|------------|
+| `androidutils-core` | Core Android utilities |
+| `androidutils-view` | View utilities |
+| `androidutils-lifecycle` | Lifecycle utilities |
+| `androidutils-test-junit5` | JUnit 5 test utilities |
 
-```kotlin
-repositories {
-    maven("https://jitpack.io")
-}
-```
+## Installation
 
-Add the dependency:
+### Inline
 
 ```kotlin
 dependencies {
-    implementation("com.github.w2sv.AndroidUtils:artifact:version")
-    // Or get the latest snapshot of a certain branch:
-    implementation("com.github.w2sv.AndroidUtils:artifact:branchname-snapshot")
+    implementation("io.github.w2sv:androidutils-core:<version>")
+    implementation("io.github.w2sv:androidutils-view:<version>")
+    implementation("io.github.w2sv:androidutils-lifecycle:<version>")
+    testImplementation("io.github.w2sv:androidutils-test-junit5:<version>")
 }
+```
+
+### Version Catalog (`libs.versions.toml`)
+
+```toml
+[versions]
+w2sv-androidutils = "<version>"
+
+[libraries]
+w2sv-androidutils-core = { module = "io.github.w2sv:androidutils-core", version.ref = "w2sv-androidutils" }
+w2sv-androidutils-view = { module = "io.github.w2sv:androidutils-view", version.ref = "w2sv-androidutils" }
+w2sv-androidutils-lifecycle = { module = "io.github.w2sv:androidutils-lifecycle", version.ref = "w2sv-androidutils" }
+w2sv-androidutils-test-junit5 = { module = "io.github.w2sv:androidutils-test-junit5", version.ref = "w2sv-androidutils" }
 ```
 
 ## License
 
-
-```
-MIT License
-
-Copyright (c) 2024 Janek Zangenberg
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
+Licensed under the Apache License 2.0.

@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jlleitschuh.gradle.ktlint")
-    `maven-publish`
+    id("com.vanniktech.maven.publish")
 }
 
 android {
@@ -30,6 +30,11 @@ android {
             all { test -> test.failOnNoDiscoveredTests = false }
         }
     }
+}
 
-    publishing { singleVariant("release") { withSourcesJar() } }
+mavenPublishing {
+    coordinates(
+        artifactId = path.removePrefix(":").replace(':', '-'),
+        version = rootProject.version.toString()
+    )
 }

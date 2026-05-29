@@ -26,35 +26,6 @@ android {
     kotlin.compilerOptions.jvmTarget.set(JvmTarget.JVM_11)
 }
 
-publishing {
-    publications {
-        register<MavenPublication>("release") {
-            groupId = "com.w2sv.androidutils"
-            artifactId = "lifecycle"
-            version = version.toString()
-            afterEvaluate {
-                from(components["release"])
-            }
-            pom {
-                developers {
-                    developer {
-                        id.set("w2sv")
-                        name.set("Janek Zangenberg")
-                    }
-                }
-                description.set("Lifecycle utilities for Android development.")
-                url.set("https://github.com/w2sv/AndroidUtils")
-                licenses {
-                    license {
-                        name.set("The Apache Software License, Version 2.0")
-                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                    }
-                }
-            }
-        }
-    }
-}
-
 dependencies {
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.lifecycle.livedata.core.ktx)
