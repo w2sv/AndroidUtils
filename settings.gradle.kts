@@ -16,9 +16,9 @@ dependencyResolutionManagement {
     }
 }
 
-include(":androidutils:core")
-include(":androidutils:view")
-include(":androidutils:lifecycle")
-include(":androidutils:test:junit5")
+include(":androidutils-core")
+include(":androidutils-junit5")
+include(":androidutils-lifecycle")
+include(":androidutils-view")
 
 rootProject.name = "AndroidUtils"

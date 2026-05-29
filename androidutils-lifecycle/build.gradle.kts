@@ -33,5 +33,5 @@ dependencies {
 
     testImplementation(libs.junit.jupiter.api)
     testRuntimeOnly(libs.junit.jupiter.engine)
-    testImplementation(project(":androidutils:test:junit5"))
+    testImplementation(projects.androidutilsJunit5)
 }

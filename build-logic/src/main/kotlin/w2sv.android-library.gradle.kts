@@ -9,7 +9,7 @@ plugins {
 rootProject.dependencies.add("dokka", project)
 
 android {
-    namespace = "com.w2sv.${path.removePrefix(":").replace(':', '.')}"
+    namespace = "com.w2sv.${project.name.replace('-', '.')}"
     compileSdk = 37
 
     defaultConfig {
@@ -38,7 +38,7 @@ android {
 
 mavenPublishing {
     coordinates(
-        artifactId = path.removePrefix(":").replace(':', '-'),
+        artifactId = project.name,
         version = rootProject.version.toString()
     )
 }

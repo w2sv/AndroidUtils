@@ -21,12 +21,10 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/androidutils" />
-            <option value="$PROJECT_DIR$/androidutils/core" />
-            <option value="$PROJECT_DIR$/androidutils/lifecycle" />
-            <option value="$PROJECT_DIR$/androidutils/test" />
-            <option value="$PROJECT_DIR$/androidutils/test/junit5" />
-            <option value="$PROJECT_DIR$/androidutils/view" />
+            <option value="$PROJECT_DIR$/androidutils-core" />
+            <option value="$PROJECT_DIR$/androidutils-junit5" />
+            <option value="$PROJECT_DIR$/androidutils-lifecycle" />
+            <option value="$PROJECT_DIR$/androidutils-view" />
             <option value="$PROJECT_DIR$/build-logic" />
           </set>
         </option>
