@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContract
+import androidx.annotation.MainThread
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 
@@ -36,6 +37,7 @@ interface ActivityCallContractHandler<I, O> : DefaultLifecycleObserver {
 
         override lateinit var resultLauncher: ActivityResultLauncher<I>
 
+        @MainThread
         override fun onCreate(owner: LifecycleOwner) {
             super.onCreate(owner)
 

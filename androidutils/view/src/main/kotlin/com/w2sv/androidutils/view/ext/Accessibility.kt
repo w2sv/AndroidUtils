@@ -5,11 +5,12 @@ package com.w2sv.androidutils.view.ext
 import android.graphics.Rect
 import android.view.TouchDelegate
 import android.view.View
+import androidx.annotation.Px
 
 /**
  * Expands this view's touch target on all sides by [all] pixels.
  */
-fun View.increaseTouchArea(all: Int) {
+fun View.increaseTouchArea(@Px all: Int) {
     increaseTouchArea(all, all, all, all)
 }
 
@@ -18,10 +19,10 @@ fun View.increaseTouchArea(all: Int) {
  * Call after the view is attached; runs via `post` to ensure layout.
  */
 fun View.increaseTouchArea(
-    left: Int = 0,
-    top: Int = 0,
-    right: Int = 0,
-    bottom: Int = 0
+    @Px left: Int = 0,
+    @Px top: Int = 0,
+    @Px right: Int = 0,
+    @Px bottom: Int = 0
 ) {
     post {
         val parentView = parent as? View ?: return@post

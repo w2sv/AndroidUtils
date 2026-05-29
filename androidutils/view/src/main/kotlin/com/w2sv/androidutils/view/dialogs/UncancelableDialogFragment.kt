@@ -9,7 +9,6 @@ import androidx.fragment.app.DialogFragment
 abstract class UncancelableDialogFragment : DialogFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
         isCancelable = false
     }
 

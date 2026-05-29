@@ -3,6 +3,7 @@
 package com.w2sv.androidutils.view.ext
 
 import android.view.View
+import androidx.annotation.MainThread
 
 /**
  * Sets a click listener that ignores rapid repeated taps.
@@ -11,6 +12,7 @@ import android.view.View
  *                 for the action to be invoked. Defaults to 500 ms.
  * @param onClick Callback invoked when a click is accepted (i.e., not debounced).
  */
+@MainThread
 fun View.setDebouncedOnClickListener(interval: Long = 500L, onClick: (View) -> Unit) {
     var lastClickTime = 0L
     setOnClickListener { v ->

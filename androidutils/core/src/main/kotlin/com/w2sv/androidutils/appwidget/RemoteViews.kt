@@ -4,6 +4,7 @@ package com.w2sv.androidutils.appwidget
 
 import android.view.View
 import android.widget.RemoteViews
+import androidx.annotation.ColorInt
 import androidx.annotation.IdRes
 
 fun RemoteViews.hide(@IdRes view: Int, visibility: Int = View.GONE) {
@@ -19,10 +20,10 @@ fun RemoteViews.crossVisualize(@IdRes hideView: Int, @IdRes showView: Int) {
     makeVisible(showView)
 }
 
-fun RemoteViews.setColorFilter(@IdRes id: Int, color: Int) {
+fun RemoteViews.setColorFilter(@IdRes id: Int, @ColorInt color: Int) {
     setInt(id, "setColorFilter", color)
 }
 
-fun RemoteViews.setBackgroundColor(@IdRes id: Int, color: Int) {
+fun RemoteViews.setBackgroundColor(@IdRes id: Int, @ColorInt color: Int) {
     setInt(id, "setBackgroundColor", color)
 }
