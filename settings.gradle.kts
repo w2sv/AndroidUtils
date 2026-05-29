@@ -16,6 +16,7 @@ dependencyResolutionManagement {
     }
 }
 
+include(":androidutils-backpress")
 include(":androidutils-core")
 include(":androidutils-junit5")
 include(":androidutils-lifecycle")

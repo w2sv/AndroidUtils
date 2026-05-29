@@ -21,6 +21,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/androidutils-backpress" />
             <option value="$PROJECT_DIR$/androidutils-core" />
             <option value="$PROJECT_DIR$/androidutils-junit5" />
             <option value="$PROJECT_DIR$/androidutils-lifecycle" />

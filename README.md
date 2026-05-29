@@ -15,6 +15,7 @@ API reference: [w2sv.github.io/AndroidUtils](https://w2sv.github.io/AndroidUtils
 
 | Artifact | Description |
 | --- | --- |
+| `androidutils-backpress` | Back press handling utilities |
 | `androidutils-core` | Core Android utilities |
 | `androidutils-view` | View utilities |
 | `androidutils-lifecycle` | Lifecycle utilities |
@@ -26,6 +27,7 @@ API reference: [w2sv.github.io/AndroidUtils](https://w2sv.github.io/AndroidUtils
 
 ```kotlin
 dependencies {
+    implementation("io.github.w2sv:androidutils-backpress:<version>")
     implementation("io.github.w2sv:androidutils-core:<version>")
     implementation("io.github.w2sv:androidutils-view:<version>")
     implementation("io.github.w2sv:androidutils-lifecycle:<version>")
@@ -40,6 +42,7 @@ dependencies {
 w2sv-androidutils = "<version>"
 
 [libraries]
+w2sv-androidutils-backpress = { module = "io.github.w2sv:androidutils-backpress", version.ref = "w2sv-androidutils" }
 w2sv-androidutils-core = { module = "io.github.w2sv:androidutils-core", version.ref = "w2sv-androidutils" }
 w2sv-androidutils-view = { module = "io.github.w2sv:androidutils-view", version.ref = "w2sv-androidutils" }
 w2sv-androidutils-lifecycle = { module = "io.github.w2sv:androidutils-lifecycle", version.ref = "w2sv-androidutils" }
@@ -50,6 +53,7 @@ Then add the aliases you need:
 
 ```kotlin
 dependencies {
+    implementation(libs.w2sv.androidutils.backpress)
     implementation(libs.w2sv.androidutils.core)
     implementation(libs.w2sv.androidutils.view)
     implementation(libs.w2sv.androidutils.lifecycle)
