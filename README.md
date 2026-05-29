@@ -5,18 +5,22 @@
 [![Build](https://github.com/w2sv/AndroidUtils/actions/workflows/workflow.yaml/badge.svg)](https://github.com/w2sv/AndroidUtils/actions/workflows/workflow.yaml)
 ![GitHub](https://img.shields.io/github/license/w2sv/AndroidUtils)
 
-A collection of utilities for Android Development. Duh.
+Small Android utility libraries published as separate artifacts.
 
-## Modules
+## 📚 Documentation
+
+API reference: [w2sv.github.io/AndroidUtils](https://w2sv.github.io/AndroidUtils/)
+
+## 📦 Modules
 
 | Artifact | Description |
-|--------|------------|
+| --- | --- |
 | `androidutils-core` | Core Android utilities |
 | `androidutils-view` | View utilities |
 | `androidutils-lifecycle` | Lifecycle utilities |
 | `androidutils-junit5` | JUnit 5 test utilities |
 
-## Installation
+## 🚀 Installation
 
 ### Inline
 
@@ -42,6 +46,17 @@ w2sv-androidutils-lifecycle = { module = "io.github.w2sv:androidutils-lifecycle"
 w2sv-androidutils-junit5 = { module = "io.github.w2sv:androidutils-junit5", version.ref = "w2sv-androidutils" }
 ```
 
-## License
+Then add the aliases you need:
+
+```kotlin
+dependencies {
+    implementation(libs.w2sv.androidutils.core)
+    implementation(libs.w2sv.androidutils.view)
+    implementation(libs.w2sv.androidutils.lifecycle)
+    testImplementation(libs.w2sv.androidutils.junit5)
+}
+```
+
+## 📄 License
 
 Licensed under the Apache License 2.0.
