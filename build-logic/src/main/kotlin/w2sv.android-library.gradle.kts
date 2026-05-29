@@ -1,8 +1,12 @@
 plugins {
     id("com.android.library")
     id("org.jlleitschuh.gradle.ktlint")
+    id("org.jetbrains.dokka")
     id("com.vanniktech.maven.publish")
 }
+
+// Include every module applying this convention plugin in the root Dokka site.
+rootProject.dependencies.add("dokka", project)
 
 android {
     namespace = "com.w2sv.${path.removePrefix(":").replace(':', '.')}"

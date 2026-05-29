@@ -6,6 +6,7 @@ plugins {
 dependencies {
     implementation(plugin(libs.plugins.android.library))
     implementation(plugin(libs.plugins.ktlint))
+    implementation(plugin(libs.plugins.org.jetbrains.dokka))
     implementation(plugin(libs.plugins.vanniktech.maven.publish))
 }
 
