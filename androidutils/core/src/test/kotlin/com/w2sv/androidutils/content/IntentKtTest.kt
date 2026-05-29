@@ -2,15 +2,27 @@ package com.w2sv.androidutils.content
 
 import android.content.Intent
 import android.os.Bundle
-import kotlin.test.Test
-import kotlin.test.assertEquals
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [35])
 class IntentKtTest {
+
+    @Test
+    fun `getIntExtraOrNull returns actual value equal to default`() {
+        val intent = Intent().putExtra("key", 0)
+
+        assertEquals(0, intent.getIntExtraOrNull("key", defaultValue = 0))
+    }
+
+    @Test
+    fun `getIntExtraOrNull returns null when extra is missing`() {
+        assertEquals(null, Intent().getIntExtraOrNull("key", defaultValue = 0))
+    }
 
     @Test
     fun `test intent with action only`() {

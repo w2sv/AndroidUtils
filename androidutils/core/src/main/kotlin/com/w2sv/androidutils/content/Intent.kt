@@ -43,12 +43,10 @@ inline fun <reified T : Parcelable> Intent.getParcelableArrayCompat(name: String
  * @see Intent.getIntExtra
  */
 fun Intent.getIntExtraOrNull(name: String, defaultValue: Int): Int? =
-    getIntExtra(name, defaultValue).run {
-        if (equals(defaultValue)) {
-            null
-        } else {
-            this
-        }
+    if (hasExtra(name)) {
+        getIntExtra(name, defaultValue)
+    } else {
+        null
     }
 
 /**

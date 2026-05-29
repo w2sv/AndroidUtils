@@ -18,7 +18,10 @@ fun <R> ContentResolver.query(
         selectionArgs,
         null
     )
-        ?.use {
-            it.moveToFirst()
-            onCursor(it)
+        ?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                onCursor(cursor)
+            } else {
+                null
+            }
         }
