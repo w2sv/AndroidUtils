@@ -8,7 +8,10 @@ import android.content.Context
 import com.w2sv.androidutils.content.componentName
 
 /**
- * @see AppWidgetManager.getAppWidgetIds
+ * Returns widget IDs for provider type [T].
+ *
+ * This avoids manually constructing a [android.content.ComponentName] before
+ * calling [AppWidgetManager.getAppWidgetIds].
  */
 inline fun <reified T : AppWidgetProvider> AppWidgetManager.appWidgetIds(context: Context): IntArray =
     getAppWidgetIds(componentName<T>(context))

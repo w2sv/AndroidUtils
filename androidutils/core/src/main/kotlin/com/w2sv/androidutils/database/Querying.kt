@@ -4,6 +4,12 @@ import android.content.ContentResolver
 import android.database.Cursor
 import android.net.Uri
 
+/**
+ * Queries a [Uri], moves to the first row, and closes the cursor.
+ *
+ * This wraps [ContentResolver.query] with `use` and first-row handling so
+ * callers can focus on reading from a valid [Cursor].
+ */
 fun <R> ContentResolver.query(
     uri: Uri,
     columns: Array<String>,

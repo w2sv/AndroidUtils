@@ -7,6 +7,12 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Binder
 
+/**
+ * Checks whether the calling process has access to this [Uri].
+ *
+ * This wraps [Context.checkUriPermission] with sensible Binder defaults for the
+ * current caller.
+ */
 fun Uri.hasPermission(
     context: Context,
     permissionCode: Int,

@@ -8,6 +8,9 @@ import androidx.annotation.MainThread
 /**
  * Sets a click listener that ignores rapid repeated taps.
  *
+ * This builds debouncing into [View.setOnClickListener], avoiding repeated
+ * timestamp checks in individual listeners.
+ *
  * @param interval Minimum time in milliseconds that must pass between clicks
  *                 for the action to be invoked. Defaults to 500 ms.
  * @param onClick Callback invoked when a click is accepted (i.e., not debounced).

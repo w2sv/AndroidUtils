@@ -10,6 +10,12 @@ import androidx.annotation.PluralsRes
 import androidx.annotation.StringRes
 import androidx.core.text.HtmlCompat
 
+/**
+ * Reads an integer resource as a [Long].
+ *
+ * Android resources expose integer values as [Int]; this avoids repeated
+ * conversion when callers need a long value.
+ */
 fun Resources.getLong(@IntegerRes id: Int): Long =
     getInteger(id).toLong()
 
@@ -46,6 +52,12 @@ fun Resources.getQuantityText(
 ): CharSequence =
     HtmlCompat.fromHtml(getQuantityString(id, quantity, *args), HtmlCompat.FROM_HTML_MODE_COMPACT)
 
+/**
+ * Reads a nested string-array entry as a [List].
+ *
+ * This wraps [Resources.obtainTypedArray], item extraction, and recycling so
+ * callers do not manage the typed array lifecycle manually.
+ */
 fun Resources.getNestedStringArray(@ArrayRes id: Int, index: Int): List<String> =
     obtainTypedArray(id).run {
         try {

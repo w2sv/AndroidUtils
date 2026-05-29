@@ -4,10 +4,10 @@ import android.location.LocationManager
 import androidx.core.location.LocationManagerCompat
 
 /**
- * Shortcut for
- * ```
- * LocationManagerCompat.isLocationEnabled(locationManager)
- * ```
+ * Returns whether location is enabled for this manager.
+ *
+ * This exposes [LocationManagerCompat.isLocationEnabled] as an extension so
+ * call sites do not pass the receiver back into AndroidX.
  *
  * @see LocationManagerCompat.isLocationEnabled
  */

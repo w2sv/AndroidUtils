@@ -7,7 +7,10 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 
 /**
- * Show [DialogFragment] with class name as tag.
+ * Shows this [DialogFragment] with its class name as tag.
+ *
+ * This avoids repeating stable tag strings when calling
+ * [DialogFragment.show].
  */
 @MainThread
 fun DialogFragment.show(fragmentManager: FragmentManager) =

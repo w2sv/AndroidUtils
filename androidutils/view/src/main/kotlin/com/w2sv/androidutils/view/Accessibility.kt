@@ -9,6 +9,9 @@ import androidx.annotation.Px
 
 /**
  * Expands this view's touch target on all sides by [all] pixels.
+ *
+ * This wraps [TouchDelegate] setup so callers do not manually calculate and
+ * assign a larger hit rectangle on the parent view.
  */
 fun View.increaseTouchArea(@Px all: Int) {
     increaseTouchArea(all, all, all, all)
@@ -16,6 +19,10 @@ fun View.increaseTouchArea(@Px all: Int) {
 
 /**
  * Expands this view's touch target by adjusting the hit rect.
+ *
+ * This wraps [TouchDelegate] setup so callers can pass edge offsets directly
+ * instead of manually editing a [Rect].
+ *
  * Call after the view is attached; runs via `post` to ensure layout.
  */
 fun View.increaseTouchArea(

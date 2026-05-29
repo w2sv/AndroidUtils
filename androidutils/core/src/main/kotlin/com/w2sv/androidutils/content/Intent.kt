@@ -27,18 +27,39 @@ inline fun <reified T> componentName(context: Context): ComponentName =
 inline fun <reified T> intent(context: Context): Intent =
     Intent(context, T::class.java)
 
+/**
+ * Reads a typed [Parcelable] extra from this [Intent].
+ *
+ * This delegates to [IntentCompat] so callers get one API across Android
+ * versions and avoid passing `T::class.java` manually.
+ */
 inline fun <reified T : Parcelable> Intent.getParcelableCompat(name: String): T? =
     IntentCompat.getParcelableExtra(this, name, T::class.java)
 
+/**
+ * Reads a typed parcelable array-list extra from this [Intent].
+ *
+ * This delegates to [IntentCompat] so callers avoid SDK-version branches and
+ * explicit class arguments.
+ */
 inline fun <reified T : Parcelable> Intent.getParcelableArrayListCompat(name: String): ArrayList<T>? =
     IntentCompat.getParcelableArrayListExtra(this, name, T::class.java)
 
+/**
+ * Reads a typed parcelable array extra from this [Intent].
+ *
+ * This delegates to [IntentCompat] so callers avoid deprecated platform APIs on
+ * older Android versions.
+ */
 inline fun <reified T : Parcelable> Intent.getParcelableArrayCompat(name: String): Array<out Parcelable>? =
     IntentCompat.getParcelableArrayExtra(this, name, T::class.java)
 
 /**
- * Returns null instead of [defaultValue] for more convenient handling through
- * built-in null handling mechanisms.
+ * Reads an integer extra or returns null when it is absent.
+ *
+ * This separates absence from Android's required [defaultValue], allowing
+ * callers to use Kotlin null handling without losing values equal to the
+ * default.
  *
  * @see Intent.getIntExtra
  */

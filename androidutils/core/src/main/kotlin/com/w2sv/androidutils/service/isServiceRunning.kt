@@ -7,6 +7,9 @@ import android.content.Context
 /**
  * Checks whether a service of type [T], owned by the calling app, is currently running.
  *
+ * This hides the [ActivityManager] lookup and class-name comparison behind a
+ * reified service type.
+ *
  * Relies on [ActivityManager.getRunningServices], which reliably returns services
  * owned by the calling app, even on Android O (API 26) and above.
  *

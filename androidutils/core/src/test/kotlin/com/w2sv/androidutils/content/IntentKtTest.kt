@@ -2,11 +2,11 @@ package com.w2sv.androidutils.content
 
 import android.content.Intent
 import android.os.Bundle
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [35])
