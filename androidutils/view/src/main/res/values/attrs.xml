@@ -1,5 +1,0 @@
-<resources>
-    <declare-styleable name="RepelledLayout">
-        <attr name="translationCoefficient" format="float" />
-    </declare-styleable>
-</resources>
