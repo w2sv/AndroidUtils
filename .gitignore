@@ -1,19 +1,22 @@
 *.iml
 .gradle
 /local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
-local.properties
 /.kotlin/
 
 version.txt
 release-notes.txt
+
+# IDEA/Android Studio project files
+.idea/*
+# Keep icon
+!.idea/icon.png
+# Keep code styles
+!/.idea/codeStyles
+/.idea/codeStyles/*
+!/.idea/codeStyles/Project.xml
+!/.idea/codeStyles/codeStyleConfig.xml
