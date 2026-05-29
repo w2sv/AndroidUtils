@@ -1,9 +1,9 @@
 [versions]
-agp = "9.1.0"
+agp = "9.2.1"
 androidx-lifecycle = "2.10.0"
 junit-junit = "4.13.2"
-junit-jupiter = "6.0.3"
-kotlin = "2.3.20"
+junit-jupiter = "6.1.0"
+kotlin = "2.3.21"
 ktlint = "14.2.0"
 
 [libraries]
@@ -22,7 +22,7 @@ junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", vers
 junit4 = { module = "junit:junit", version.ref = "junit-junit" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 roboelectric = "org.robolectric:robolectric:4.16.1"
-w2sv-kotlinutils = "com.github.w2sv:KotlinUtils:0.2.2"
+w2sv-kotlinutils-coroutines = "io.github.w2sv:kotlinutils-coroutines:1.0.0"
 
 [bundles]
 unitTest = [
