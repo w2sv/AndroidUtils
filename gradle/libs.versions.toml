@@ -40,4 +40,4 @@ ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 mannodermaus-android-junit5 = "de.mannodermaus.android-junit5:2.0.1"
 org-jetbrains-dokka = { id = "org.jetbrains.dokka", version.ref = "org-jetbrains-dokka" }
 vanniktech-maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktech-maven-publish" }
-versionCatalogUpdate = "nl.littlerobots.version-catalog-update:1.1.0"
+versionCatalogUpdate = "nl.littlerobots.version-catalog-update:1.1.1"
