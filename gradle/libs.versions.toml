@@ -11,7 +11,7 @@ vanniktech-maven-publish = "0.36.0"
 
 [libraries]
 androidx-activity-ktx = "androidx.activity:activity-ktx:1.13.0"
-androidx-appcompat-resources = "androidx.appcompat:appcompat-resources:1.7.1"
+androidx-appcompat-resources = "androidx.appcompat:appcompat-resources:1.8.0"
 androidx-arch-core-runtime = "androidx.arch.core:core-runtime:2.2.0"
 androidx-core-ktx = "androidx.core:core-ktx:1.18.0"
 androidx-fragment-ktx = "androidx.fragment:fragment-ktx:1.8.9"
